@@ -1,30 +1,58 @@
-import React, { useState } from 'react';
-import { X, Heart, CheckCircle2, ShieldCheck, Copy, QrCode } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  X,
+  Heart,
+  CheckCircle2,
+  ShieldCheck,
+  Copy,
+  QrCode,
+} from "lucide-react";
 
 interface DonationModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose }) => {
+export const DonationModal: React.FC<DonationModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const [selectedTier, setSelectedTier] = useState<number>(250000);
-  const [customAmount, setCustomAmount] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<'qris' | 'bank' | 'kitabisa'>('qris');
-  const [donorName, setDonorName] = useState<string>('');
-  const [donorEmail, setDonorEmail] = useState<string>('');
+  const [customAmount, setCustomAmount] = useState<string>("");
+  const [paymentMethod, setPaymentMethod] = useState<
+    "qris" | "bank" | "kitabisa"
+  >("qris");
+  const [donorName, setDonorName] = useState<string>("");
+  const [donorEmail, setDonorEmail] = useState<string>("");
   const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [copiedAccount, setCopiedAccount] = useState<boolean>(false);
 
   const tiers = [
-    { amount: 50000, label: 'Rp 50.000', impact: 'Pulsa & paket data darurat untuk 1 korban pelapor' },
-    { amount: 150000, label: 'Rp 150.000', impact: 'Paket transportasi aman & pendampingan BAP' },
-    { amount: 250000, label: 'Rp 250.000', impact: '1 sesi konseling pemulihan trauma psikologis' },
-    { amount: 1000000, label: 'Rp 1.000.000', impact: 'Bantuan hukum & litigasi pro bono hingga tuntas' },
+    {
+      amount: 50000,
+      label: "Rp 50.000",
+      impact: "Pulsa & paket data darurat untuk 1 korban pelapor",
+    },
+    {
+      amount: 150000,
+      label: "Rp 150.000",
+      impact: "Paket transportasi aman & pendampingan BAP",
+    },
+    {
+      amount: 250000,
+      label: "Rp 250.000",
+      impact: "1 sesi konseling pemulihan trauma psikologis",
+    },
+    {
+      amount: 1000000,
+      label: "Rp 1.000.000",
+      impact: "Bantuan hukum & litigasi pro bono hingga tuntas",
+    },
   ];
 
   const handleCopyBank = () => {
-    navigator.clipboard.writeText('8720199000');
+    navigator.clipboard.writeText("8720199000");
     setCopiedAccount(true);
     setTimeout(() => setCopiedAccount(false), 2000);
   };
@@ -42,19 +70,23 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
 
       <div className="relative bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-lg overflow-hidden z-10 my-8">
         {/* Header */}
-        <div className="p-5 bg-gradient-to-r from-rose-900 to-rose-800 text-white flex items-center justify-between">
+        <div className="p-5 bg-gradient-to-r from-blue-900 to-blue-800 text-white flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-rose-700/60 rounded-xl">
-              <Heart className="w-5 h-5 fill-rose-200 text-rose-200" />
+            <div className="p-2 bg-blue-700/60 rounded-xl">
+              <Heart className="w-5 h-5 fill-blue-200 text-blue-200" />
             </div>
             <div>
-              <h3 className="font-editorial text-xl font-bold leading-none">Dukung Kedaulatan Korban</h3>
-              <p className="text-xs text-rose-200 mt-1">Donasi independen untuk layanan pendampingan 100% gratis</p>
+              <h3 className="font-editorial text-xl font-bold leading-none">
+                Dukung Kedaulatan Korban
+              </h3>
+              <p className="text-xs text-blue-200 mt-1">
+                Donasi independen untuk layanan pendampingan 100% gratis
+              </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 text-rose-200 hover:text-white rounded-lg hover:bg-rose-700/50 cursor-pointer"
+            className="p-1 text-blue-200 hover:text-white rounded-lg hover:bg-blue-700/50 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -69,17 +101,22 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
               Terima Kasih Atas Solidaritas Anda!
             </h4>
             <p className="text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
-              Dukungan Anda memungkinkan tim pendamping hukum, teknisi keamanan siber, dan psikolog TP.com terus mendampingi ratusan perempuan dan kelompok rentan yang sedang berjuang keluar dari jeratan kekerasan digital.
+              Dukungan Anda memungkinkan tim pendamping hukum, teknisi keamanan
+              siber, dan psikolog TP.com terus mendampingi ratusan perempuan dan
+              kelompok rentan yang sedang berjuang keluar dari jeratan kekerasan
+              digital.
             </p>
             <div className="p-3 bg-stone-50 rounded-xl text-xs text-slate-500 border border-stone-200">
-              Konfirmasi donasi dan bukti penerimaan telah dikirimkan ke email Anda. Laporan akuntabilitas keuangan kami diaudit dan dipublikasikan setiap tahun.
+              Konfirmasi donasi dan bukti penerimaan telah dikirimkan ke email
+              Anda. Laporan akuntabilitas keuangan kami diaudit dan
+              dipublikasikan setiap tahun.
             </div>
             <button
               onClick={() => {
                 setIsSuccess(false);
                 onClose();
               }}
-              className="px-6 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-bold rounded-xl text-sm transition-colors cursor-pointer"
+              className="px-6 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-sm transition-colors cursor-pointer"
             >
               Selesai
             </button>
@@ -98,16 +135,18 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
                     type="button"
                     onClick={() => {
                       setSelectedTier(tier.amount);
-                      setCustomAmount('');
+                      setCustomAmount("");
                     }}
                     className={`p-3 text-left rounded-xl border transition-all cursor-pointer ${
                       selectedTier === tier.amount && !customAmount
-                        ? 'border-rose-600 bg-rose-50/80 text-rose-950 font-bold ring-1 ring-rose-600'
-                        : 'border-stone-200 hover:border-slate-400 text-slate-800 bg-white'
+                        ? "border-blue-600 bg-blue-50/80 text-blue-950 font-bold ring-1 ring-blue-600"
+                        : "border-stone-200 hover:border-slate-400 text-slate-800 bg-white"
                     }`}
                   >
                     <div className="text-sm font-bold">{tier.label}</div>
-                    <div className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">{tier.impact}</div>
+                    <div className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
+                      {tier.impact}
+                    </div>
                   </button>
                 ))}
               </div>
@@ -122,7 +161,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
                     setCustomAmount(e.target.value);
                     setSelectedTier(0);
                   }}
-                  className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                  className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -134,9 +173,9 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
               </label>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { id: 'qris', label: 'QRIS Instan', icon: QrCode },
-                  { id: 'bank', label: 'Transfer Bank', icon: ShieldCheck },
-                  { id: 'kitabisa', label: 'Kitabisa Partner', icon: Heart },
+                  { id: "qris", label: "QRIS Instan", icon: QrCode },
+                  { id: "bank", label: "Transfer Bank", icon: ShieldCheck },
+                  { id: "kitabisa", label: "Kitabisa Partner", icon: Heart },
                 ].map((m) => (
                   <button
                     key={m.id}
@@ -144,8 +183,8 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
                     onClick={() => setPaymentMethod(m.id as any)}
                     className={`py-2 px-2 text-center text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
                       paymentMethod === m.id
-                        ? 'border-rose-600 bg-rose-50 text-rose-900 font-bold'
-                        : 'border-stone-200 text-slate-600 hover:bg-stone-50'
+                        ? "border-blue-600 bg-blue-50 text-blue-900 font-bold"
+                        : "border-stone-200 text-slate-600 hover:bg-stone-50"
                     }`}
                   >
                     {m.label}
@@ -155,29 +194,35 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
             </div>
 
             {/* Bank details if bank transfer */}
-            {paymentMethod === 'bank' && (
+            {paymentMethod === "bank" && (
               <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-1">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Bank Mandiri (Yayasan TanpaPelecehan):</span>
+                  <span className="text-slate-500">
+                    Bank BSI (TRANSFORMASI PEREMPUAN DOTCOM):
+                  </span>
                   <button
                     type="button"
                     onClick={handleCopyBank}
-                    className="text-rose-700 hover:underline inline-flex items-center gap-1 font-bold"
+                    className="text-blue-700 hover:underline inline-flex items-center gap-1 font-bold"
                   >
-                    <Copy className="w-3 h-3" /> {copiedAccount ? 'Tersalin!' : 'Salin Rekening'}
+                    <Copy className="w-3 h-3" />{" "}
+                    {copiedAccount ? "Tersalin!" : "Salin Rekening"}
                   </button>
                 </div>
-                <div className="font-mono text-sm font-bold text-slate-900">872-019-9000</div>
+                <div className="font-mono text-sm font-bold text-slate-900">
+                  5655555562
+                </div>
               </div>
             )}
 
-            {paymentMethod === 'qris' && (
+            {paymentMethod === "qris" && (
               <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 text-center space-y-2">
                 <div className="w-32 h-32 bg-white p-2 border border-stone-300 rounded-lg mx-auto flex items-center justify-center">
                   <QrCode className="w-24 h-24 text-slate-900" />
                 </div>
                 <p className="text-[11px] text-slate-500">
-                  Dapat dipindai dari BCA, Mandiri, GoPay, OVO, ShopeePay, DANA & seluruh aplikasi perbankan.
+                  Dapat dipindai dari BCA, Mandiri, GoPay, OVO, ShopeePay, DANA
+                  & seluruh aplikasi perbankan.
                 </p>
               </div>
             )}
@@ -190,9 +235,12 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
                   id="anonymousCheck"
                   checked={isAnonymous}
                   onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="rounded text-rose-600 focus:ring-rose-500"
+                  className="rounded text-blue-600 focus:ring-blue-500"
                 />
-                <label htmlFor="anonymousCheck" className="text-slate-700 font-medium">
+                <label
+                  htmlFor="anonymousCheck"
+                  className="text-slate-700 font-medium"
+                >
                   Donasikan sebagai Anonim (Nama tidak dipublikasikan)
                 </label>
               </div>
@@ -222,16 +270,21 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
             {/* Submit */}
             <button
               type="submit"
-              className="w-full py-3 bg-rose-700 hover:bg-rose-800 text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
             >
               <Heart className="w-4 h-4 fill-white" />
               <span>
-                Lanjutkan Donasi ({customAmount ? `Rp ${Number(customAmount).toLocaleString('id-ID')}` : `Rp ${selectedTier.toLocaleString('id-ID')}`})
+                Lanjutkan Donasi (
+                {customAmount
+                  ? `Rp ${Number(customAmount).toLocaleString("id-ID")}`
+                  : `Rp ${selectedTier.toLocaleString("id-ID")}`}
+                )
               </span>
             </button>
 
             <p className="text-[11px] text-center text-slate-400">
-              TP.com adalah yayasan nirlaba independen. Seluruh dana disalurkan langsung untuk operasional pendampingan korban.
+              TP.com adalah yayasan nirlaba independen. Seluruh dana disalurkan
+              langsung untuk operasional pendampingan korban.
             </p>
           </form>
         )}

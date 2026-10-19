@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { PageRoute } from "../types";
+import Logo from "../assets/images/logo.png";
 
 interface FooterProps {
   onRouteChange: (route: PageRoute) => void;
@@ -26,7 +27,7 @@ export const Footer: React.FC<FooterProps> = ({
     <footer className="bg-slate-950 text-slate-300 pt-16 pb-12 border-t border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Safety Warning Notice for Survivors */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        {/* <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 shrink-0">
               <Lock className="w-5 h-5" />
@@ -51,20 +52,17 @@ export const Footer: React.FC<FooterProps> = ({
             <AlertTriangle className="w-3.5 h-3.5" />
             <span>Keluar Cepat Sekarang</span>
           </button>
-        </div>
+        </div> */}
 
         {/* 4 Main Footer Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800">
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-rose-600 flex items-center justify-center text-white">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <span className="font-editorial text-2xl font-bold tracking-tight text-white">
-                TanpaPelecehan<span className="text-rose-500">.com</span>
-              </span>
-            </div>
+            <img
+              src={Logo}
+              alt="Transformasi Perempuan Dotcom"
+              // className="w-1/2"
+            />
             <p className="text-xs text-slate-400 leading-relaxed max-w-md">
               Organisasi advokasi masyarakat sipil non-pemerintah yang berfokus
               pada pencegahan kekerasan berbasis gender online (KBGO),
@@ -184,24 +182,24 @@ export const Footer: React.FC<FooterProps> = ({
             </h5>
             <div className="space-y-2 text-xs text-slate-400">
               <div className="flex items-start gap-2">
-                <PhoneCall className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                <PhoneCall className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-slate-200 font-medium">
                     WhatsApp Crisis Hotline:
                   </span>
                   <a
-                    href="https://wa.me/6281299008720"
+                    href="https://wa.me/6282339431011"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-rose-400 hover:underline"
+                    className="text-blue-400 hover:underline"
                   >
-                    +62 812-9900-8720 (24 Jam)
+                    +62 823-3943-1011 (24 Jam)
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-2 pt-1">
-                <Mail className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                <Mail className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-slate-200 font-medium">
                     Email Terenkripsi:
@@ -215,7 +213,7 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="pt-2">
                 <button
                   onClick={() => onRouteChange("kontak_pengaduan")}
-                  className="w-full py-2 px-3 bg-rose-700 hover:bg-rose-600 text-white font-semibold rounded-lg text-center transition-colors cursor-pointer block"
+                  className="w-full py-2 px-3 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded-lg text-center transition-colors cursor-pointer block"
                 >
                   Formulir Pengaduan Aman
                 </button>
@@ -238,9 +236,9 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="flex items-center gap-4">
             <button
               onClick={onOpenDonation}
-              className="text-rose-400 hover:text-rose-300 font-medium flex items-center gap-1 cursor-pointer"
+              className="text-blue-400 hover:text-blue-300 font-medium flex items-center gap-1 cursor-pointer"
             >
-              <Heart className="w-3 h-3 fill-rose-500 text-rose-500" />
+              <Heart className="w-3 h-3 fill-blue-500 text-blue-500" />
               <span>Dukung Donasi Independen</span>
             </button>
             <span>·</span>

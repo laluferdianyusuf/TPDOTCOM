@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PageRoute } from "../types";
+import Logo from "../assets/images/logo.png";
 
 interface HeaderProps {
   currentRoute: PageRoute;
@@ -90,16 +91,16 @@ export const Header: React.FC<HeaderProps> = ({
         },
       ],
     },
-    { label: "Kontak & Pengaduan", route: "kontak_pengaduan" as PageRoute },
+    { label: "Kontak", route: "kontak_pengaduan" as PageRoute },
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-[#fafaf8]/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
       {/* Top Security & Crisis Banner */}
-      <div className="bg-rose-950 text-rose-50 text-xs px-4 py-2 border-b border-rose-900/60">
+      <div className="bg-blue-950 text-blue-50 text-xs px-4 py-2 border-b border-blue-900/60">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 font-medium">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-rose-800 text-rose-100 font-bold uppercase tracking-wider text-[10px]">
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-800 text-blue-100 font-bold uppercase tracking-wider text-[10px]">
               Kanal Darurat
             </span>
             <span className="hidden sm:inline">
@@ -107,18 +108,18 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
             <span className="sm:hidden">Butuh bantuan darurat?</span>
             <a
-              href="https://wa.me/6281299008720"
+              href="https://wa.me/6282339431011"
               target="_blank"
               rel="noreferrer"
               className="underline font-semibold hover:text-white inline-flex items-center gap-1"
             >
-              <PhoneCall className="w-3 h-3" /> WA: 0812-9900-8720
+              <PhoneCall className="w-3 h-3" /> WA: 0823-3943-1011
             </a>
           </div>
 
           {/* <div className="flex items-center gap-3 ml-auto">
-            <span className="text-rose-200 text-[11px] hidden md:inline">
-              Tekan <kbd className="px-1.5 py-0.5 bg-rose-900 rounded border border-rose-700 font-mono text-[10px]">ESC</kbd> untuk keluar cepat
+            <span className="text-blue-200 text-[11px] hidden md:inline">
+              Tekan <kbd className="px-1.5 py-0.5 bg-blue-900 rounded border border-blue-700 font-mono text-[10px]">ESC</kbd> untuk keluar cepat
             </span>
             <button
               onClick={handleQuickExit}
@@ -134,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex justify-between h-20">
           {/* Logo & Brand Identity */}
           <div className="flex items-center gap-3">
             <button
@@ -142,26 +143,22 @@ export const Header: React.FC<HeaderProps> = ({
                 onRouteChange("beranda");
                 setIsMobileMenuOpen(false);
               }}
-              className="text-left group cursor-pointer"
+              className="text-left group cursor-pointer w-10/12"
             >
-              <div className="flex items-center gap-2.5">
-                {/* <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-700 to-rose-900 flex items-center justify-center text-white shadow-md shadow-rose-900/10 group-hover:scale-105 transition-transform">
-                  <ShieldCheck className="w-6 h-6" />
-                </div> */}
-                <div>
-                  <img
-                    src="../assets/images/logo.png"
-                    alt="Transformasi Perempuan Dotcom"
-                  />
-                  {/* <div className="flex items-center gap-1.5">
+              <div>
+                <img
+                  src={Logo}
+                  alt="Transformasi Perempuan Dotcom"
+                  // className="w-1/2"
+                />
+                {/* <div className="flex items-center gap-1.5">
                     <span className="font-editorial text-2xl font-bold tracking-tight text-slate-900 leading-none">
-                      TanpaPelecehan<span className="text-rose-700">.com</span>
+                      TanpaPelecehan<span className="text-blue-700">.com</span>
                     </span>
                   </div>
                   <p className="text-[11px] font-medium text-slate-500 uppercase tracking-widest mt-1">
                     Advokasi & Hak Asasi Digital
                   </p> */}
-                </div>
               </div>
             </button>
           </div>
@@ -199,7 +196,7 @@ export const Header: React.FC<HeaderProps> = ({
                         item.dropdownItems?.some(
                           (d) => d.route === currentRoute,
                         )
-                          ? "text-rose-700 font-semibold bg-rose-50"
+                          ? "text-blue-700 font-semibold bg-blue-50"
                           : "hover:text-slate-950 hover:bg-stone-100"
                       }`}
                     >
@@ -218,7 +215,7 @@ export const Header: React.FC<HeaderProps> = ({
                           }}
                           className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-colors cursor-pointer block ${
                             currentRoute === drop.route
-                              ? "bg-rose-50 text-rose-800 font-semibold"
+                              ? "bg-blue-50 text-blue-800 font-semibold"
                               : "text-slate-700 hover:bg-stone-50 hover:text-slate-950"
                           }`}
                         >
@@ -236,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({
                   onClick={() => onRouteChange(item.route)}
                   className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
                     currentRoute === item.route
-                      ? "text-rose-700 font-semibold bg-rose-50"
+                      ? "text-blue-700 font-semibold bg-blue-50"
                       : "hover:text-slate-950 hover:bg-stone-100"
                   }`}
                 >
@@ -259,18 +256,18 @@ export const Header: React.FC<HeaderProps> = ({
 
             <button
               onClick={onOpenDonation}
-              className="px-3.5 py-2 text-xs font-semibold text-rose-800 bg-rose-100/70 hover:bg-rose-200/70 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 text-xs font-semibold text-blue-800 bg-blue-100/70 hover:bg-blue-200/70 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <Heart className="w-3.5 h-3.5 fill-rose-600 text-rose-600" />
-              <span>Dukung Kami</span>
+              <Heart className="w-3.5 h-3.5 fill-blue-600 text-blue-600" />
+              <span>Dukung</span>
             </button>
 
             <button
               onClick={() => onRouteChange("kontak_pengaduan")}
-              className="px-4 py-2.5 text-xs font-bold text-white bg-rose-700 hover:bg-rose-800 rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer hover:shadow-md"
+              className="px-4 py-2.5 text-xs font-bold text-white bg-blue-700 hover:bg-blue-800 rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer hover:shadow-md"
             >
-              <Lock className="w-3.5 h-3.5 text-rose-200" />
-              <span>Lapor Kasus (Aman)</span>
+              <Lock className="w-3.5 h-3.5 text-blue-200" />
+              <span>Lapor</span>
             </button>
           </div>
 
@@ -309,7 +306,7 @@ export const Header: React.FC<HeaderProps> = ({
               }}
               className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${
                 currentRoute === "beranda"
-                  ? "bg-rose-50 text-rose-800 font-bold"
+                  ? "bg-blue-50 text-blue-800 font-bold"
                   : "text-slate-800"
               }`}
             >
@@ -323,7 +320,7 @@ export const Header: React.FC<HeaderProps> = ({
               }}
               className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${
                 currentRoute === "tentang_kami"
-                  ? "bg-rose-50 text-rose-800 font-bold"
+                  ? "bg-blue-50 text-blue-800 font-bold"
                   : "text-slate-800"
               }`}
             >
@@ -341,7 +338,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "program"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -354,7 +351,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "detail_program_keamanan_digital"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -373,7 +370,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "isu_pengetahuan"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -386,7 +383,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "kategori_kbgo"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -405,7 +402,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "publikasi"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -418,7 +415,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "detail_publikasi_laporan_tahunan_2024"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -431,7 +428,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
                   currentRoute === "detail_panduan_protokol_penghapusan_ncii"
-                    ? "bg-rose-50 text-rose-800 font-bold"
+                    ? "bg-blue-50 text-blue-800 font-bold"
                     : "text-slate-700"
                 }`}
               >
@@ -447,8 +444,8 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-bold ${
                   currentRoute === "kontak_pengaduan"
-                    ? "bg-rose-50 text-rose-800"
-                    : "text-rose-700"
+                    ? "bg-blue-50 text-blue-800"
+                    : "text-blue-700"
                 }`}
               >
                 Kontak & Pengaduan Kasus
@@ -462,7 +459,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenDonation();
                 setIsMobileMenuOpen(false);
               }}
-              className="w-full py-2.5 text-center text-xs font-semibold text-rose-800 bg-rose-100 rounded-xl"
+              className="w-full py-2.5 text-center text-xs font-semibold text-blue-800 bg-blue-100 rounded-xl"
             >
               Dukung Donasi
             </button>
@@ -471,7 +468,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onRouteChange("kontak_pengaduan");
                 setIsMobileMenuOpen(false);
               }}
-              className="w-full py-2.5 text-center text-xs font-bold text-white bg-rose-700 rounded-xl"
+              className="w-full py-2.5 text-center text-xs font-bold text-white bg-blue-700 rounded-xl"
             >
               Lapor Kasus
             </button>

@@ -30,7 +30,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
     {
       step: "03",
       title: "Intervensi Terpadu (Teknis, Hukum, Psikologis)",
-      desc: "Berdasarkan persetujuan korban, teknisi kami memproses hashing & takedown konten, advokat menyiapkan berkas hukum UU TPKS, dan psikolog memberikan konseling krisis.",
+      desc: "Berdasarkan persetujuan korban, teknisi kami mempblues hashing & takedown konten, advokat menyiapkan berkas hukum UU TPKS, dan psikolog memberikan konseling krisis.",
     },
     {
       step: "04",
@@ -49,7 +49,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
       {/* Header Banner */}
       <section className="pt-10 sm:pt-16 pb-12 border-b border-stone-200 bg-stone-50/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-          <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             Program Kerja TP.com
           </span>
           <h1 className="font-editorial text-4xl sm:text-5xl font-bold text-slate-900 leading-tight">
@@ -75,7 +75,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
           >
             <div className="lg:col-span-7 space-y-4">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded-md bg-rose-50 text-rose-800 text-xs font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-1 rounded-md bg-blue-50 text-blue-800 text-xs font-bold uppercase tracking-wider">
                   {prog.category}
                 </span>
                 <span className="text-xs text-slate-400">·</span>
@@ -99,7 +99,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
                   {prog.keyFeatures.map((feat, fidx) => (
                     <div key={fidx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -112,7 +112,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
                     onClick={() =>
                       onNavigate("detail_program_keamanan_digital")
                     }
-                    className="px-5 py-2.5 bg-rose-700 hover:bg-rose-800 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-2 cursor-pointer"
+                    className="px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-2 cursor-pointer"
                   >
                     <span>Buka Detail Klinik Keamanan Digital</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -130,7 +130,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
             </div>
 
             <div className="lg:col-span-5 bg-stone-50 rounded-2xl p-6 border border-stone-200/80 space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-rose-700 shadow-xs">
+              <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 flex items-center justify-center text-blue-700 shadow-xs">
                 {prog.id === "keamanan-digital" && (
                   <ShieldCheck className="w-6 h-6" />
                 )}
@@ -174,8 +174,8 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl">
           <div className="max-w-3xl mb-12 space-y-2">
-            <span className="text-xs font-bold text-rose-400 uppercase tracking-wider">
-              Prosedur Operasional Standar (SOP)
+            <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
+              Pbluedur Operasional Standar (SOP)
             </span>
             <h2 className="font-editorial text-3xl font-bold">
               Alur Penanganan Kasus di Transformasi Perempuan Dotcom
@@ -189,7 +189,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             {serviceFlow.map((flow, idx) => (
               <div key={idx} className="relative space-y-3">
-                <div className="text-2xl font-editorial font-bold text-rose-400">
+                <div className="text-2xl font-editorial font-bold text-blue-400">
                   {flow.step}
                 </div>
                 <h3 className="text-sm font-bold text-white leading-snug">
@@ -208,7 +208,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
             </div>
             <button
               onClick={() => onNavigate("kontak_pengaduan")}
-              className="px-6 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
+              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
             >
               Ajukan Pengaduan Sekarang
             </button>

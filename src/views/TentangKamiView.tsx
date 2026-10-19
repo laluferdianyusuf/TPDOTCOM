@@ -68,7 +68,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
       {/* Header Intro */}
       <section className="pt-10 sm:pt-16 pb-12 border-b border-stone-200 bg-stone-50/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-          <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             Tentang Transformasi Perempuan Dotcom
           </span>
           <h1 className="font-editorial text-4xl sm:text-5xl font-bold text-slate-900 leading-tight">
@@ -88,7 +88,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-10 flex flex-col justify-between shadow-xl">
             <div className="space-y-4">
-              <span className="text-xs font-bold text-rose-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
                 Visi Organisasi
               </span>
               <h2 className="font-editorial text-2xl sm:text-3xl font-bold leading-snug">
@@ -106,12 +106,12 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
 
           <div className="bg-white border border-stone-200 rounded-3xl p-8 sm:p-10 shadow-xs flex flex-col justify-between">
             <div className="space-y-4">
-              <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+              <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
                 Misi Strategis
               </span>
               <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700">
                 <li className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                  <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center shrink-0 text-xs">
                     1
                   </span>
                   <span>
@@ -122,7 +122,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                  <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center shrink-0 text-xs">
                     2
                   </span>
                   <span>
@@ -132,7 +132,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                  <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center shrink-0 text-xs">
                     3
                   </span>
                   <span>
@@ -143,7 +143,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-rose-100 text-rose-800 font-bold flex items-center justify-center shrink-0 text-xs">
+                  <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center shrink-0 text-xs">
                     4
                   </span>
                   <span>
@@ -161,7 +161,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
       {/* Nilai-Nilai Dasar */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             Prinsip Etik Kerja
           </span>
           <h2 className="font-editorial text-3xl font-bold text-slate-900">
@@ -181,7 +181,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                 key={idx}
                 className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3"
               >
-                <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                   <Icon className="w-5 h-5" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 leading-snug">
@@ -200,7 +200,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-stone-50 border border-stone-200 rounded-3xl p-6 sm:p-12">
           <div className="max-w-3xl mb-10 space-y-2">
-            <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
               Linimasa Gerakan
             </span>
             <h2 className="font-editorial text-3xl font-bold text-slate-900">
@@ -212,18 +212,18 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
             </p>
           </div>
 
-          <div className="space-y-6 relative before:absolute before:inset-0 before:left-3 sm:before:left-4 before:w-0.5 before:bg-rose-200">
+          <div className="space-y-6 relative before:absolute before:inset-0 before:left-3 sm:before:left-4 before:w-0.5 before:bg-blue-200">
             {milestones.map((m, idx) => (
               <div
                 key={idx}
                 className="relative flex items-start gap-4 sm:gap-6"
               >
-                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-rose-700 text-white font-bold flex items-center justify-center shrink-0 z-10 text-xs shadow-xs">
+                <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-blue-700 text-white font-bold flex items-center justify-center shrink-0 z-10 text-xs shadow-xs">
                   {idx + 1}
                 </div>
                 <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex-1 space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-xs font-bold">
+                    <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-bold">
                       {m.year}
                     </span>
                     <h3 className="text-sm sm:text-base font-bold text-slate-900">
@@ -243,7 +243,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
       {/* Tim & Dewan Ahli */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             Penggerak & Pakar
           </span>
           <h2 className="font-editorial text-3xl font-bold text-slate-900">
@@ -272,7 +272,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                 <h3 className="text-sm font-bold text-slate-900">
                   {member.name}
                 </h3>
-                <p className="text-xs font-semibold text-rose-700">
+                <p className="text-xs font-semibold text-blue-700">
                   {member.role}
                 </p>
                 <p className="text-xs text-slate-600 leading-relaxed">
@@ -289,7 +289,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
         <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-10 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-800">
             <div className="space-y-2 max-w-xl">
-              <span className="text-xs font-bold text-rose-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
                 Akuntabilitas Publik
               </span>
               <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-white">

@@ -79,7 +79,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
       {/* Header Breadcrumb & Title */}
       <section className="pt-10 sm:pt-16 pb-12 border-b border-stone-200 bg-stone-50/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="flex items-center gap-2 text-xs font-semibold text-rose-800">
+          <div className="flex items-center gap-2 text-xs font-semibold text-blue-800">
             <button
               onClick={() => onNavigate("publikasi")}
               className="hover:underline cursor-pointer"
@@ -90,7 +90,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
             <span>Laporan Tahunan 2024</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-800 text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold uppercase tracking-wider">
             Laporan Riset Tahunan Resmi
           </div>
 
@@ -111,7 +111,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
                   'Memulai unduhan dokumen lengkap "Laporan Tahunan KBGO 2024 TP.com" (Format PDF, 4.8 MB).',
                 )
               }
-              className="px-6 py-3 bg-rose-700 hover:bg-rose-800 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-2 shadow-md cursor-pointer"
+              className="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-2 shadow-md cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Unduh Laporan Lengkap (PDF · 4.8 MB)</span>
@@ -130,7 +130,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
       {/* Ringkasan Eksekutif */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="space-y-3">
-          <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             Ringkasan Eksekutif
           </span>
           <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-slate-900">
@@ -138,10 +138,10 @@ export const DetailPublikasiLaporan2024View: React.FC<
           </h2>
         </div>
 
-        <div className="prose prose-slate max-w-none text-sm sm:text-base text-slate-700 leading-relaxed space-y-4">
+        <div className="pblue pblue-slate max-w-none text-sm sm:text-base text-slate-700 leading-relaxed space-y-4">
           <p>
             Sepanjang tahun 2024, Transformasi Perempuan Dotcom menerima dan
-            memproses{" "}
+            mempblues{" "}
             <strong>
               1.412 aduan kasus kekerasan berbasis gender online (KBGO)
             </strong>{" "}
@@ -168,7 +168,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-12 shadow-xl space-y-8">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-bold text-rose-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
               Data Kasus Empiris
             </span>
             <h2 className="font-editorial text-2xl sm:text-3xl font-bold">
@@ -190,14 +190,14 @@ export const DetailPublikasiLaporan2024View: React.FC<
                       ({item.cases})
                     </span>
                   </span>
-                  <span className="font-mono font-bold text-rose-400">
+                  <span className="font-mono font-bold text-blue-400">
                     {item.percentage}%
                   </span>
                 </div>
                 {/* Visual bar */}
                 <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-rose-600 to-rose-400 rounded-full transition-all duration-700"
+                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-700"
                     style={{ width: `${item.percentage}%` }}
                   />
                 </div>
@@ -211,7 +211,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
       {/* Daftar Bab Laporan */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="space-y-2">
-          <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+          <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
             Struktur Dokumen
           </span>
           <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-slate-900">
@@ -226,7 +226,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
               className="p-5 bg-white rounded-2xl border border-stone-200 shadow-xs space-y-2"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+                <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
                   {ch.num}
                 </span>
                 <span className="text-xs text-slate-400 font-mono">
@@ -246,7 +246,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-stone-100 rounded-3xl p-6 sm:p-12 border border-stone-200 space-y-8">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-bold text-rose-700 uppercase tracking-wider">
+            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
               Tuntutan Kebijakan
             </span>
             <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-slate-900">
@@ -256,7 +256,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                 <Building2 className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-slate-900">
@@ -271,7 +271,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                 <Scale className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-slate-900">
@@ -285,7 +285,7 @@ export const DetailPublikasiLaporan2024View: React.FC<
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
                 <Shield className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-slate-900">
