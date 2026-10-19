@@ -92,9 +92,9 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                 Visi Organisasi
               </span>
               <h2 className="font-editorial text-2xl sm:text-3xl font-bold leading-snug">
-                Terwujudnya ruang digital Indonesia yang bebas dari ketakutan,
-                diskriminasi gender, dan pelecehan seksual, di mana setiap
-                individu berdaulat penuh atas privasi dan tubuhnya.
+                Mewujudkan masyarakat yang berkeadilan gender dan berkemampuan
+                digital yang mendukung pembangunan ekonomi, hukum, dan sosial
+                lainnya yang berwawasan lingkungan.
               </h2>
             </div>
             <p className="text-xs text-slate-400 pt-6 mt-6 border-t border-slate-800">
@@ -115,10 +115,9 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                     1
                   </span>
                   <span>
-                    <strong>Layanan Terpadu & Gratis:</strong> Memberikan
-                    pendampingan hukum pro bono, psikoterapi krisis, dan
-                    pembersihan jejak digital bagi korban kekerasan seksual
-                    siber.
+                    Mendorong pemberdayaan dan peningkatan perempuan literasi
+                    digital bagi perempuan, generasi muda, dan kelompok
+                    penyandang disabilitas.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -126,9 +125,9 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                     2
                   </span>
                   <span>
-                    <strong>Edukasi & Pemberdayaan:</strong> Memperluas literasi
-                    keamanan siber dan protokol mitigasi KBGO bagi 50.000
-                    perempuan, pelajar, dan aktivis komunitas.
+                    Meningkatkan kapasitas perempuan dan kelompok rentan
+                    kelompok (pemuda, penyandang disabilitas, lanjut usia)
+                    mengenai hak asasi manusia dan hak asasi manusia lainnya
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -136,10 +135,9 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                     3
                   </span>
                   <span>
-                    <strong>Advokasi & Akuntabilitas Platform:</strong>{" "}
-                    Mendorong penegakan ketat UU TPKS serta menuntut
-                    pertanggungjawaban platform teknologi global atas penyebaran
-                    konten ilegal.
+                    Memberikan ruang bagi partisipasi perempuan, generasi muda,
+                    penyandang disabilitas, dan lanjut usia dalam proses
+                    pembangunan berwawasan lingkungan
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -147,9 +145,9 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                     4
                   </span>
                   <span>
-                    <strong>Riset Berbasis Bukti:</strong> Menghasilkan data dan
-                    catatan tahunan situasi hak digital nasional sebagai rujukan
-                    kebijakan negara.
+                    Melaksanakan advokasi dalam rangka mencapai kemanusiaan hak
+                    bagi perempuan, penyandang disabilitas, dan orang lanjut
+                    usia
                   </span>
                 </li>
               </ul>
