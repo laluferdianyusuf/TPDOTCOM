@@ -633,12 +633,11 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
             <div className="p-5 bg-stone-50 rounded-2xl border border-stone-200 text-xs text-slate-600 space-y-2">
               <div className="font-bold text-slate-800 flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-blue-700" />
-                <span>Sekretariat Advokasi TP.com:</span>
+                <span>Sekretariat TPDcom:</span>
               </div>
               <p className="leading-relaxed">
-                Gedung Pusat Advokasi Masyarakat Sipil, Jl. Diponegoro No. 42,
-                Menteng, Jakarta Pusat 10310. (Kunjungan tatap muka memerlukan
-                janji temu demi keamanan klien).
+                Jl. Bung Karno No.100, Pagutan Tim., Kec. Mataram, Kota Mataram,
+                Nusa Tenggara Bar. 83127.
               </p>
             </div>
           </div>

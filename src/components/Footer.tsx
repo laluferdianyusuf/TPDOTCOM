@@ -119,6 +119,16 @@ export const Footer: React.FC<FooterProps> = ({
                   Advokasi Kebijakan & Regulasi
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() =>
+                    onRouteChange("dokumentasi_kegiatan_program")
+                  }
+                  className="hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  Dokumentasi Kegiatan & Pelatihan
+                </button>
+              </li>
             </ul>
           </div>
 

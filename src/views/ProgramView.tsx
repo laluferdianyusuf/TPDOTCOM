@@ -3,12 +3,13 @@ import {
   CheckCircle2,
   FileText,
   HeartHandshake,
+  Images,
   Lock,
   Scale,
   ShieldCheck,
 } from "lucide-react";
 import React from "react";
-import { PROGRAMS } from "../data/content";
+import { PROGRAM_ACTIVITIES, PROGRAMS } from "../data/content";
 import { PageRoute } from "../types";
 
 interface ProgramViewProps {
@@ -43,6 +44,8 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
       desc: "Penyintas diundang bergabung ke ruang pemulihan trauma mingguan bersama sesama penyintas untuk saling menguatkan dan merebut kembali otonomi diri.",
     },
   ];
+
+  const recentActivities = PROGRAM_ACTIVITIES.slice(0, 3);
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-20">
@@ -168,6 +171,53 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
             </div>
           </div>
         ))}
+      </section>
+
+      {/* Tautan ke halaman dokumentasi kegiatan */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-stone-200 bg-white p-8 sm:p-10 shadow-xs">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+            <div className="space-y-3 max-w-xl">
+              <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
+                Dokumentasi Kegiatan
+              </span>
+              <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-slate-900">
+                Pelatihan & Kegiatan yang Sudah Diselenggarakan
+              </h2>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Lihat arsip lengkap workshop, webinar, dan kegiatan lapangan
+                beserta galeri foto dokumentasi di halaman tersendiri.
+              </p>
+              <button
+                type="button"
+                onClick={() => onNavigate("dokumentasi_kegiatan_program")}
+                className="mt-2 px-5 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-xs transition-colors inline-flex items-center gap-2 cursor-pointer"
+              >
+                <Images className="w-4 h-4" />
+                Buka Dokumentasi Kegiatan
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 flex-1 max-w-lg">
+              {recentActivities.map((act) => (
+                <button
+                  key={act.id}
+                  type="button"
+                  onClick={() => onNavigate("dokumentasi_kegiatan_program")}
+                  className="relative aspect-square rounded-xl overflow-hidden border border-stone-200 group cursor-pointer"
+                >
+                  <img
+                    src={act.coverImage}
+                    alt=""
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Alur Layanan Pendampingan 5 Langkah */}

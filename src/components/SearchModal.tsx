@@ -14,6 +14,7 @@ import {
   PUBLICATIONS,
   KBGO_CATEGORIES,
   PROGRAMS,
+  PROGRAM_ACTIVITIES,
 } from "../data/content";
 
 interface SearchModalProps {
@@ -93,6 +94,22 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           snippet: item.excerpt,
           route: "isu_pengetahuan",
           icon: "article",
+        });
+      }
+    });
+
+    PROGRAM_ACTIVITIES.forEach((item) => {
+      if (
+        item.title.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q) ||
+        item.location.toLowerCase().includes(q)
+      ) {
+        results.push({
+          title: item.title,
+          category: `Dokumentasi Kegiatan · ${item.type}`,
+          snippet: item.description,
+          route: "dokumentasi_kegiatan_program",
+          icon: "program",
         });
       }
     });

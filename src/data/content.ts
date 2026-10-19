@@ -1,6 +1,7 @@
 import {
   ArticleItem,
   KBGOCategory,
+  ProgramActivity,
   ProgramItem,
   PublicationItem,
 } from "../types";
@@ -247,6 +248,141 @@ export const PROGRAMS: ProgramItem[] = [
   },
 ];
 
+export const PROGRAM_ACTIVITIES: ProgramActivity[] = [
+  {
+    id: "pelatihan-keamanan-digital-aktivis-2025",
+    title: "Pelatihan Keamanan Digital untuk Aktivis & Jurnalis Perempuan",
+    typeKey: "pelatihan",
+    date: "15–16 Maret 2025",
+    location: "Jakarta Pusat",
+    participants: "48 peserta dari 12 organisasi",
+    description:
+      "Pelatihan intensif dua hari meliputi audit akun, pengenalan stalkerware, aktivasi 2FA, serta simulasi respons insiden doxing dan NCII bagi perempuan pembela HAM.",
+    coverImage:
+      "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800",
+    relatedProgramId: "keamanan-digital",
+    photos: [
+      {
+        url: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=600",
+        caption: "Sesi pembukaan dan pengenalan modul keamanan akun",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600",
+        caption: "Kelompok kerja praktik audit privasi perangkat",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=600",
+        caption: "Diskusi kasus dan rencana mitigasi ancaman",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=600",
+        caption: "Penutupan dan distribusi materi panduan keamanan",
+      },
+    ],
+  },
+  {
+    id: "workshop-stopncii-kampus-ui-2024",
+    title: "Workshop StopNCII & Protokol Takedown di Lingkungan Kampus",
+    typeKey: "workshop",
+    date: "22 Juni 2024",
+    location: "Depok, Jawa Barat",
+    participants: "120 mahasiswi & dosen pendamping",
+    description:
+      "Workshop kolaboratif dengan komunitas kampus tentang pencegahan penyebaran konten intim non-konsensual, hashing lokal via StopNCII, dan jalur eskalasi ke platform.",
+    coverImage:
+      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
+    relatedProgramId: "keamanan-digital",
+    photos: [
+      {
+        url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=600",
+        caption: "Peserta workshop di aula fakultas",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&q=80&w=600",
+        caption:
+          "Demonstrasi hashing sidik jari digital tanpa unggah file asli",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600",
+        caption: "Sesi tanya jawab dengan tim teknisi TPDcom",
+      },
+    ],
+  },
+  {
+    id: "webinar-uu-tpks-pembela-ham-2024",
+    title: "Webinar UU TPKS & Akses Keadilan untuk Korban KBGO",
+    typeKey: "webinar",
+    date: "14 Agustus 2024",
+    location: "Daring (Zoom)",
+    participants: "340 peserta dari 28 provinsi",
+    description:
+      "Webinar nasional bersama advokat pro bono TPDcom mengurai pasal-pasal UU TPKS yang relevan, prosedur lapor polisi yang peka gender, dan hak korban atas perlindungan LPSK.",
+    coverImage:
+      "https://images.unsplash.com/photo-1587825140708-dfaf176aecc0?auto=format&fit=crop&q=80&w=800",
+    relatedProgramId: "advokasi-hukum",
+    photos: [
+      {
+        url: "https://images.unsplash.com/photo-1587825140708-dfaf176aecc0?auto=format&fit=crop&q=80&w=600",
+        caption: "Panel advokat dan fasilitator TPDcom",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=600",
+        caption: "Sesi interaktif pertanyaan dari peserta daring",
+      },
+    ],
+  },
+  {
+    id: "support-group-penyintas-yogyakarta-2024",
+    title: "Support Group Penyintas KBGO & Psikoedukasi Trauma",
+    typeKey: "kegiatan_lapangan",
+    date: "9 November 2024",
+    location: "Yogyakarta",
+    participants: "24 penyintas (identitas terlindungi)",
+    description:
+      "Pertemuan peer-support mingguan dengan psikolog klinis TPDcom. Foto dokumentasi menggunakan ilustrasi dan rekaman suasana ruang tanpa wajah peserta demi keamanan.",
+    coverImage:
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=800",
+    relatedProgramId: "pemulihan-psikologis",
+    photos: [
+      {
+        url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600",
+        caption: "Ruang aman — dekorasi tanpa identitas peserta",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1515377901643-3387c6a95d85?auto=format&fit=crop&q=80&w=600",
+        caption: "Materi psikoedukasi pengelolaan kecemasan",
+      },
+    ],
+  },
+  {
+    id: "seminar-akuntabilitas-platform-2024",
+    title: "Seminar Akuntabilitas Platform & Dialog Kebijakan KBGO",
+    typeKey: "seminar",
+    date: "5 Desember 2024",
+    location: "Jakarta Selatan",
+    participants: "85 peserta (CSO, akademisi, praktisi)",
+    description:
+      "Seminar presentasi temuan Laporan Situasi KBGO 2024 dan dialog kebijakan tentang transparansi moderasi konten serta perwakilan responsif platform di Indonesia.",
+    coverImage:
+      "https://images.unsplash.com/photo-1475721027870-1213a9361fb2?auto=format&fit=crop&q=80&w=800",
+    relatedProgramId: "advokasi-kebijakan",
+    photos: [
+      {
+        url: "https://images.unsplash.com/photo-1475721027870-1213a9361fb2?auto=format&fit=crop&q=80&w=600",
+        caption: "Presentasi data advokasi TPDcom",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=600",
+        caption: "Diskusi panel dengan koalisi masyarakat sipil",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1505373877841-8d25f294d306?auto=format&fit=crop&q=80&w=600",
+        caption: "Networking sesi akhir seminar",
+      },
+    ],
+  },
+];
+
 export const PUBLICATIONS: PublicationItem[] = [
   {
     id: "laporan-tahunan-2024",
@@ -392,28 +528,28 @@ export const ARTICLES: ArticleItem[] = [
 
 export const TEAM_MEMBERS = [
   {
-    name: "Siti Rahmawati, S.H., M.H.",
+    name: "Name",
     role: "Direktur Eksekutif & Advokat HAM",
     bio: "Pengacara publik dengan pengalaman lebih dari 12 tahun dalam litigasi kasus kekerasan seksual dan perumusan kebijakan UU TPKS.",
     avatar:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400",
   },
   {
-    name: "Dimas Prasetyo, S.Kom., CISSP",
+    name: "Name",
     role: "Kepala Divisi Keamanan Digital & Forensik",
     bio: "Praktisi keamanan siber dan digital forensics yang berfokus pada perlindungan data perempuan pembela HAM dan jurnalis.",
     avatar:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400",
   },
   {
-    name: "Ayu Kartika, M.Psi., Psikolog",
+    name: "Name",
     role: "Koordinator Layanan Psikososial & Trauma",
     bio: "Psikolog klinis spesialis trauma recovery dan konseling krisis gender dengan pendekatan survivor-centered.",
     avatar:
       "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400",
   },
   {
-    name: "Budi Santoso, S.Sos.",
+    name: "Name",
     role: "Manajer Kampanye & Riset Kebijakan",
     bio: "Peneliti hak-hak digital dan koordinator advokasi akuntabilitas platform teknologi bersama koalisi masyarakat sipil regional.",
     avatar:
@@ -424,7 +560,7 @@ export const TEAM_MEMBERS = [
 export const EMERGENCY_HOTLINES = [
   {
     name: "Hotline Darurat TPDcom (WhatsApp)",
-    number: "+62 812-9900-8720",
+    number: "+62 823-3943-1011",
     description:
       "Respon cepat 24 jam untuk kasus darurat ancaman sebar konten intim dan doxing",
     type: "whatsapp",

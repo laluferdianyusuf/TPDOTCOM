@@ -58,6 +58,10 @@ export const Header: React.FC<HeaderProps> = ({
           label: "Klinik Keamanan Digital & Forensik",
           route: "detail_program_keamanan_digital" as PageRoute,
         },
+        {
+          label: "Dokumentasi Kegiatan & Pelatihan",
+          route: "dokumentasi_kegiatan_program" as PageRoute,
+        },
       ],
     },
     {
@@ -356,6 +360,19 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 Klinik Keamanan Digital & Forensik
+              </button>
+              <button
+                onClick={() => {
+                  onRouteChange("dokumentasi_kegiatan_program");
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
+                  currentRoute === "dokumentasi_kegiatan_program"
+                    ? "bg-blue-50 text-blue-800 font-bold"
+                    : "text-slate-700"
+                }`}
+              >
+                Dokumentasi Kegiatan & Pelatihan
               </button>
             </div>
 

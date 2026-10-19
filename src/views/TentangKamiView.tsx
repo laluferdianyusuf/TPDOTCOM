@@ -247,7 +247,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
             Penggerak & Pakar
           </span>
           <h2 className="font-editorial text-3xl font-bold text-slate-900">
-            Tim Advokat, Ahli Forensik, & Psikolog
+            Tim Ahli Transformasi perempuan Dotcom
           </h2>
           <p className="text-sm text-slate-600">
             Dipimpin oleh para profesional yang berdedikasi membela hak asasi

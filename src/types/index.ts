@@ -3,6 +3,7 @@ export type PageRoute =
   | 'tentang_kami'
   | 'program'
   | 'detail_program_keamanan_digital'
+  | 'dokumentasi_kegiatan_program'
   | 'isu_pengetahuan'
   | 'kategori_kbgo'
   | 'publikasi'
@@ -60,6 +61,31 @@ export interface ProgramItem {
   keyFeatures: string[];
   icon: string;
   route?: PageRoute;
+}
+
+export type ProgramActivityTypeKey =
+  | "pelatihan"
+  | "workshop"
+  | "webinar"
+  | "seminar"
+  | "kegiatan_lapangan";
+
+export interface ProgramActivityPhoto {
+  url: string;
+  caption?: string;
+}
+
+export interface ProgramActivity {
+  id: string;
+  title: string;
+  typeKey: ProgramActivityTypeKey;
+  date: string;
+  location: string;
+  participants: string;
+  description: string;
+  coverImage: string;
+  photos: ProgramActivityPhoto[];
+  relatedProgramId?: string;
 }
 
 export interface CaseReportForm {

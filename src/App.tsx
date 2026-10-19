@@ -10,6 +10,7 @@ import { BerandaView } from "./views/BerandaView";
 import { TentangKamiView } from "./views/TentangKamiView";
 import { ProgramView } from "./views/ProgramView";
 import { DetailProgramKeamananDigitalView } from "./views/DetailProgramKeamananDigitalView";
+import { DokumentasiKegiatanProgramView } from "./views/DokumentasiKegiatanProgramView";
 import { IsuPengetahuanView } from "./views/IsuPengetahuanView";
 import { KategoriKBGOView } from "./views/KategoriKBGOView";
 import { PublikasiView } from "./views/PublikasiView";
@@ -31,6 +32,7 @@ export default function App() {
       "tentang_kami",
       "program",
       "detail_program_keamanan_digital",
+      "dokumentasi_kegiatan_program",
       "isu_pengetahuan",
       "kategori_kbgo",
       "publikasi",
@@ -96,6 +98,9 @@ export default function App() {
         )}
         {currentRoute === "detail_program_keamanan_digital" && (
           <DetailProgramKeamananDigitalView onNavigate={handleNavigate} />
+        )}
+        {currentRoute === "dokumentasi_kegiatan_program" && (
+          <DokumentasiKegiatanProgramView onNavigate={handleNavigate} />
         )}
         {currentRoute === "isu_pengetahuan" && (
           <IsuPengetahuanView onNavigate={handleNavigate} />
