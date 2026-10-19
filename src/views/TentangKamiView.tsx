@@ -197,7 +197,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
       </section>
 
       {/* Linimasa Perjalanan */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-stone-50 border border-stone-200 rounded-3xl p-6 sm:p-12">
           <div className="max-w-3xl mb-10 space-y-2">
             <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
@@ -238,7 +238,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Tim & Dewan Ahli */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
