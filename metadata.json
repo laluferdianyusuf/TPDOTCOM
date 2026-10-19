@@ -1,0 +1,6 @@
+{
+  "name": "Transformasi Perempuan Dotcom - Advokasi & Pendampingan Hak Digital",
+  "description": "Platform advokasi hak digital dan pendampingan korban Kekerasan Berbasis Gender Online (KBGO) dan pelecehan seksual di Indonesia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
