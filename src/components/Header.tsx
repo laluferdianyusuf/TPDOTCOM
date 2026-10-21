@@ -1,15 +1,16 @@
 import {
+  ArrowUpRight,
   ChevronDown,
   Heart,
-  Lock,
+  LockKeyhole,
   Menu,
-  PhoneCall,
+  Phone,
   Search,
   X,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { PageRoute } from "../types";
+import React, { useEffect, useRef, useState } from "react";
 import Logo from "../assets/images/logo.png";
+import { PageRoute } from "../types";
 
 interface HeaderProps {
   currentRoute: PageRoute;
@@ -18,6 +19,95 @@ interface HeaderProps {
   onOpenDonation: () => void;
 }
 
+interface DropdownItem {
+  label: string;
+  route: PageRoute;
+}
+
+interface NavigationItem {
+  label: string;
+  route: PageRoute;
+  dropdownItems?: DropdownItem[];
+}
+
+const NAV_ITEMS: NavigationItem[] = [
+  {
+    label: "Beranda",
+    route: "beranda",
+  },
+  {
+    label: "Tentang Kami",
+    route: "tentang_kami",
+  },
+  {
+    label: "Program",
+    route: "program",
+    dropdownItems: [
+      {
+        label: "Semua Program",
+        route: "program",
+      },
+      {
+        label: "Keamanan Digital",
+        route: "detail_program_keamanan_digital",
+      },
+      {
+        label: "Dokumentasi Kegiatan",
+        route: "dokumentasi_kegiatan_program",
+      },
+    ],
+  },
+  {
+    label: "Isu & Pengetahuan",
+    route: "isu_pengetahuan",
+    dropdownItems: [
+      {
+        label: "Artikel & Analisis",
+        route: "isu_pengetahuan",
+      },
+      {
+        label: "Bentuk-Bentuk KBGO",
+        route: "kategori_kbgo",
+      },
+    ],
+  },
+  {
+    label: "Publikasi",
+    route: "publikasi",
+    dropdownItems: [
+      {
+        label: "Semua Publikasi",
+        route: "publikasi",
+      },
+      {
+        label: "Laporan Tahunan 2024",
+        route: "detail_publikasi_laporan_tahunan_2024",
+      },
+      {
+        label: "Panduan Penghapusan NCII",
+        route: "detail_panduan_protokol_penghapusan_ncii",
+      },
+    ],
+  },
+  {
+    label: "Kontak",
+    route: "kontak_pengaduan",
+  },
+];
+
+const isRouteActive = (
+  currentRoute: PageRoute,
+  item: NavigationItem,
+): boolean => {
+  if (currentRoute === item.route) return true;
+
+  return Boolean(
+    item.dropdownItems?.some(
+      (dropdownItem) => dropdownItem.route === currentRoute,
+    ),
+  );
+};
+
 export const Header: React.FC<HeaderProps> = ({
   currentRoute,
   onRouteChange,
@@ -25,473 +115,412 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenDonation,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isProgramDropdownOpen, setIsProgramDropdownOpen] = useState(false);
-  const [isPublikasiDropdownOpen, setIsPublikasiDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  // Quick Exit: immediately redirects and clears history state
-  const handleQuickExit = () => {
-    // Replace URL immediately with weather/news
-    window.location.replace("https://www.google.com/search?q=cuaca+hari+ini");
+  const headerRef = useRef<HTMLElement>(null);
+
+  const navigateTo = (route: PageRoute) => {
+    onRouteChange(route);
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
   };
 
-  // Keyboard shortcut: ESC triggers quick exit
+  const toggleDropdown = (label: string) => {
+    setOpenDropdown((current) => (current === label ? null : label));
+  };
+
+  const handleSearch = () => {
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
+    onOpenSearch();
+  };
+
+  const handleDonation = () => {
+    setIsMobileMenuOpen(false);
+    setOpenDropdown(null);
+    onOpenDonation();
+  };
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        handleQuickExit();
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        headerRef.current &&
+        event.target instanceof Node &&
+        !headerRef.current.contains(event.target)
+      ) {
+        setOpenDropdown(null);
+        setIsMobileMenuOpen(false);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenDropdown(null);
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
-  const navItems = [
-    { label: "Beranda", route: "beranda" as PageRoute },
-    { label: "Tentang Kami", route: "tentang_kami" as PageRoute },
-    {
-      label: "Program",
-      route: "program" as PageRoute,
-      hasDropdown: true,
-      dropdownItems: [
-        { label: "Semua Program Advokasi", route: "program" as PageRoute },
-        {
-          label: "Klinik Keamanan Digital & Forensik",
-          route: "detail_program_keamanan_digital" as PageRoute,
-        },
-        {
-          label: "Dokumentasi Kegiatan & Pelatihan",
-          route: "dokumentasi_kegiatan_program" as PageRoute,
-        },
-      ],
-    },
-    {
-      label: "Isu & Pengetahuan",
-      route: "isu_pengetahuan" as PageRoute,
-      hasDropdown: true,
-      dropdownItems: [
-        {
-          label: "Pusat Pengetahuan & Artikel",
-          route: "isu_pengetahuan" as PageRoute,
-        },
-        {
-          label: "Kategori & Bentuk KBGO",
-          route: "kategori_kbgo" as PageRoute,
-        },
-      ],
-    },
-    {
-      label: "Publikasi",
-      route: "publikasi" as PageRoute,
-      hasDropdown: true,
-      dropdownItems: [
-        { label: "Semua Publikasi & Riset", route: "publikasi" as PageRoute },
-        {
-          label: "Laporan Tahunan KBGO 2024",
-          route: "detail_publikasi_laporan_tahunan_2024" as PageRoute,
-        },
-        {
-          label: "Panduan Protokol Hapus NCII",
-          route: "detail_panduan_protokol_penghapusan_ncii" as PageRoute,
-        },
-      ],
-    },
-    { label: "Kontak", route: "kontak_pengaduan" as PageRoute },
-  ];
-
   return (
-    <header className="sticky top-0 z-50 bg-[#fafaf8]/95 backdrop-blur-md border-b border-stone-200 shadow-xs">
-      {/* Top Security & Crisis Banner */}
-      <div className="bg-blue-950 text-blue-50 text-xs px-4 py-2 border-b border-blue-900/60">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2 font-medium">
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-blue-800 text-blue-100 font-bold uppercase tracking-wider text-[10px]">
-              Kanal Darurat
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 border-b border-stone-200 bg-[#f8f7f3]/95 backdrop-blur-md"
+    >
+      {/* Informasi kontak */}
+      <div className="border-b border-slate-700 bg-slate-950 text-slate-100">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 items-center gap-2 text-xs">
+            <span className="shrink-0 text-blue-300">
+              <Phone size={13} aria-hidden="true" />
             </span>
-            <span className="hidden sm:inline">
-              Sedang dalam bahaya atau ancaman sebar konten intim?
+
+            <span className="hidden text-slate-300 sm:inline">
+              Ingin menghubungi TPDotcom?
             </span>
-            <span className="sm:hidden">Butuh bantuan darurat?</span>
+
+            <span className="text-slate-300 sm:hidden">Kontak TPDotcom</span>
+
             <a
               href="https://wa.me/6282339431011"
               target="_blank"
-              rel="noreferrer"
-              className="underline font-semibold hover:text-white inline-flex items-center gap-1"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center gap-1 font-semibold text-white underline decoration-slate-500 underline-offset-4 transition-colors hover:text-blue-200"
+              aria-label="Hubungi TPDotcom melalui WhatsApp"
             >
-              <PhoneCall className="w-3 h-3" /> WA: 0823-3943-1011
+              WhatsApp
+              <ArrowUpRight size={12} aria-hidden="true" />
             </a>
           </div>
 
-          {/* <div className="flex items-center gap-3 ml-auto">
-            <span className="text-blue-200 text-[11px] hidden md:inline">
-              Tekan <kbd className="px-1.5 py-0.5 bg-blue-900 rounded border border-blue-700 font-mono text-[10px]">ESC</kbd> untuk keluar cepat
-            </span>
-            <button
-              onClick={handleQuickExit}
-              className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-2.5 py-1 rounded text-xs transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer"
-              title="Segera tinggalkan situs ini dan alihkan ke Google untuk keamanan Anda"
-            >
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-950" />
-              <span>Keluar Cepat</span>
-            </button>
-          </div> */}
+          <span className="hidden text-[10px] tracking-wide text-slate-400 md:inline">
+            Transformasi Perempuan Dotcom
+          </span>
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20">
-          {/* Logo & Brand Identity */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => {
-                onRouteChange("beranda");
-                setIsMobileMenuOpen(false);
-              }}
-              className="text-left group cursor-pointer w-10/12"
-            >
-              <div>
-                <img
-                  src={Logo}
-                  alt="Transformasi Perempuan Dotcom"
-                  // className="w-1/2"
-                />
-                {/* <div className="flex items-center gap-1.5">
-                    <span className="font-editorial text-2xl font-bold tracking-tight text-slate-900 leading-none">
-                      TanpaPelecehan<span className="text-blue-700">.com</span>
-                    </span>
-                  </div>
-                  <p className="text-[11px] font-medium text-slate-500 uppercase tracking-widest mt-1">
-                    Advokasi & Hak Asasi Digital
-                  </p> */}
-              </div>
-            </button>
-          </div>
+      {/* Navigasi utama */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex min-h-[76px] items-center justify-between gap-4">
+          {/* Logo */}
+          <button
+            type="button"
+            onClick={() => navigateTo("beranda")}
+            className="flex min-w-0 shrink-0 items-center rounded-sm text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-4"
+            aria-label="TPDotcom — kembali ke beranda"
+          >
+            <img
+              src={Logo}
+              alt="Transformasi Perempuan Dotcom"
+              className="h-auto max-h-12 w-auto max-w-[155px] object-contain sm:max-w-[190px]"
+            />
+          </button>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-1 text-sm font-medium text-slate-700">
-            {navItems.map((item) => {
-              if (item.hasDropdown) {
-                const isProgram = item.route === "program";
-                const isPublikasi = item.route === "publikasi";
-                const isIsu = item.route === "isu_pengetahuan";
-                const isOpen = isProgram
-                  ? isProgramDropdownOpen
-                  : isPublikasi
-                    ? isPublikasiDropdownOpen
-                    : false;
+          {/* Navigasi desktop */}
+          <nav
+            className="hidden items-center gap-0.5 lg:flex"
+            aria-label="Navigasi utama"
+          >
+            {NAV_ITEMS.map((item) => {
+              const active = isRouteActive(currentRoute, item);
+              const hasDropdown = Boolean(item.dropdownItems?.length);
+              const dropdownOpen = openDropdown === item.label;
 
+              if (!hasDropdown) {
                 return (
-                  <div
+                  <button
                     key={item.label}
-                    className="relative group"
-                    onMouseEnter={() => {
-                      if (isProgram) setIsProgramDropdownOpen(true);
-                      if (isPublikasi) setIsPublikasiDropdownOpen(true);
-                    }}
-                    onMouseLeave={() => {
-                      if (isProgram) setIsProgramDropdownOpen(false);
-                      if (isPublikasi) setIsPublikasiDropdownOpen(false);
-                    }}
+                    type="button"
+                    onClick={() => navigateTo(item.route)}
+                    aria-current={
+                      currentRoute === item.route ? "page" : undefined
+                    }
+                    className={`relative whitespace-nowrap px-3 py-3 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 ${
+                      active
+                        ? "font-semibold text-blue-800"
+                        : "text-slate-600 hover:text-slate-950"
+                    }`}
                   >
-                    <button
-                      onClick={() => onRouteChange(item.route)}
-                      className={`px-3 py-2 rounded-lg flex items-center gap-1 transition-colors cursor-pointer ${
-                        currentRoute === item.route ||
-                        item.dropdownItems?.some(
-                          (d) => d.route === currentRoute,
-                        )
-                          ? "text-blue-700 font-semibold bg-blue-50"
-                          : "hover:text-slate-950 hover:bg-stone-100"
-                      }`}
-                    >
-                      {item.label}
-                      <ChevronDown className="w-3.5 h-3.5 opacity-60 group-hover:rotate-180 transition-transform" />
-                    </button>
+                    {item.label}
 
-                    <div className="absolute top-full left-0 w-64 bg-white border border-stone-200 rounded-xl shadow-xl p-2 py-2 mt-1 hidden group-hover:block transition-all z-50">
-                      {item.dropdownItems?.map((drop) => (
-                        <button
-                          key={drop.label}
-                          onClick={() => {
-                            onRouteChange(drop.route);
-                            setIsProgramDropdownOpen(false);
-                            setIsPublikasiDropdownOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-colors cursor-pointer block ${
-                            currentRoute === drop.route
-                              ? "bg-blue-50 text-blue-800 font-semibold"
-                              : "text-slate-700 hover:bg-stone-50 hover:text-slate-950"
-                          }`}
-                        >
-                          {drop.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                    {active && (
+                      <span className="absolute inset-x-3 bottom-0 h-[2px] bg-blue-800" />
+                    )}
+                  </button>
                 );
               }
 
               return (
-                <button
-                  key={item.label}
-                  onClick={() => onRouteChange(item.route)}
-                  className={`px-3 py-2 rounded-lg transition-colors cursor-pointer ${
-                    currentRoute === item.route
-                      ? "text-blue-700 font-semibold bg-blue-50"
-                      : "hover:text-slate-950 hover:bg-stone-100"
-                  }`}
-                >
-                  {item.label}
-                </button>
+                <div key={item.label} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => toggleDropdown(item.label)}
+                    aria-expanded={dropdownOpen}
+                    aria-haspopup="true"
+                    className={`flex items-center gap-1 whitespace-nowrap px-3 py-3 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 ${
+                      active
+                        ? "font-semibold text-blue-800"
+                        : "text-slate-600 hover:text-slate-950"
+                    }`}
+                  >
+                    {item.label}
+
+                    <ChevronDown
+                      size={14}
+                      aria-hidden="true"
+                      className={`transition-transform duration-200 ${
+                        dropdownOpen ? "rotate-180" : ""
+                      }`}
+                    />
+
+                    {active && (
+                      <span className="absolute inset-x-3 bottom-0 h-[2px] bg-blue-800" />
+                    )}
+                  </button>
+
+                  {dropdownOpen && (
+                    <div className="absolute left-0 top-full z-50 mt-2 w-64 border border-stone-200 bg-[#fffefa] py-2 shadow-xl shadow-slate-900/10">
+                      <div className="border-b border-stone-100 px-4 pb-2 pt-1">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                          Jelajahi
+                        </p>
+                        <p className="mt-1 font-editorial text-base text-slate-900">
+                          {item.label}
+                        </p>
+                      </div>
+
+                      <div className="py-1">
+                        {item.dropdownItems?.map((dropdownItem) => {
+                          const selected = currentRoute === dropdownItem.route;
+
+                          return (
+                            <button
+                              key={dropdownItem.label}
+                              type="button"
+                              onClick={() => navigateTo(dropdownItem.route)}
+                              aria-current={selected ? "page" : undefined}
+                              className={`flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-xs transition-colors ${
+                                selected
+                                  ? "bg-blue-50 font-semibold text-blue-900"
+                                  : "text-slate-600 hover:bg-stone-100 hover:text-slate-950"
+                              }`}
+                            >
+                              <span>{dropdownItem.label}</span>
+
+                              {selected && (
+                                <span
+                                  className="h-1.5 w-1.5 shrink-0 bg-blue-800"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               );
             })}
           </nav>
 
-          {/* Action CTAs */}
-          <div className="hidden sm:flex items-center gap-2.5">
+          {/* Aksi desktop */}
+          <div className="hidden shrink-0 items-center gap-1.5 lg:flex">
             <button
-              onClick={onOpenSearch}
-              className="p-2.5 text-slate-600 hover:text-slate-950 hover:bg-stone-100 rounded-xl transition-colors cursor-pointer"
-              title="Cari artikel, panduan, atau informasi hukum"
-              aria-label="Pencarian"
+              type="button"
+              onClick={handleSearch}
+              className="inline-flex h-10 w-10 items-center justify-center text-slate-600 transition-colors hover:bg-stone-200/70 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
+              title="Cari artikel, panduan, atau publikasi"
+              aria-label="Buka pencarian"
             >
-              <Search className="w-4 h-4" />
+              <Search size={18} strokeWidth={1.7} />
             </button>
 
             <button
-              onClick={onOpenDonation}
-              className="px-3.5 py-2 text-xs font-semibold text-blue-800 bg-blue-100/70 hover:bg-blue-200/70 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+              type="button"
+              onClick={handleDonation}
+              className="inline-flex h-10 items-center gap-2 border border-stone-300 px-3 text-xs font-medium text-slate-700 transition-colors hover:border-blue-800 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
             >
-              <Heart className="w-3.5 h-3.5 fill-blue-600 text-blue-600" />
-              <span>Dukung</span>
+              <Heart size={15} strokeWidth={1.8} />
+              Dukung
             </button>
 
             <button
-              onClick={() => onRouteChange("kontak_pengaduan")}
-              className="px-4 py-2.5 text-xs font-bold text-white bg-blue-700 hover:bg-blue-800 rounded-xl shadow-xs transition-all flex items-center gap-2 cursor-pointer hover:shadow-md"
+              type="button"
+              onClick={() => navigateTo("kontak_pengaduan")}
+              className="inline-flex h-10 items-center gap-2 bg-blue-800 px-4 text-xs font-semibold text-white transition-colors hover:bg-blue-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
             >
-              <Lock className="w-3.5 h-3.5 text-blue-200" />
-              <span>Lapor</span>
+              <LockKeyhole size={14} strokeWidth={1.8} />
+              Kontak & Pengaduan
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex sm:hidden items-center gap-2">
+          {/* Aksi layar kecil */}
+          <div className="flex shrink-0 items-center gap-1 lg:hidden">
             <button
-              onClick={onOpenSearch}
-              className="p-2 text-slate-600 hover:bg-stone-100 rounded-lg"
-              aria-label="Pencarian"
+              type="button"
+              onClick={handleSearch}
+              className="inline-flex h-10 w-10 items-center justify-center text-slate-700 transition-colors hover:bg-stone-200/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
+              aria-label="Buka pencarian"
             >
-              <Search className="w-4 h-4" />
+              <Search size={19} strokeWidth={1.7} />
             </button>
+
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-slate-700 hover:bg-stone-100 rounded-lg cursor-pointer"
-              aria-label="Buka navigasi menu"
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen((current) => !current);
+                setOpenDropdown(null);
+              }}
+              className="inline-flex h-10 w-10 items-center justify-center text-slate-800 transition-colors hover:bg-stone-200/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
+              aria-label={
+                isMobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"
+              }
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X size={22} strokeWidth={1.7} />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu size={22} strokeWidth={1.7} />
               )}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Menu mobile dan tablet */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-stone-200 bg-[#fafaf8] px-4 pt-4 pb-6 space-y-3 shadow-lg">
-          <div className="space-y-1">
-            <button
-              onClick={() => {
-                onRouteChange("beranda");
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${
-                currentRoute === "beranda"
-                  ? "bg-blue-50 text-blue-800 font-bold"
-                  : "text-slate-800"
-              }`}
-            >
-              Beranda
-            </button>
+        <div
+          id="mobile-navigation"
+          className="border-t border-stone-200 bg-[#f8f7f3] lg:hidden"
+        >
+          <nav
+            aria-label="Navigasi mobile"
+            className="mx-auto max-w-7xl px-4 pb-5 pt-3 sm:px-6"
+          >
+            {NAV_ITEMS.map((item, index) => {
+              const active = isRouteActive(currentRoute, item);
+              const hasDropdown = Boolean(item.dropdownItems?.length);
+              const dropdownOpen = openDropdown === item.label;
 
-            <button
-              onClick={() => {
-                onRouteChange("tentang_kami");
-                setIsMobileMenuOpen(false);
-              }}
-              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${
-                currentRoute === "tentang_kami"
-                  ? "bg-blue-50 text-blue-800 font-bold"
-                  : "text-slate-800"
-              }`}
-            >
-              Tentang Kami
-            </button>
+              return (
+                <div
+                  key={item.label}
+                  className={index === 0 ? "" : "border-t border-stone-200/80"}
+                >
+                  {hasDropdown ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => toggleDropdown(item.label)}
+                        aria-expanded={dropdownOpen}
+                        className={`flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm transition-colors ${
+                          active
+                            ? "font-semibold text-blue-900"
+                            : "font-medium text-slate-700"
+                        }`}
+                      >
+                        <span>{item.label}</span>
 
-            <div className="pt-2 pb-1 border-t border-stone-200">
-              <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                Program
-              </p>
+                        <ChevronDown
+                          size={17}
+                          aria-hidden="true"
+                          className={`shrink-0 transition-transform duration-200 ${
+                            dropdownOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {dropdownOpen && (
+                        <div className="mb-3 ml-2 border-l-2 border-stone-300 pl-3">
+                          {item.dropdownItems?.map((dropdownItem) => {
+                            const selected =
+                              currentRoute === dropdownItem.route;
+
+                            return (
+                              <button
+                                key={dropdownItem.label}
+                                type="button"
+                                onClick={() => navigateTo(dropdownItem.route)}
+                                aria-current={selected ? "page" : undefined}
+                                className={`block w-full py-2.5 pl-2 text-left text-[13px] transition-colors ${
+                                  selected
+                                    ? "font-semibold text-blue-900"
+                                    : "text-slate-600 hover:text-slate-950"
+                                }`}
+                              >
+                                {dropdownItem.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => navigateTo(item.route)}
+                      aria-current={
+                        currentRoute === item.route ? "page" : undefined
+                      }
+                      className={`flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm transition-colors ${
+                        active
+                          ? "font-semibold text-blue-900"
+                          : "font-medium text-slate-700"
+                      }`}
+                    >
+                      <span>{item.label}</span>
+
+                      {active && (
+                        <span
+                          className="h-1.5 w-1.5 shrink-0 bg-blue-800"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+
+            {/* Aksi utama */}
+            <div className="mt-4 grid grid-cols-2 gap-2 border-t border-stone-200 pt-4">
               <button
-                onClick={() => {
-                  onRouteChange("program");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "program"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
+                type="button"
+                onClick={handleDonation}
+                className="inline-flex min-h-11 items-center justify-center gap-2 border border-stone-300 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-blue-800 hover:text-blue-800"
               >
-                Semua Program
+                <Heart size={15} strokeWidth={1.8} />
+                Dukung TPDotcom
               </button>
+
               <button
-                onClick={() => {
-                  onRouteChange("detail_program_keamanan_digital");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "detail_program_keamanan_digital"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
+                type="button"
+                onClick={() => navigateTo("kontak_pengaduan")}
+                className="inline-flex min-h-11 items-center justify-center gap-2 bg-blue-800 px-3 text-xs font-semibold text-white transition-colors hover:bg-blue-950"
               >
-                Klinik Keamanan Digital & Forensik
-              </button>
-              <button
-                onClick={() => {
-                  onRouteChange("dokumentasi_kegiatan_program");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "dokumentasi_kegiatan_program"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
-              >
-                Dokumentasi Kegiatan & Pelatihan
+                <LockKeyhole size={14} strokeWidth={1.8} />
+                Kontak & Pengaduan
               </button>
             </div>
 
-            <div className="pt-2 pb-1 border-t border-stone-200">
-              <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                Isu & Pengetahuan
-              </p>
-              <button
-                onClick={() => {
-                  onRouteChange("isu_pengetahuan");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "isu_pengetahuan"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
-              >
-                Artikel & Analisis Kebijakan
-              </button>
-              <button
-                onClick={() => {
-                  onRouteChange("kategori_kbgo");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "kategori_kbgo"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
-              >
-                Katalog 8 Bentuk KBGO
-              </button>
-            </div>
-
-            <div className="pt-2 pb-1 border-t border-stone-200">
-              <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
-                Publikasi
-              </p>
-              <button
-                onClick={() => {
-                  onRouteChange("publikasi");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "publikasi"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
-              >
-                Arsip Riset & Publikasi
-              </button>
-              <button
-                onClick={() => {
-                  onRouteChange("detail_publikasi_laporan_tahunan_2024");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "detail_publikasi_laporan_tahunan_2024"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
-              >
-                Laporan Tahunan 2024
-              </button>
-              <button
-                onClick={() => {
-                  onRouteChange("detail_panduan_protokol_penghapusan_ncii");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm ${
-                  currentRoute === "detail_panduan_protokol_penghapusan_ncii"
-                    ? "bg-blue-50 text-blue-800 font-bold"
-                    : "text-slate-700"
-                }`}
-              >
-                Panduan Protokol Hapus NCII
-              </button>
-            </div>
-
-            <div className="pt-2 border-t border-stone-200">
-              <button
-                onClick={() => {
-                  onRouteChange("kontak_pengaduan");
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-bold ${
-                  currentRoute === "kontak_pengaduan"
-                    ? "bg-blue-50 text-blue-800"
-                    : "text-blue-700"
-                }`}
-              >
-                Kontak & Pengaduan Kasus
-              </button>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-stone-200 grid grid-cols-2 gap-2">
-            <button
-              onClick={() => {
-                onOpenDonation();
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full py-2.5 text-center text-xs font-semibold text-blue-800 bg-blue-100 rounded-xl"
-            >
-              Dukung Donasi
-            </button>
-            <button
-              onClick={() => {
-                onRouteChange("kontak_pengaduan");
-                setIsMobileMenuOpen(false);
-              }}
-              className="w-full py-2.5 text-center text-xs font-bold text-white bg-blue-700 rounded-xl"
-            >
-              Lapor Kasus
-            </button>
-          </div>
+            <p className="mt-4 text-[11px] leading-relaxed text-slate-500">
+              Transformasi Perempuan Dotcom — ruang informasi, pengetahuan, dan
+              pemberdayaan perempuan.
+            </p>
+          </nav>
         </div>
       )}
     </header>
   );
 };
+
+export default Header;

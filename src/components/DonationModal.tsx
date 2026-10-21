@@ -1,294 +1,517 @@
-import React, { useState } from "react";
 import {
-  X,
-  Heart,
-  CheckCircle2,
-  ShieldCheck,
+  ArrowLeft,
+  Check,
   Copy,
+  Heart,
+  Info,
+  Landmark,
   QrCode,
+  X,
 } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface DonationModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+type PaymentMethod = "bank" | "qris" | "kitabisa";
+
+const BANK_NAME = "BSI";
+const ACCOUNT_NAME = "TRANSFORMASI PEREMPUAN DOTCOM";
+const ACCOUNT_NUMBER = "5655555562";
+
+const DONATION_TIERS = [
+  { amount: 50000, label: "Rp50.000" },
+  { amount: 150000, label: "Rp150.000" },
+  { amount: 250000, label: "Rp250.000" },
+  { amount: 1000000, label: "Rp1.000.000" },
+];
+
+const formatRupiah = (amount: number) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(amount);
+
 export const DonationModal: React.FC<DonationModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [selectedTier, setSelectedTier] = useState<number>(250000);
-  const [customAmount, setCustomAmount] = useState<string>("");
-  const [paymentMethod, setPaymentMethod] = useState<
-    "qris" | "bank" | "kitabisa"
-  >("qris");
-  const [donorName, setDonorName] = useState<string>("");
-  const [donorEmail, setDonorEmail] = useState<string>("");
-  const [isAnonymous, setIsAnonymous] = useState<boolean>(true);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [copiedAccount, setCopiedAccount] = useState<boolean>(false);
+  const [selectedAmount, setSelectedAmount] = useState(250000);
+  const [customAmount, setCustomAmount] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("bank");
+  const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState("");
 
-  const tiers = [
-    {
-      amount: 50000,
-      label: "Rp 50.000",
-      impact: "Pulsa & paket data darurat untuk 1 korban pelapor",
-    },
-    {
-      amount: 150000,
-      label: "Rp 150.000",
-      impact: "Paket transportasi aman & pendampingan BAP",
-    },
-    {
-      amount: 250000,
-      label: "Rp 250.000",
-      impact: "1 sesi konseling pemulihan trauma psikologis",
-    },
-    {
-      amount: 1000000,
-      label: "Rp 1.000.000",
-      impact: "Bantuan hukum & litigasi pro bono hingga tuntas",
-    },
-  ];
+  const parsedCustomAmount =
+    customAmount.trim() === "" ? null : Number(customAmount);
 
-  const handleCopyBank = () => {
-    navigator.clipboard.writeText("8720199000");
-    setCopiedAccount(true);
-    setTimeout(() => setCopiedAccount(false), 2000);
-  };
+  const amount =
+    parsedCustomAmount !== null &&
+    Number.isFinite(parsedCustomAmount) &&
+    parsedCustomAmount > 0
+      ? Math.floor(parsedCustomAmount)
+      : selectedAmount;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSuccess(true);
-  };
+  const isCustomAmountValid =
+    parsedCustomAmount === null ||
+    (Number.isFinite(parsedCustomAmount) &&
+      parsedCustomAmount >= 1000 &&
+      Number.isSafeInteger(parsedCustomAmount));
+
+  const canShowBankInstructions =
+    paymentMethod === "bank" && isCustomAmountValid && amount >= 1000;
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setCopied(false);
+      setCopyError("");
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="fixed inset-0" onClick={onClose} aria-hidden="true" />
+  const handleCopy = async (text: string) => {
+    setCopyError("");
 
-      <div className="relative bg-white rounded-2xl shadow-2xl border border-stone-200 w-full max-w-lg overflow-hidden z-10 my-8">
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+      setCopyError(
+        "Tidak dapat menyalin otomatis. Silakan salin teks secara manual.",
+      );
+    }
+  };
+
+  const handleCustomAmountChange = (value: string) => {
+    const digitsOnly = value.replace(/\D/g, "");
+    setCustomAmount(digitsOnly);
+    setCopied(false);
+    setCopyError("");
+  };
+
+  const handleSelectTier = (value: number) => {
+    setSelectedAmount(value);
+    setCustomAmount("");
+    setCopied(false);
+    setCopyError("");
+  };
+
+  const handleMethodChange = (method: PaymentMethod) => {
+    setPaymentMethod(method);
+    setCopied(false);
+    setCopyError("");
+  };
+
+  const bankInstructions = [
+    "Informasi Donasi TPDotcom",
+    `Nominal: ${formatRupiah(amount)}`,
+    `Bank: ${BANK_NAME}`,
+    `Nama rekening: ${ACCOUNT_NAME}`,
+    `Nomor rekening: ${ACCOUNT_NUMBER}`,
+    "Mohon verifikasi detail rekening sebelum transfer.",
+  ].join("\n");
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-slate-950/65 backdrop-blur-[3px] sm:items-center sm:p-5"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="donation-modal-title"
+        className="relative flex max-h-[92dvh] w-full max-w-xl flex-col overflow-hidden border border-stone-200 bg-[#faf9f5] shadow-2xl sm:max-h-[88dvh]"
+      >
         {/* Header */}
-        <div className="p-5 bg-gradient-to-r from-blue-900 to-blue-800 text-white flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-blue-700/60 rounded-xl">
-              <Heart className="w-5 h-5 fill-blue-200 text-blue-200" />
-            </div>
+        <div className="relative shrink-0 bg-[#142238] px-5 py-6 text-white sm:px-7">
+          <div className="absolute right-0 top-0 h-28 w-28 translate-x-8 -translate-y-10 border border-white/10" />
+          <div className="absolute right-10 top-8 h-16 w-16 border border-white/10" />
+
+          <div className="relative flex items-start justify-between gap-4">
             <div>
-              <h3 className="font-editorial text-xl font-bold leading-none">
-                Dukung Kedaulatan Korban
-              </h3>
-              <p className="text-xs text-blue-200 mt-1">
-                Donasi independen untuk layanan pendampingan 100% gratis
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">
+                Solidaritas & Dukungan
+              </p>
+
+              <h2
+                id="donation-modal-title"
+                className="font-editorial text-2xl leading-tight tracking-tight sm:text-3xl"
+              >
+                Dukung kerja
+                <br />
+                pemberdayaan perempuan.
+              </h2>
+
+              <p className="mt-3 max-w-sm text-xs leading-6 text-slate-300">
+                Pilih nominal dan metode pembayaran untuk melihat instruksi
+                donasi yang tersedia.
               </p>
             </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Tutup jendela donasi"
+              className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center border border-white/20 text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+            >
+              <X size={18} />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1 text-blue-200 hover:text-white rounded-lg hover:bg-blue-700/50 cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
         </div>
 
-        {isSuccess ? (
-          <div className="p-8 text-center space-y-4">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-10 h-10" />
-            </div>
-            <h4 className="font-editorial text-2xl font-bold text-slate-900">
-              Terima Kasih Atas Solidaritas Anda!
-            </h4>
-            <p className="text-sm text-slate-600 leading-relaxed max-w-md mx-auto">
-              Dukungan Anda memungkinkan tim pendamping hukum, teknisi keamanan
-              siber, dan psikolog TP.com terus mendampingi ratusan perempuan dan
-              kelompok rentan yang sedang berjuang keluar dari jeratan kekerasan
-              digital.
-            </p>
-            <div className="p-3 bg-stone-50 rounded-xl text-xs text-slate-500 border border-stone-200">
-              Konfirmasi donasi dan bukti penerimaan telah dikirimkan ke email
-              Anda. Laporan akuntabilitas keuangan kami diaudit dan
-              dipublikasikan setiap tahun.
-            </div>
-            <button
-              onClick={() => {
-                setIsSuccess(false);
-                onClose();
-              }}
-              className="px-6 py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-sm transition-colors cursor-pointer"
-            >
-              Selesai
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-5">
-            {/* Tier Selector */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Pilih Nominal Solidaritas
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {tiers.map((tier) => (
-                  <button
-                    key={tier.amount}
-                    type="button"
-                    onClick={() => {
-                      setSelectedTier(tier.amount);
-                      setCustomAmount("");
-                    }}
-                    className={`p-3 text-left rounded-xl border transition-all cursor-pointer ${
-                      selectedTier === tier.amount && !customAmount
-                        ? "border-blue-600 bg-blue-50/80 text-blue-950 font-bold ring-1 ring-blue-600"
-                        : "border-stone-200 hover:border-slate-400 text-slate-800 bg-white"
-                    }`}
-                  >
-                    <div className="text-sm font-bold">{tier.label}</div>
-                    <div className="text-[11px] text-slate-500 font-normal mt-0.5 line-clamp-1">
-                      {tier.impact}
-                    </div>
-                  </button>
-                ))}
+        {/* Scrollable content */}
+        <div className="overflow-y-auto overscroll-contain">
+          <div className="space-y-7 px-5 py-6 sm:px-7">
+            {/* Amount */}
+            <section>
+              <div className="mb-3 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Langkah 01
+                  </p>
+                  <h3 className="mt-1 text-sm font-semibold text-slate-900">
+                    Tentukan nominal
+                  </h3>
+                </div>
+
+                <span className="text-[11px] text-slate-500">Dalam rupiah</span>
               </div>
 
-              {/* Custom amount */}
-              <div className="mt-2.5">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {DONATION_TIERS.map((tier) => {
+                  const selected =
+                    !customAmount && selectedAmount === tier.amount;
+
+                  return (
+                    <button
+                      key={tier.amount}
+                      type="button"
+                      onClick={() => handleSelectTier(tier.amount)}
+                      aria-pressed={selected}
+                      className={`min-h-[60px] border px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 ${
+                        selected
+                          ? "border-blue-800 bg-blue-50 text-blue-950"
+                          : "border-stone-300 bg-white text-slate-700 hover:border-slate-500"
+                      }`}
+                    >
+                      <span className="block text-sm font-semibold">
+                        {tier.label}
+                      </span>
+                      <span
+                        className={`mt-1 block text-[10px] ${
+                          selected ? "text-blue-700" : "text-slate-400"
+                        }`}
+                      >
+                        {selected ? "Dipilih" : "Pilih nominal"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <label
+                htmlFor="donation-custom-amount"
+                className="mt-4 block text-xs font-medium text-slate-700"
+              >
+                Atau masukkan nominal sendiri
+              </label>
+
+              <div className="mt-2 flex items-center border border-stone-300 bg-white focus-within:border-blue-800 focus-within:ring-1 focus-within:ring-blue-800">
+                <span className="border-r border-stone-200 px-3 py-3 text-sm text-slate-500">
+                  Rp
+                </span>
+
                 <input
-                  type="number"
-                  placeholder="Atau masukkan nominal lain (Rp)"
+                  id="donation-custom-amount"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  placeholder="Minimal 1.000"
                   value={customAmount}
-                  onChange={(e) => {
-                    setCustomAmount(e.target.value);
-                    setSelectedTier(0);
-                  }}
-                  className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  onChange={(event) =>
+                    handleCustomAmountChange(event.target.value)
+                  }
+                  aria-invalid={!isCustomAmountValid}
+                  aria-describedby="donation-amount-help"
+                  className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400"
                 />
               </div>
-            </div>
 
-            {/* Payment Method */}
-            <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Metode Pembayaran
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: "qris", label: "QRIS Instan", icon: QrCode },
-                  { id: "bank", label: "Transfer Bank", icon: ShieldCheck },
-                  { id: "kitabisa", label: "Kitabisa Partner", icon: Heart },
-                ].map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setPaymentMethod(m.id as any)}
-                    className={`py-2 px-2 text-center text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                      paymentMethod === m.id
-                        ? "border-blue-600 bg-blue-50 text-blue-900 font-bold"
-                        : "border-stone-200 text-slate-600 hover:bg-stone-50"
-                    }`}
-                  >
-                    {m.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+              <p
+                id="donation-amount-help"
+                className={`mt-2 text-[11px] leading-5 ${
+                  !isCustomAmountValid ? "text-red-700" : "text-slate-500"
+                }`}
+              >
+                {!isCustomAmountValid
+                  ? "Masukkan nominal minimal Rp1.000 dalam angka bulat."
+                  : customAmount
+                    ? `Nominal pilihan: ${formatRupiah(amount)}`
+                    : "Pilih salah satu nominal di atas atau masukkan jumlah sendiri."}
+              </p>
+            </section>
 
-            {/* Bank details if bank transfer */}
-            {paymentMethod === "bank" && (
-              <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-1">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">
-                    Bank BSI (TRANSFORMASI PEREMPUAN DOTCOM):
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleCopyBank}
-                    className="text-blue-700 hover:underline inline-flex items-center gap-1 font-bold"
-                  >
-                    <Copy className="w-3 h-3" />{" "}
-                    {copiedAccount ? "Tersalin!" : "Salin Rekening"}
-                  </button>
-                </div>
-                <div className="font-mono text-sm font-bold text-slate-900">
-                  5655555562
-                </div>
-              </div>
-            )}
-
-            {paymentMethod === "qris" && (
-              <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 text-center space-y-2">
-                <div className="w-32 h-32 bg-white p-2 border border-stone-300 rounded-lg mx-auto flex items-center justify-center">
-                  <QrCode className="w-24 h-24 text-slate-900" />
-                </div>
-                <p className="text-[11px] text-slate-500">
-                  Dapat dipindai dari BCA, Mandiri, GoPay, OVO, ShopeePay, DANA
-                  & seluruh aplikasi perbankan.
+            {/* Payment method */}
+            <section>
+              <div className="mb-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Langkah 02
                 </p>
+                <h3 className="mt-1 text-sm font-semibold text-slate-900">
+                  Pilih metode pembayaran
+                </h3>
               </div>
-            )}
 
-            {/* Donor info */}
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="anonymousCheck"
-                  checked={isAnonymous}
-                  onChange={(e) => setIsAnonymous(e.target.checked)}
-                  className="rounded text-blue-600 focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="anonymousCheck"
-                  className="text-slate-700 font-medium"
+              <div className="grid grid-cols-3 border-y border-stone-300">
+                <button
+                  type="button"
+                  onClick={() => handleMethodChange("bank")}
+                  aria-pressed={paymentMethod === "bank"}
+                  className={`flex min-h-[84px] flex-col items-start justify-between border-r border-stone-300 p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-700 ${
+                    paymentMethod === "bank"
+                      ? "bg-blue-50 text-blue-950"
+                      : "text-slate-600 hover:bg-white"
+                  }`}
                 >
-                  Donasikan sebagai Anonim (Nama tidak dipublikasikan)
-                </label>
-              </div>
+                  <Landmark size={19} strokeWidth={1.7} />
+                  <span>
+                    <span className="block text-xs font-semibold">
+                      Transfer bank
+                    </span>
+                    <span className="mt-1 block text-[10px] text-slate-500">
+                      Instruksi rekening
+                    </span>
+                  </span>
+                </button>
 
-              {!isAnonymous && (
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <input
-                    type="text"
-                    placeholder="Nama Lengkap"
-                    value={donorName}
-                    onChange={(e) => setDonorName(e.target.value)}
-                    className="px-3 py-2 border border-stone-300 rounded-lg text-xs"
-                    required={!isAnonymous}
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email Penerima Laporan"
-                    value={donorEmail}
-                    onChange={(e) => setDonorEmail(e.target.value)}
-                    className="px-3 py-2 border border-stone-300 rounded-lg text-xs"
-                    required={!isAnonymous}
+                <button
+                  type="button"
+                  onClick={() => handleMethodChange("qris")}
+                  aria-pressed={paymentMethod === "qris"}
+                  className={`flex min-h-[84px] flex-col items-start justify-between border-r border-stone-300 p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-700 ${
+                    paymentMethod === "qris"
+                      ? "bg-blue-50 text-blue-950"
+                      : "text-slate-600 hover:bg-white"
+                  }`}
+                >
+                  <QrCode size={19} strokeWidth={1.7} />
+                  <span>
+                    <span className="block text-xs font-semibold">QRIS</span>
+                    <span className="mt-1 block text-[10px] text-slate-500">
+                      Belum tersedia
+                    </span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleMethodChange("kitabisa")}
+                  aria-pressed={paymentMethod === "kitabisa"}
+                  className={`flex min-h-[84px] flex-col items-start justify-between p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-700 ${
+                    paymentMethod === "kitabisa"
+                      ? "bg-blue-50 text-blue-950"
+                      : "text-slate-600 hover:bg-white"
+                  }`}
+                >
+                  <Heart size={19} strokeWidth={1.7} />
+                  <span>
+                    <span className="block text-xs font-semibold">
+                      Kitabisa
+                    </span>
+                    <span className="mt-1 block text-[10px] text-slate-500">
+                      Belum tersedia
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </section>
+
+            {/* Bank transfer instructions */}
+            {paymentMethod === "bank" && (
+              <section className="border border-stone-300 bg-white">
+                <div className="flex items-start justify-between gap-3 border-b border-stone-200 px-4 py-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                      Instruksi transfer
+                    </p>
+                    <h3 className="mt-1 text-sm font-semibold text-slate-900">
+                      Rekening {BANK_NAME}
+                    </h3>
+                  </div>
+
+                  <Landmark
+                    size={19}
+                    className="text-slate-400"
+                    aria-hidden="true"
                   />
                 </div>
-              )}
+
+                <div className="space-y-4 p-4">
+                  <div>
+                    <p className="text-[11px] text-slate-500">Nama rekening</p>
+                    <p className="mt-1 text-xs font-semibold leading-5 text-slate-900">
+                      {ACCOUNT_NAME}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-[11px] text-slate-500">Nomor rekening</p>
+
+                    <div className="mt-1 flex items-center justify-between gap-3">
+                      <p className="font-mono text-xl font-semibold tracking-wide text-slate-950">
+                        {ACCOUNT_NUMBER}
+                      </p>
+
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(ACCOUNT_NUMBER)}
+                        className="inline-flex min-h-9 shrink-0 items-center gap-1.5 border border-stone-300 px-2.5 text-xs font-medium text-slate-700 transition-colors hover:border-blue-800 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
+                      >
+                        {copied ? (
+                          <Check size={14} aria-hidden="true" />
+                        ) : (
+                          <Copy size={14} aria-hidden="true" />
+                        )}
+                        {copied ? "Tersalin" : "Salin"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-stone-200 pt-3">
+                    <p className="text-[11px] text-slate-500">Nominal donasi</p>
+                    <p className="mt-1 text-lg font-semibold text-blue-900">
+                      {formatRupiah(amount)}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(bankInstructions)}
+                    className="inline-flex min-h-10 w-full items-center justify-center gap-2 border border-blue-800 px-4 text-xs font-semibold text-blue-900 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
+                  >
+                    {copied ? (
+                      <Check size={15} aria-hidden="true" />
+                    ) : (
+                      <Copy size={15} aria-hidden="true" />
+                    )}
+                    {copied
+                      ? "Informasi berhasil disalin"
+                      : "Salin seluruh instruksi"}
+                  </button>
+
+                  {copyError && (
+                    <p role="status" className="text-xs leading-5 text-red-700">
+                      {copyError}
+                    </p>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* QRIS unavailable */}
+            {paymentMethod === "qris" && (
+              <section className="border border-stone-300 bg-white p-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-stone-100 text-slate-500">
+                    <QrCode size={20} />
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-900">
+                      QRIS belum dikonfigurasi
+                    </h3>
+                    <p className="mt-2 text-xs leading-6 text-slate-600">
+                      Kode QR pembayaran resmi belum tersedia di halaman ini.
+                      Kami tidak menampilkan gambar QR pengganti agar kamu tidak
+                      keliru melakukan pembayaran.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Kitabisa unavailable */}
+            {paymentMethod === "kitabisa" && (
+              <section className="border border-stone-300 bg-white p-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-stone-100 text-slate-500">
+                    <Heart size={20} />
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-900">
+                      Tautan Kitabisa belum tersedia
+                    </h3>
+                    <p className="mt-2 text-xs leading-6 text-slate-600">
+                      Halaman penggalangan dana resmi belum ditautkan. Pilih
+                      transfer bank jika detail rekening telah dikonfirmasi oleh
+                      pihak TPDotcom.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Important note */}
+            <div className="flex items-start gap-3 border-l-2 border-amber-500 bg-amber-50/70 px-4 py-3">
+              <Info
+                size={17}
+                className="mt-0.5 shrink-0 text-amber-700"
+                aria-hidden="true"
+              />
+
+              <p className="text-[11px] leading-5 text-slate-700">
+                Sebelum mentransfer, pastikan nama penerima dan nomor rekening
+                sesuai dengan informasi resmi TPDotcom. Modal ini belum
+                memproses pembayaran atau memverifikasi transaksi.
+              </p>
             </div>
 
-            {/* Submit */}
             <button
-              type="submit"
-              className="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl text-sm transition-all shadow-md cursor-pointer flex items-center justify-center gap-2"
+              type="button"
+              onClick={onClose}
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 bg-blue-800 px-4 text-sm font-semibold text-white transition-colors hover:bg-blue-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
             >
-              <Heart className="w-4 h-4 fill-white" />
-              <span>
-                Lanjutkan Donasi (
-                {customAmount
-                  ? `Rp ${Number(customAmount).toLocaleString("id-ID")}`
-                  : `Rp ${selectedTier.toLocaleString("id-ID")}`}
-                )
-              </span>
+              <ArrowLeft size={15} aria-hidden="true" />
+              Kembali ke situs
             </button>
 
-            <p className="text-[11px] text-center text-slate-400">
-              TP.com adalah yayasan nirlaba independen. Seluruh dana disalurkan
-              langsung untuk operasional pendampingan korban.
+            <p className="pb-1 text-center text-[10px] leading-5 text-slate-500">
+              Dukungan diberikan secara sukarela. Informasi pembayaran perlu
+              dikonfirmasi sebelum digunakan.
             </p>
-          </form>
-        )}
-      </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
+
+export default DonationModal;

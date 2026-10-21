@@ -1,20 +1,18 @@
 import {
+  ArrowDownRight,
   ArrowRight,
   CheckCircle2,
   FileText,
   HeartHandshake,
   Lock,
+  MapPin,
   Scale,
-  ShieldAlert,
   ShieldCheck,
+  Users,
 } from "lucide-react";
 import React, { useState } from "react";
-import {
-  IMPACT_STATS,
-  KBGO_CATEGORIES,
-  PROGRAMS,
-  PUBLICATIONS,
-} from "../data/content";
+
+import { KBGO_CATEGORIES, PROGRAMS, PUBLICATIONS } from "../data/content";
 import { PageRoute } from "../types";
 
 interface BerandaViewProps {
@@ -22,606 +20,747 @@ interface BerandaViewProps {
   onOpenDonation: () => void;
 }
 
+type EmergencyTab = "ncii" | "doxing" | "stalking" | "deepfake";
+
+const emergencyGuides: Record<
+  EmergencyTab,
+  {
+    eyebrow: string;
+    title: string;
+    introduction: string;
+    steps: string[];
+    actionLabel: string;
+    route: PageRoute;
+  }
+> = {
+  ncii: {
+    eyebrow: "Konten intim tanpa persetujuan",
+    title: "Foto atau video intim diancam untuk disebarkan",
+    introduction:
+      "Kamu tidak harus memenuhi ancaman pelaku. Utamakan keselamatan dan simpan bukti jika aman dilakukan.",
+    steps: [
+      "Jangan terburu-buru membayar atau mengirim konten tambahan.",
+      "Simpan pesan ancaman, nama akun, tautan, dan waktu kejadian jika aman.",
+      "Laporkan konten melalui kanal resmi platform. StopNCII.org dapat membantu orang dewasa yang memenuhi syarat mencegah penyebaran gambar intim tertentu.",
+    ],
+    actionLabel: "Pelajari langkah penanganan",
+    route: "detail_panduan_protokol_penghapusan_ncii" as PageRoute,
+  },
+  doxing: {
+    eyebrow: "Penyebaran data pribadi",
+    title: "Informasi pribadi disebarkan tanpa izin",
+    introduction:
+      "Penyebaran alamat, nomor telepon, atau informasi pribadi dapat meningkatkan risiko keselamatan. Kamu berhak mencari bantuan.",
+    steps: [
+      "Dokumentasikan unggahan dan tautannya jika aman dilakukan.",
+      "Periksa pengaturan privasi dan amankan akun dari perangkat yang kamu percaya.",
+      "Laporkan konten kepada platform dan pertimbangkan bantuan hukum jika ada ancaman atau kerugian.",
+    ],
+    actionLabel: "Kenali bentuk KBGO",
+    route: "kategori_kbgo" as PageRoute,
+  },
+  stalking: {
+    eyebrow: "Penguntitan digital",
+    title: "Merasa akun atau perangkat sedang dipantau",
+    introduction:
+      "Jika kamu mencurigai pemantauan oleh seseorang yang mungkin membahayakanmu, hindari tindakan yang dapat meningkatkan risiko.",
+    steps: [
+      "Gunakan perangkat yang lebih aman untuk mencari bantuan bila memungkinkan.",
+      "Periksa sesi masuk, berbagi lokasi, dan izin aplikasi hanya jika aman dilakukan.",
+      "Catat kejadian yang mencurigakan dan cari bantuan teknis tepercaya sebelum menghapus aplikasi yang mungkin menjadi bukti.",
+    ],
+    actionLabel: "Pelajari keamanan digital",
+    route: "detail_program_keamanan_digital" as PageRoute,
+  },
+  deepfake: {
+    eyebrow: "Manipulasi gambar dengan AI",
+    title: "Wajah atau identitas digunakan dalam gambar palsu",
+    introduction:
+      "Gambar manipulatif dapat digunakan untuk mempermalukan, mengancam, atau memeras seseorang. Kamu tidak bertanggung jawab atas tindakan pelaku.",
+    steps: [
+      "Simpan tautan dan informasi akun yang menyebarkan gambar jika aman.",
+      "Hindari menyebarkan ulang gambar, terutama konten intim.",
+      "Gunakan kanal pelaporan platform dan cari pendampingan untuk menentukan langkah berikutnya.",
+    ],
+    actionLabel: "Cari informasi dan bantuan",
+    route: "kontak_pengaduan" as PageRoute,
+  },
+};
+
+const programIcons: Record<string, React.ReactNode> = {
+  "keamanan-digital": <ShieldCheck className="h-5 w-5" />,
+  "advokasi-hukum": <Scale className="h-5 w-5" />,
+  "pemulihan-psikologis": <HeartHandshake className="h-5 w-5" />,
+  "advokasi-kebijakan": <FileText className="h-5 w-5" />,
+};
+
 export const BerandaView: React.FC<BerandaViewProps> = ({
   onNavigate,
   onOpenDonation,
 }) => {
-  const [activeEmergencyTab, setActiveEmergencyTab] = useState<
-    "ncii" | "doxing" | "stalking" | "deepfake"
-  >("ncii");
-
-  const emergencyGuides = {
-    ncii: {
-      title: "Diancam Sebar Foto / Video Intim (NCII & Sextortion)",
-      urgency: "Sangat Kritis",
-      steps: [
-        "JANGAN pernah menuruti permintaan uang atau konten tambahan dari pelaku.",
-        "Amankan bukti berupa tangkapan layar (screenshot) nomor, username, dan tautan profil pelaku.",
-        "Buka StopNCII.org untuk mendaftarkan sidik jari digital (hash) foto Anda secara lokal tanpa mengunggah file asli.",
-        "Hubungi Hotline Darurat TP.com untuk pendampingan takedown langsung ke perwakilan platform.",
-      ],
-      actionLabel: "Buka Panduan Lengkap Protokol NCII",
-      route: "detail_panduan_protokol_penghapusan_ncii" as PageRoute,
-    },
-    doxing: {
-      title: "Data Pribadi Anda Disebar di Media Sosial (Doxing)",
-      urgency: "Tinggi",
-      steps: [
-        "Kunci (private) seluruh akun sosial media Anda dan ubah kata sandi dengan autentikasi 2FA.",
-        "Laporkan postingan doxing ke platform penyedia dan minta penghapusan darurat via Google Removal Tool.",
-        "Informasikan keluarga atau pengurus lingkungan agar waspada terhadap orang tak dikenal yang mencari Anda.",
-        "Konsultasikan pelaporan pelanggaran UU Perlindungan Data Pribadi (UU PDP) dengan advokat kami.",
-      ],
-      actionLabel: "Pelajari Hak Perlindungan Data Korban",
-      route: "kategori_kbgo" as PageRoute,
-    },
-    stalking: {
-      title: "Ponsel atau Akun Anda Terus Diintai (Stalkerware & Penguntitan)",
-      urgency: "Tinggi",
-      steps: [
-        "Matikan fitur berbagi lokasi (location sharing / GPS tracking) di seluruh aplikasi ponsel Anda.",
-        "Periksa daftar aplikasi aktif untuk mendeteksi aplikasi pelacak tersembunyi dengan izin berlebih.",
-        "Gunakan perangkat lain yang bersih untuk menghubungi pendamping teknis TP.com guna audit forensik.",
-        "Buat log catatan harian teror penguntit sebagai alat bukti sah tindak pidana UU TPKS Pasal 14.",
-      ],
-      actionLabel: "Audit Keamanan Perangkat Anda",
-      route: "detail_program_keamanan_digital" as PageRoute,
-    },
-    deepfake: {
-      title: "Wajah Anda Dimanipulasi Menjadi Gambar Pornografi AI (Deepfake)",
-      urgency: "Sangat Kritis",
-      steps: [
-        "Simpan URL dan ID channel/bot tempat gambar disebarkan tanpa membagikannya ulang.",
-        "Laporkan channel dan tautan tersebut ke tim takedown darurat TP.com.",
-        "Klaim hak penghapusan media sintetis eksplisit melalui Google Search Removal & Meta Take It Down.",
-        "Gunakan hak hukum perlindungan martabat di bawah UU TPKS dengan pendampingan advokat pro bono.",
-      ],
-      actionLabel: "Konsultasikan Kasus Deepfake",
-      route: "kontak_pengaduan" as PageRoute,
-    },
-  };
+  const [activeEmergencyTab, setActiveEmergencyTab] =
+    useState<EmergencyTab>("ncii");
 
   const currentGuide = emergencyGuides[activeEmergencyTab];
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-20">
-      {/* Hero Section: Editorial & Urgent */}
-      <section className="relative pt-10 sm:pt-16 pb-12 sm:pb-20 border-b border-stone-200 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Heading & Narrative */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-xs font-semibold text-blue-800">
-                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
-                <span>Organisasi Advokasi Hak Asasi & Keadilan Digital</span>
+    <main className="pb-16 text-slate-800 sm:pb-24">
+      {/* HERO */}
+      <section className="border-b border-stone-200">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-12 lg:gap-16 lg:px-10 lg:py-24">
+          <div className="lg:col-span-7">
+            <div className="mb-7 flex items-center gap-3">
+              <span className="h-px w-8 bg-blue-700" />
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                Transformasi Perempuan Dotcom
+              </span>
+            </div>
+
+            <h1 className="max-w-3xl font-editorial text-4xl font-bold leading-[1.12] tracking-tight text-slate-950 sm:text-5xl lg:text-[4.25rem]">
+              Ruang digital yang lebih aman,{" "}
+              <span className="text-blue-800">adil, dan setara.</span>
+            </h1>
+
+            <p className="mt-7 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+              TPDotcom bekerja untuk memperkuat kapasitas masyarakat, mendorong
+              pemberdayaan perempuan, dan meningkatkan pemahaman tentang hak
+              serta keamanan di ruang digital.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => onNavigate("kontak_pengaduan")}
+                className="inline-flex min-h-12 items-center justify-center gap-3 bg-blue-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
+              >
+                <Lock className="h-4 w-4" />
+                Cari bantuan atau ajukan pengaduan
+                <ArrowRight className="h-4 w-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onNavigate("program")}
+                className="inline-flex min-h-12 items-center justify-center gap-3 border border-stone-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-700 hover:text-blue-800"
+              >
+                Kenali kerja kami
+                <ArrowDownRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-stone-200 pt-5 text-xs leading-5 text-slate-500">
+              <span className="inline-flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-700" />
+                Berperspektif korban
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-700" />
+                Menghormati persetujuan
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-700" />
+                Berorientasi pada pemberdayaan
+              </span>
+            </div>
+          </div>
+
+          {/* Panel informasi yang lebih tenang */}
+          <aside className="lg:col-span-5">
+            <div className="border border-stone-200 bg-[#f8f7f3]">
+              <div className="border-b border-stone-200 px-5 py-5 sm:px-7">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-800">
+                  Mulai dari sini
+                </p>
+                <h2 className="mt-2 font-editorial text-2xl font-bold text-slate-950">
+                  Apa yang kamu butuhkan?
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Pilih informasi yang paling sesuai dengan kebutuhanmu.
+                </p>
               </div>
 
-              <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.12]">
-                Membela Korban, <br />
-                <span className="text-blue-700 italic">
-                  Menghentikan Impunitas
-                </span>{" "}
-                <br />
-                di Ruang Siber.
-              </h1>
-
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-                Transformasi Perempuan Dotcom (TPDcom) hadir sebagai ruang aman
-                terpercaya bagi perempuan, anak, dan kelompok rentan di
-                Indonesia. Kami memberikan pendampingan hukum pro bono, dukungan
-                pemulihan trauma, audit keamanan digital, dan bantuan takedown
-                konten intim non-konsensual secara{" "}
-                <strong>100% gratis dan rahasia</strong>.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="divide-y divide-stone-200">
                 <button
+                  type="button"
                   onClick={() => onNavigate("kontak_pengaduan")}
-                  className="px-6 py-3.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer hover:shadow-lg"
+                  className="group flex w-full items-start gap-4 px-5 py-5 text-left transition hover:bg-white sm:px-7"
                 >
-                  <Lock className="w-4 h-4 text-blue-200" />
-                  <span>Lapor Kasus (Aman & Terenkripsi)</span>
+                  <span className="mt-0.5 text-blue-800">
+                    <HeartHandshake className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold text-slate-900">
+                      Mencari bantuan
+                    </span>
+                    <span className="mt-1 block text-sm leading-6 text-slate-600">
+                      Informasi awal untuk mencari pendampingan atau
+                      menyampaikan pengaduan.
+                    </span>
+                  </span>
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-blue-800" />
                 </button>
 
                 <button
-                  onClick={() =>
-                    onNavigate("detail_panduan_protokol_penghapusan_ncii")
-                  }
-                  className="px-5 py-3.5 bg-white hover:bg-stone-50 border border-stone-300 text-slate-800 font-semibold rounded-xl transition-colors flex items-center gap-2 cursor-pointer"
+                  type="button"
+                  onClick={() => onNavigate("kategori_kbgo")}
+                  className="group flex w-full items-start gap-4 px-5 py-5 text-left transition hover:bg-white sm:px-7"
                 >
-                  <span>Panduan Hapus Konten NCII</span>
-                  <ArrowRight className="w-4 h-4 text-slate-400" />
+                  <span className="mt-0.5 text-blue-800">
+                    <ShieldCheck className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold text-slate-900">
+                      Memahami KBGO
+                    </span>
+                    <span className="mt-1 block text-sm leading-6 text-slate-600">
+                      Kenali bentuk kekerasan berbasis gender online dan langkah
+                      yang dapat dipertimbangkan.
+                    </span>
+                  </span>
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-blue-800" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => onNavigate("program")}
+                  className="group flex w-full items-start gap-4 px-5 py-5 text-left transition hover:bg-white sm:px-7"
+                >
+                  <span className="mt-0.5 text-blue-800">
+                    <Users className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold text-slate-900">
+                      Mengenal program
+                    </span>
+                    <span className="mt-1 block text-sm leading-6 text-slate-600">
+                      Pelajari area kerja, kegiatan, dan pendekatan pemberdayaan
+                      TPDotcom.
+                    </span>
+                  </span>
+                  <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-blue-800" />
                 </button>
               </div>
 
-              {/* Quick Trust Highlights */}
-              <div className="pt-4 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-slate-500">
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Privasi 100% Dijamin</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Berperspektif Korban (Zero Blaming)</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Tanpa Biaya Sepeser Pun</span>
+              <div className="border-t border-stone-200 px-5 py-4 sm:px-7">
+                <p className="text-xs leading-5 text-slate-500">
+                  Jika kamu berada dalam bahaya langsung, utamakan keselamatan
+                  fisik dan hubungi layanan darurat setempat atau orang yang
+                  dapat dipercaya.
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      {/* PERTOLONGAN PERTAMA KBGO */}
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-10">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-blue-700" />
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                Panduan Praktis
+              </span>
+            </div>
+
+            <h2 className="mt-5 font-editorial text-3xl font-bold leading-tight text-slate-950 sm:text-4xl">
+              Ketika kekerasan terjadi di ruang digital
+            </h2>
+
+            <p className="mt-5 text-sm leading-7 text-slate-600">
+              Kamu tidak harus menyelesaikan semuanya sekaligus. Mulai dengan
+              langkah yang aman dan pilih informasi sesuai situasi yang sedang
+              dihadapi.
+            </p>
+
+            <button
+              type="button"
+              onClick={() =>
+                onNavigate("detail_panduan_protokol_penghapusan_ncii")
+              }
+              className="mt-6 inline-flex items-center gap-2 border-b border-blue-800 pb-1 text-sm font-semibold text-blue-800 transition hover:text-blue-950"
+            >
+              Baca panduan penanganan
+              <ArrowRight className="h-4 w-4" />
+            </button>
+
+            <p className="mt-6 text-xs leading-5 text-slate-500">
+              Panduan umum ini bukan pengganti pendampingan hukum, bantuan
+              teknis khusus, atau layanan darurat.
+            </p>
+          </div>
+
+          <div className="lg:col-span-8">
+            <div className="border-y border-stone-200">
+              <div className="grid grid-cols-2 border-b border-stone-200 sm:grid-cols-4">
+                {(
+                  [
+                    ["ncii", "Konten intim"],
+                    ["doxing", "Doxing"],
+                    ["stalking", "Penguntitan"],
+                    ["deepfake", "Manipulasi AI"],
+                  ] as [EmergencyTab, string][]
+                ).map(([key, label], index) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setActiveEmergencyTab(key)}
+                    aria-pressed={activeEmergencyTab === key}
+                    className={`relative px-3 py-4 text-left text-xs font-semibold transition sm:px-4 ${
+                      index % 2 === 0
+                        ? "border-r border-stone-200 sm:border-r-0"
+                        : ""
+                    } ${
+                      index < 2 ? "border-b border-stone-200 sm:border-b-0" : ""
+                    } ${index < 3 ? "sm:border-r sm:border-stone-200" : ""} ${
+                      activeEmergencyTab === key
+                        ? "bg-blue-50 text-blue-900"
+                        : "bg-white text-slate-500 hover:bg-stone-50 hover:text-slate-900"
+                    }`}
+                  >
+                    {label}
+                    {activeEmergencyTab === key && (
+                      <span className="absolute inset-x-0 bottom-0 h-0.5 bg-blue-800" />
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              <div className="bg-white px-5 py-6 sm:px-7 sm:py-8">
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-blue-800">
+                  {currentGuide.eyebrow}
+                </p>
+
+                <h3 className="mt-3 max-w-2xl font-editorial text-2xl font-bold leading-snug text-slate-950">
+                  {currentGuide.title}
+                </h3>
+
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
+                  {currentGuide.introduction}
+                </p>
+
+                <ol className="mt-6 space-y-0">
+                  {currentGuide.steps.map((step, index) => (
+                    <li
+                      key={`${activeEmergencyTab}-${index}`}
+                      className="flex gap-4 border-t border-stone-100 py-4"
+                    >
+                      <span className="pt-0.5 font-editorial text-lg font-bold text-blue-800">
+                        0{index + 1}
+                      </span>
+                      <p className="text-sm leading-7 text-slate-700">{step}</p>
+                    </li>
+                  ))}
+                </ol>
+
+                <div className="mt-3 flex flex-col gap-3 border-t border-stone-200 pt-5 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate(currentGuide.route)}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 bg-blue-800 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-900"
+                  >
+                    {currentGuide.actionLabel}
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onNavigate("kontak_pengaduan")}
+                    className="inline-flex min-h-11 items-center justify-center border border-stone-300 px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-blue-700 hover:text-blue-800"
+                  >
+                    Cari pendampingan
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Right Column: Interactive Emergency First-Aid Widget */}
-            <div className="lg:col-span-5">
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-xl overflow-hidden">
-                <div className="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <ShieldAlert className="w-5 h-5 text-amber-400" />
-                    <h3 className="text-sm font-bold uppercase tracking-wider">
-                      Pertolongan Pertama KBGO
+      {/* PROGRAM KERJA */}
+      <section className="border-y border-stone-200 bg-[#f8f7f3]">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-10">
+          <div className="grid gap-6 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-8">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-8 bg-blue-700" />
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                  Area Kerja
+                </span>
+              </div>
+
+              <h2 className="mt-5 max-w-3xl font-editorial text-3xl font-bold leading-tight text-slate-950 sm:text-4xl">
+                Perubahan membutuhkan lebih dari satu pendekatan.
+              </h2>
+
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
+                Program TPDotcom menghubungkan pengetahuan, dukungan, dan
+                advokasi untuk menjawab kebutuhan masyarakat.
+              </p>
+            </div>
+
+            <div className="md:col-span-4 md:text-right">
+              <button
+                type="button"
+                onClick={() => onNavigate("program")}
+                className="inline-flex items-center gap-2 border-b border-blue-800 pb-1 text-sm font-semibold text-blue-800 hover:text-blue-950"
+              >
+                Lihat seluruh program
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-10 border-t border-stone-300">
+            {PROGRAMS.map((program, index) => (
+              <article
+                key={program.id}
+                className="group grid gap-4 border-b border-stone-300 py-6 sm:py-7 md:grid-cols-12 md:gap-8"
+              >
+                <div className="flex items-start gap-4 md:col-span-4">
+                  <span className="pt-1 font-editorial text-xl text-blue-800">
+                    0{index + 1}
+                  </span>
+
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                      {program.category}
+                    </span>
+                    <h3 className="mt-2 font-editorial text-xl font-bold leading-snug text-slate-950 transition group-hover:text-blue-800">
+                      {program.title}
                     </h3>
                   </div>
-                  <span className="text-[11px] px-2 py-0.5 rounded bg-blue-900/80 text-blue-200 font-semibold">
-                    {currentGuide.urgency}
+                </div>
+
+                <div className="md:col-span-6">
+                  <p className="text-sm leading-7 text-slate-600">
+                    {program.description}
+                  </p>
+
+                  {program.keyFeatures.length > 0 && (
+                    <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                      {program.keyFeatures.slice(0, 3).map((feature) => (
+                        <li
+                          key={feature}
+                          className="flex items-start gap-2 text-xs leading-5 text-slate-600"
+                        >
+                          <span className="mt-1 text-blue-800">—</span>
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between md:col-span-2 md:justify-end md:self-center">
+                  <span className="text-slate-400">
+                    {programIcons[program.id] ?? (
+                      <FileText className="h-5 w-5" />
+                    )}
                   </span>
-                </div>
 
-                {/* Tabs */}
-                <div className="grid grid-cols-4 border-b border-stone-200 bg-stone-50 text-[11px] font-semibold text-center divide-x divide-stone-200">
                   <button
-                    onClick={() => setActiveEmergencyTab("ncii")}
-                    className={`py-2.5 px-1 transition-colors cursor-pointer ${
-                      activeEmergencyTab === "ncii"
-                        ? "bg-white text-blue-700 font-bold border-b-2 border-blue-700"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
+                    type="button"
+                    onClick={() => onNavigate(program.route || "program")}
+                    aria-label={`Pelajari ${program.title}`}
+                    className="inline-flex h-10 w-10 items-center justify-center border border-stone-300 text-slate-700 transition hover:border-blue-800 hover:bg-blue-800 hover:text-white"
                   >
-                    Foto Intim
-                  </button>
-                  <button
-                    onClick={() => setActiveEmergencyTab("doxing")}
-                    className={`py-2.5 px-1 transition-colors cursor-pointer ${
-                      activeEmergencyTab === "doxing"
-                        ? "bg-white text-blue-700 font-bold border-b-2 border-blue-700"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    Doxing
-                  </button>
-                  <button
-                    onClick={() => setActiveEmergencyTab("stalking")}
-                    className={`py-2.5 px-1 transition-colors cursor-pointer ${
-                      activeEmergencyTab === "stalking"
-                        ? "bg-white text-blue-700 font-bold border-b-2 border-blue-700"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    Diintai
-                  </button>
-                  <button
-                    onClick={() => setActiveEmergencyTab("deepfake")}
-                    className={`py-2.5 px-1 transition-colors cursor-pointer ${
-                      activeEmergencyTab === "deepfake"
-                        ? "bg-white text-blue-700 font-bold border-b-2 border-blue-700"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    AI Deepfake
+                    <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
-
-                {/* Content */}
-                <div className="p-5 sm:p-6 space-y-4">
-                  <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    {currentGuide.title}
-                  </h4>
-
-                  <div className="space-y-2.5">
-                    {currentGuide.steps.map((step, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed"
-                      >
-                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center shrink-0 text-[10px]">
-                          {idx + 1}
-                        </span>
-                        <span>{step}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-2 border-t border-stone-100 flex flex-col sm:flex-row gap-2">
-                    <button
-                      onClick={() => onNavigate(currentGuide.route)}
-                      className="w-full py-2.5 px-3 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold rounded-xl text-center transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                    >
-                      <span>{currentGuide.actionLabel}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                    <button
-                      onClick={() => onNavigate("kontak_pengaduan")}
-                      className="shrink-0 py-2.5 px-3 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-bold rounded-xl text-center transition-colors cursor-pointer"
-                    >
-                      Minta Bantuan
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Impact Numbers Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl">
-          <div className="max-w-3xl mb-8 space-y-2">
-            <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
-              Rekam Jejak Advokasi
-            </span>
-            <h2 className="font-editorial text-2xl sm:text-3xl font-bold">
-              Angka di Balik Perjuangan Memulihkan Keberdayaan Penyintas
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {IMPACT_STATS.map((stat, i) => (
-              <div
-                key={i}
-                className="border-l-2 border-blue-500 pl-4 space-y-1"
-              >
-                <div className="font-editorial text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                  {stat.value}
-                </div>
-                <div className="text-sm font-bold text-blue-200">
-                  {stat.label}
-                </div>
-                <div className="text-xs text-slate-400 leading-tight">
-                  {stat.detail}
-                </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4 Pilar Program Kerja */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-          <div className="space-y-2">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
-              Layanan & Intervensi
-            </span>
-            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-slate-900">
-              Empat Pilar Penanganan Terpadu TP.com
-            </h2>
-            <p className="text-sm text-slate-600 max-w-xl">
-              Kami memadukan mitigasi teknologi siber, pendampingan hukum
-              berkeadilan, terapi pemulihan psikologis, serta riset kebijakan
-              untuk meruntuhkan kekerasan struktural.
-            </p>
-          </div>
-          <button
-            onClick={() => onNavigate("program")}
-            className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1.5 cursor-pointer shrink-0"
-          >
-            <span>Lihat Seluruh Alur Program</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {PROGRAMS.map((prog) => (
-            <div
-              key={prog.id}
-              className="bg-white rounded-2xl border border-stone-200 p-6 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group"
-            >
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-700 group-hover:scale-105 transition-transform">
-                  {prog.id === "keamanan-digital" && (
-                    <ShieldCheck className="w-6 h-6" />
-                  )}
-                  {prog.id === "advokasi-hukum" && (
-                    <Scale className="w-6 h-6" />
-                  )}
-                  {prog.id === "pemulihan-psikologis" && (
-                    <HeartHandshake className="w-6 h-6" />
-                  )}
-                  {prog.id === "advokasi-kebijakan" && (
-                    <FileText className="w-6 h-6" />
-                  )}
-                </div>
-
-                <div>
-                  <span className="text-[11px] font-semibold text-blue-700 uppercase tracking-wider block mb-1">
-                    {prog.category}
-                  </span>
-                  <h3 className="font-editorial text-lg font-bold text-slate-900 leading-snug group-hover:text-blue-800 transition-colors">
-                    {prog.title}
-                  </h3>
-                </div>
-
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {prog.description}
-                </p>
-
-                <div className="pt-2 border-t border-stone-100">
-                  <p className="text-[11px] font-semibold text-slate-500 mb-2">
-                    Fasilitas Utama:
-                  </p>
-                  <ul className="space-y-1.5 text-[11px] text-slate-600">
-                    {prog.keyFeatures.slice(0, 3).map((feat, fidx) => (
-                      <li key={fidx} className="flex items-start gap-1.5">
-                        <span className="text-blue-600 font-bold">·</span>
-                        <span>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="pt-5 mt-4 border-t border-stone-100">
-                <button
-                  onClick={() => onNavigate(prog.route || "program")}
-                  className="w-full py-2 px-3 rounded-lg bg-stone-50 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer"
-                >
-                  <span>Pelajari Layanan</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
+      {/* KATEGORI KBGO */}
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-10">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-blue-700" />
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                Isu dan Pengetahuan
+              </span>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* Mengenal 8 Bentuk KBGO Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-stone-100/70 border border-stone-200 rounded-3xl p-6 sm:p-10">
-          <div className="max-w-3xl mb-8 space-y-2">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
-              Literasi Hak Digital
-            </span>
-            <h2 className="font-editorial text-2xl sm:text-3xl font-bold text-slate-900">
-              Kenali Bentuk-Bentuk Kekerasan Berbasis Gender Online (KBGO)
+            <h2 className="mt-5 font-editorial text-3xl font-bold leading-tight text-slate-950 sm:text-4xl">
+              Mengenali kekerasan adalah langkah awal.
             </h2>
-            <p className="text-sm text-slate-600">
-              Kekerasan digital bukan kesalahan korban. Pelajari definisinya,
-              tanda-tanda bahaya, dan dasar hukum penjeratan pidana di
-              Indonesia.
+
+            <p className="mt-4 text-sm leading-7 text-slate-600">
+              Pahami bentuk-bentuk kekerasan berbasis gender online, risiko yang
+              mungkin muncul, dan pilihan untuk mencari bantuan.
             </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {KBGO_CATEGORIES.slice(0, 6).map((cat) => (
-              <div
-                key={cat.id}
-                className="bg-white p-5 rounded-2xl border border-stone-200/90 shadow-xs hover:border-blue-300 transition-all space-y-3 flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-800 uppercase tracking-wider">
-                      Tingkat Resiko: {cat.riskLevel}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-slate-900 leading-snug">
-                    {cat.name}
-                  </h3>
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-                    {cat.shortDesc}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-stone-100 flex items-center justify-between text-xs">
-                  <span className="text-[11px] text-slate-400 font-medium truncate max-w-[170px]">
-                    {cat.legalBasis[0]}
-                  </span>
-                  <button
-                    onClick={() => onNavigate("kategori_kbgo")}
-                    className="text-blue-700 hover:text-blue-900 font-bold text-xs inline-flex items-center gap-1 cursor-pointer shrink-0"
-                  >
-                    <span>Detail</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 text-center">
             <button
+              type="button"
               onClick={() => onNavigate("kategori_kbgo")}
-              className="px-6 py-3 bg-white hover:bg-stone-50 border border-stone-300 text-slate-800 font-bold rounded-xl text-xs transition-colors inline-flex items-center gap-2 cursor-pointer shadow-xs"
+              className="mt-6 inline-flex items-center gap-2 border-b border-blue-800 pb-1 text-sm font-semibold text-blue-800 hover:text-blue-950"
             >
-              <span>Buka Seluruh Katalog & Alur Tanggap Darurat KBGO</span>
-              <ArrowRight className="w-4 h-4 text-slate-500" />
+              Buka katalog KBGO
+              <ArrowRight className="h-4 w-4" />
             </button>
-          </div>
-        </div>
-      </section>
 
-      {/* Featured Publications: Laporan 2024 & Panduan NCII */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-          <div className="space-y-2">
-            <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
-              Riset & Advokasi Pengetahuan
-            </span>
-            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-slate-900">
-              Publikasi & Dokumen Kebijakan Pilihan
-            </h2>
-            <p className="text-sm text-slate-600 max-w-xl">
-              Dokumentasi data kasus riil, analisis yuridis, dan panduan taktis
-              yang kami terbitkan sebagai rujukan akademisi, penegak hukum, dan
-              masyarakat sipil.
-            </p>
-          </div>
-          <button
-            onClick={() => onNavigate("publikasi")}
-            className="text-xs font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1.5 cursor-pointer shrink-0"
-          >
-            <span>Lihat Semua Publikasi ({PUBLICATIONS.length})</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Laporan Tahunan 2024 Card */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-xl border border-slate-800">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-1 rounded-md bg-blue-600 text-white text-[11px] font-bold uppercase tracking-wider">
-                  Laporan Tahunan 2024
-                </span>
-                <span className="text-xs text-slate-400">
-                  148 Halaman · PDF
-                </span>
-              </div>
-
-              <h3 className="font-editorial text-2xl font-bold text-white leading-tight">
-                Mengurai Bayang-bayang Kekerasan Digital: Laporan Situasi KBGO
-                di Indonesia
-              </h3>
-
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Menyajikan temuan empiris 1.412 kasus sepanjang 2024, evaluasi 2
-                tahun implementasi UU TPKS, data platform terbanyak digunakan
-                pelaku, serta peta jalan reformasi moderasi konten.
-              </p>
-
-              <div className="p-3.5 bg-slate-800/80 rounded-xl border border-slate-700/60 space-y-1.5">
-                <p className="text-[11px] font-bold text-blue-400 uppercase tracking-wider">
-                  Temuan Kunci:
-                </p>
-                <p className="text-xs text-slate-300">
-                  • Lonjakan 38% kasus baru & penyebaran konten intim via
-                  Telegram dan WhatsApp grup tertutup.
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-6 mt-6 border-t border-slate-800 flex items-center justify-between gap-4">
-              <button
-                onClick={() =>
-                  onNavigate("detail_publikasi_laporan_tahunan_2024")
-                }
-                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
-              >
-                Baca Ringkasan & Unduh
-              </button>
-              <span className="text-xs text-slate-400">
-                Gratis · Lisensi Terbuka CC-BY
-              </span>
-            </div>
-          </div>
-
-          {/* Panduan NCII Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-md border border-stone-200">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 text-[11px] font-bold uppercase tracking-wider">
-                  Panduan Praktis
-                </span>
-                <span className="text-xs text-slate-500">
-                  64 Halaman · Edisi Revisi
-                </span>
-              </div>
-
-              <h3 className="font-editorial text-2xl font-bold text-slate-900 leading-tight">
-                Panduan Protokol Penghapusan Konten Intim Non-Konsensual (NCII)
-              </h3>
-
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Pedoman komprehensif bagi korban dan pendamping untuk menghapus
-                materi intim dari platform digital secara mandiri, memanfaatkan
-                StopNCII, Take It Down, serta perlindungan hukum UU TPKS.
-              </p>
-
-              <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
-                <p className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
-                  Termasuk di dalamnya:
-                </p>
-                <p className="text-xs text-slate-600">
-                  • Template resmi draf somasi platform, panduan screenshot
-                  bukti sah, dan kontak eskalasi darurat.
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-6 mt-6 border-t border-stone-100 flex items-center justify-between gap-4">
-              <button
-                onClick={() =>
-                  onNavigate("detail_panduan_protokol_penghapusan_ncii")
-                }
-                className="px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
-              >
-                Buka Panduan Protokol
-              </button>
-              <span className="text-xs text-slate-500">
-                Panduan Resmi TP.com
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Voices of Survivors / Testimoni */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-blue-950 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden">
-          <div className="max-w-3xl space-y-4 relative z-10">
-            <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">
-              Suara Penyintas
-            </span>
-            <blockquote className="font-editorial text-xl sm:text-2xl lg:text-3xl font-medium text-blue-50 leading-relaxed italic">
-              "Saat foto pribadi saya diancam disebar, ketakutan membuat saya
-              hampir menyerah. TP.com tidak hanya membantu men-takedown konten
-              tersebut dari platform dalam 48 jam, tetapi juga memulihkan
-              martabat dan kesehatan mental saya tanpa satu pun penghakiman."
-            </blockquote>
-            <div className="pt-2">
-              <p className="text-sm font-bold text-white">
-                — Maya (Nama Samaran, 22 tahun)
-              </p>
-              <p className="text-xs text-blue-300">
-                Penyintas Kasus Sextortion, Didampingi Tim TP.com Periode 2024
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action: Lapor atau Donasi */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl border border-stone-200 p-8 sm:p-12 text-center space-y-6 shadow-md">
-          <div className="max-w-2xl mx-auto space-y-3">
-            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-slate-900">
-              Jangan Menghadapi Kekerasan Digital Sendirian
-            </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              Kerahasiaan identitas dan data Anda adalah prioritas tertinggi
-              kami. Layanan pendampingan kami bersifat non-judgemental, berpusat
-              pada persetujuan korban, dan tidak dipungut biaya apa pun.
+            <p className="mt-5 text-xs leading-5 text-slate-500">
+              Tingkat risiko berbeda sesuai konteks dan kondisi setiap orang.
+              Penilaian pada katalog bukan pengganti penilaian keselamatan
+              secara individual.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <button
-              onClick={() => onNavigate("kontak_pengaduan")}
-              className="px-6 py-3.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl shadow-md text-sm transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <Lock className="w-4 h-4 text-blue-200" />
-              <span>Isi Formulir Pengaduan Kasus</span>
-            </button>
+          <div className="lg:col-span-8">
+            <div className="border-t border-stone-200">
+              {KBGO_CATEGORIES.slice(0, 6).map((category, index) => (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => onNavigate("kategori_kbgo")}
+                  className="group grid w-full grid-cols-[2rem_1fr_auto] items-start gap-3 border-b border-stone-200 py-5 text-left transition hover:bg-stone-50 sm:grid-cols-[2.5rem_1fr_auto] sm:gap-5 sm:px-3"
+                >
+                  <span className="pt-0.5 font-editorial text-lg text-blue-800">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  <span>
+                    <span className="block font-editorial text-lg font-bold leading-snug text-slate-900 group-hover:text-blue-800">
+                      {category.name}
+                    </span>
+
+                    <span className="mt-2 block text-sm leading-6 text-slate-600">
+                      {category.shortDesc}
+                    </span>
+
+                    <span className="mt-3 block text-xs leading-5 text-slate-500">
+                      Dasar hukum:{" "}
+                      {category.legalBasis?.[0] ?? "Lihat penjelasan lengkap"}
+                    </span>
+                  </span>
+
+                  <ArrowRight className="mt-1 h-4 w-4 text-slate-400 transition group-hover:translate-x-1 group-hover:text-blue-800" />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PUBLIKASI */}
+      <section className="border-y border-stone-200 bg-[#f8f7f3]">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-10">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-3xl">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-8 bg-blue-700" />
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                  Publikasi dan Sumber Belajar
+                </span>
+              </div>
+
+              <h2 className="mt-5 font-editorial text-3xl font-bold leading-tight text-slate-950 sm:text-4xl">
+                Pengetahuan yang dapat digunakan bersama.
+              </h2>
+
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                Temukan bahan bacaan dan dokumen yang membantu masyarakat
+                memahami isu, memperkuat kapasitas, serta mendukung kerja
+                advokasi.
+              </p>
+            </div>
 
             <button
+              type="button"
+              onClick={() => onNavigate("publikasi")}
+              className="inline-flex shrink-0 items-center gap-2 border-b border-blue-800 pb-1 text-sm font-semibold text-blue-800 hover:text-blue-950"
+            >
+              Semua publikasi ({PUBLICATIONS.length})
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          {PUBLICATIONS.length > 0 ? (
+            <div className="mt-9 grid grid-cols-1 gap-0 border-y border-stone-300 md:grid-cols-2 md:divide-x md:divide-stone-300">
+              {PUBLICATIONS.slice(0, 4).map((publication, index) => (
+                <button
+                  key={publication.id}
+                  type="button"
+                  onClick={() =>
+                    onNavigate(
+                      (publication.downloadUrl || "publikasi") as PageRoute,
+                    )
+                  }
+                  className={`group flex h-full flex-col items-start p-5 text-left transition hover:bg-white sm:p-7 ${
+                    index > 1 ? "border-t border-stone-300" : ""
+                  } ${index % 2 === 1 ? "md:border-t-0" : ""}`}
+                >
+                  <div className="flex w-full items-center justify-between gap-3">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue-800">
+                      Bahan bacaan
+                    </span>
+                    <FileText className="h-5 w-5 text-slate-400 transition group-hover:text-blue-800" />
+                  </div>
+
+                  <h3 className="mt-5 font-editorial text-xl font-bold leading-snug text-slate-950 group-hover:text-blue-800">
+                    {publication.title}
+                  </h3>
+
+                  <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-600">
+                    {publication.subtitle}
+                  </p>
+
+                  <span className="mt-6 inline-flex items-center gap-2 text-xs font-bold text-blue-800">
+                    Baca publikasi
+                    <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-9 border-y border-stone-300 py-10">
+              <p className="text-sm text-slate-600">
+                Publikasi sedang disiapkan. Kunjungi halaman publikasi untuk
+                melihat informasi terbaru.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* PENDEKATAN ORGANISASI */}
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-10">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-blue-700" />
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-800">
+                Cara Kami Bekerja
+              </span>
+            </div>
+
+            <h2 className="mt-5 font-editorial text-3xl font-bold leading-tight text-slate-950 sm:text-4xl">
+              Pendampingan yang menghormati pilihan setiap orang.
+            </h2>
+          </div>
+
+          <div className="lg:col-span-7">
+            <p className="text-base leading-8 text-slate-700">
+              Setiap orang memiliki situasi, kebutuhan, dan pertimbangan
+              keselamatan yang berbeda. Respons yang baik dimulai dengan
+              mendengarkan, menghormati keputusan orang yang terdampak, serta
+              menyediakan informasi yang jelas mengenai pilihan yang tersedia.
+            </p>
+
+            <div className="mt-7 grid grid-cols-1 gap-0 border-t border-stone-200 sm:grid-cols-3">
+              <div className="border-b border-stone-200 py-5 sm:border-b-0 sm:border-r sm:pr-5">
+                <span className="text-xs font-bold text-blue-800">01</span>
+                <h3 className="mt-3 text-sm font-bold text-slate-950">
+                  Dengarkan
+                </h3>
+                <p className="mt-2 text-xs leading-6 text-slate-600">
+                  Mulai dari pengalaman dan kebutuhan orang yang terdampak.
+                </p>
+              </div>
+
+              <div className="border-b border-stone-200 py-5 sm:border-b-0 sm:border-r sm:px-5">
+                <span className="text-xs font-bold text-blue-800">02</span>
+                <h3 className="mt-3 text-sm font-bold text-slate-950">
+                  Beri pilihan
+                </h3>
+                <p className="mt-2 text-xs leading-6 text-slate-600">
+                  Jelaskan pilihan yang tersedia tanpa menyalahkan korban.
+                </p>
+              </div>
+
+              <div className="py-5 sm:pl-5">
+                <span className="text-xs font-bold text-blue-800">03</span>
+                <h3 className="mt-3 text-sm font-bold text-slate-950">
+                  Hormati keputusan
+                </h3>
+                <p className="mt-2 text-xs leading-6 text-slate-600">
+                  Utamakan persetujuan dan pertimbangan keselamatan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA AKHIR */}
+      <section className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+        <div className="grid overflow-hidden border border-slate-800 bg-slate-950 text-white lg:grid-cols-12">
+          <div className="px-6 py-10 sm:px-10 sm:py-12 lg:col-span-8 lg:px-12">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-blue-400" />
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-blue-300">
+                Langkah Berikutnya
+              </span>
+            </div>
+
+            <h2 className="mt-5 max-w-2xl font-editorial text-3xl font-bold leading-tight sm:text-4xl">
+              Kamu tidak harus mencari jawaban sendirian.
+            </h2>
+
+            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-300">
+              Mulai dengan membaca informasi yang kamu butuhkan atau menghubungi
+              organisasi untuk menanyakan pilihan dukungan yang tersedia.
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => onNavigate("kontak_pengaduan")}
+                className="inline-flex min-h-12 items-center justify-center gap-2 bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-600"
+              >
+                <Lock className="h-4 w-4" />
+                Hubungi kami
+                <ArrowRight className="h-4 w-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onNavigate("program")}
+                className="inline-flex min-h-12 items-center justify-center border border-slate-600 px-5 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/5"
+              >
+                Lihat program kami
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-between border-t border-slate-800 bg-slate-900 px-6 py-8 sm:px-10 lg:col-span-4 lg:border-l lg:border-t-0 lg:px-8">
+            <div>
+              <HeartHandshake className="h-6 w-6 text-blue-300" />
+
+              <h3 className="mt-5 font-editorial text-2xl font-bold">
+                Dukung kerja bersama.
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-slate-300">
+                Solidaritas masyarakat ikut mendukung keberlanjutan kerja
+                pemberdayaan dan advokasi.
+              </p>
+            </div>
+
+            <button
+              type="button"
               onClick={onOpenDonation}
-              className="px-6 py-3.5 bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold rounded-xl text-sm transition-colors cursor-pointer"
+              className="mt-7 inline-flex items-center gap-2 self-start border-b border-blue-300 pb-1 text-sm font-semibold text-blue-300 transition hover:border-white hover:text-white"
             >
-              Dukung Solidaritas Donasi
+              Dukung melalui donasi
+              <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
+
+        <div className="mt-5 flex flex-col gap-2 text-xs leading-5 text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+          <span>Transformasi Perempuan Dotcom</span>
+          <span className="inline-flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5" />
+            Pemberdayaan masyarakat dan keadilan digital
+          </span>
+        </div>
       </section>
-    </div>
+    </main>
   );
 };
