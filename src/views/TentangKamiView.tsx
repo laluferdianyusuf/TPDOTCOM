@@ -76,9 +76,9 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
           </h1>
           <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
             Transformasi Perempuan Dotcom adalah organisasi nirlaba independen
-            yang bergerak di garis depan penanganan kekerasan berbasis gender
-            online (KBGO), perlindungan privasi data, dan pembelaan hak asasi
-            digital di Indonesia.
+            yang bergerak di garis depan dalam pemberdayaan masyarakat dan
+            penanganan kekerasan berbasis gender online (KBGO), perlindungan
+            privasi data, dan pembelaan hak asasi digital di NTB.
           </p>
         </div>
       </section>
@@ -109,7 +109,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
               <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
                 Misi Strategis
               </span>
-              <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700">
+              <ul className="space-y-3.5 text-xs sm:text-sm text-slate-700 mt-2">
                 <li className="flex items-start gap-3">
                   <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center shrink-0 text-xs">
                     1
@@ -294,7 +294,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                 Transparansi Sumber Dana & Audit Keuangan
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                TP.com menjaga independensi mutlak. Kami tidak menerima dana
+                TPDcom menjaga independensi mutlak. Kami tidak menerima dana
                 dari entitas politik, korporasi dengan rekam jejak pelanggaran
                 HAM, atau platform yang menolak mematuhi standar perlindungan
                 perempuan dan anak. Laporan keuangan diaudit secara independen
