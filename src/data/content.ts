@@ -11,9 +11,14 @@ import toniPhoto from "../assets/members/tony.jpeg";
 import {
   ArticleItem,
   KBGOCategory,
+  PageRoute,
+  ParalegalMember,
   ProgramActivity,
+  ProgramActivityPhoto,
+  ProgramActivityTypeKey,
   ProgramItem,
   PublicationItem,
+  UmkmBusiness,
 } from "../types";
 
 export const IMPACT_STATS = [
@@ -257,132 +262,858 @@ export const PROGRAMS: ProgramItem[] = [
     route: "program",
   },
 ];
+const ACTIVITY_PHOTOS: Record<ProgramActivityTypeKey, ProgramActivityPhoto[]> =
+  {
+    pelatihan: [
+      {
+        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi suasana pelatihan dan interaksi peserta",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi pembelajaran dan penyampaian materi",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi diskusi kelompok",
+      },
+    ],
+
+    kasus: [
+      {
+        url: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi dokumen dan pendampingan hukum",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi layanan dan konsultasi hukum",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1505664159854-232618df4fac?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi proses advokasi",
+      },
+    ],
+
+    workshop: [
+      {
+        url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi diskusi dan kerja kelompok",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi kolaborasi peserta workshop",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi interaksi dalam kegiatan",
+      },
+    ],
+
+    sosialisasi: [
+      {
+        url: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi penyampaian informasi kepada peserta",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi partisipasi masyarakat",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi edukasi di lingkungan sekolah",
+      },
+    ],
+
+    event: [
+      {
+        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi penyelenggaraan acara",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi aktivitas komunitas",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1523580494112-071d31174ee8?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi kegiatan dan partisipasi peserta",
+      },
+    ],
+
+    diskusi: [
+      {
+        url: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi forum diskusi",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi diskusi kelompok",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi pertukaran gagasan",
+      },
+    ],
+
+    evaluasi: [
+      {
+        url: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi evaluasi dan peninjauan kegiatan",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi diskusi evaluasi tim",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi koordinasi dan tindak lanjut",
+      },
+    ],
+
+    kunjungan: [
+      {
+        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi kunjungan dan koordinasi lapangan",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1542744094-24638ea0b3b5?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi pendampingan dan observasi",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi interaksi dengan masyarakat",
+      },
+    ],
+
+    networking: [
+      {
+        url: "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi pertemuan dan jejaring kolaborasi",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi pertukaran gagasan",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi kerja sama antarlembaga",
+      },
+    ],
+
+    kegiatan: [
+      {
+        url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi produksi konten dan kerja kreatif",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi proses pembuatan konten",
+      },
+      {
+        url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=85",
+        caption: "Ilustrasi kolaborasi tim",
+      },
+    ],
+  };
 
 export const PROGRAM_ACTIVITIES: ProgramActivity[] = [
   {
-    id: "legal-digital-empowerment-communities",
-    title: "Legal and Digital Empowerment for Communities",
+    id: "pdp-paralegal",
+    title: "PDP PARALEGAL",
     typeKey: "pelatihan",
-    date: "Informasi tanggal belum tersedia",
+    date: "29 Juli 2026",
     location: "Informasi lokasi belum tersedia",
-    participants: "Informasi peserta belum tersedia",
+    participants: "Calon Paralegal / Masyarakat",
     description:
-      "Program pemberdayaan masyarakat melalui penguatan akses terhadap pengetahuan hukum dan keterampilan digital. Informasi detail kegiatan dan dokumentasi dapat ditambahkan setelah diverifikasi dari arsip TPDotcom.",
+      "Pelatihan Dasar-Dasar Paralegal (PDP) untuk memperkuat pemahaman hukum di tingkat komunitas, membantu masyarakat mengakses keadilan, serta memberikan pendampingan hukum non-litigasi dasar.",
     coverImage:
-      "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1000",
+      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1000",
     relatedProgramId: "",
-    photos: [],
+    photos: ACTIVITY_PHOTOS.pelatihan,
   },
   {
-    id: "workshop-kewirausahaan-digital-inklusif",
-    title: "Workshop Kewirausahaan Berbasis Digital",
+    id: "pelatihan-keamanan-digital-kelompok-rentan",
+    title: "PELATIHAN KEAMANAN DIGITAL BAGI KELOMPOK RENTAN",
+    typeKey: "pelatihan",
+    date: "20 Mei 2024",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Kelompok Rentan",
+    description:
+      "Pelatihan praktis untuk meningkatkan kesadaran dan keterampilan kelompok rentan dalam mengamankan data pribadi, menghadapi ancaman online, serta menggunakan perangkat digital secara aman.",
+    coverImage:
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.pelatihan,
+  },
+  {
+    id: "pelatihan-literasi-digital-pencegahan-kekerasan",
+    title:
+      "Pelatihan Literasi Digital dan Pencegahan Kekerasan Terhadap Perempuan dan Anak",
+    typeKey: "pelatihan",
+    date: "7 Februari 2024",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Perempuan, anak-anak, dan pendamping",
+    description:
+      "Edukasi literasi digital yang fokus pada pencegahan kekerasan berbasis gender online (KBGO) serta perlindungan anak di dunia maya, membekali peserta dengan langkah-langkah preventif dan penanganan.",
+    coverImage:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.pelatihan,
+  },
+  {
+    id: "pelatihan-pemberdayaan-ekonomi-digital",
+    title: "PELATIHAN PEMBERDAYAAN EKONOMI DIGITAL",
+    typeKey: "pelatihan",
+    date: "24 Agustus 2026",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pelaku UMKM / Masyarakat",
+    description:
+      "Program peningkatan kapasitas ekonomi melalui digitalisasi, termasuk pemanfaatan e-commerce, pemasaran digital, dan manajemen keuangan berbasis aplikasi untuk memperluas jangkauan pasar.",
+    coverImage:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.pelatihan,
+  },
+  {
+    id: "pelatihan-participatory-rural-appraisal",
+    title: "PELATIHAN PARTICIPATORY RURAL APPRAISAL",
+    typeKey: "pelatihan",
+    date: "15 Juli 2026",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Masyarakat Desa / Fasilitator Komunitas",
+    description:
+      "Pelatihan metode pemahaman keadaan desa secara partisipatif (PRA), melibatkan masyarakat secara aktif untuk menganalisis kondisi, masalah, dan potensi mereka dalam merencanakan pembangunan.",
+    coverImage:
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.pelatihan,
+  },
+
+  {
+    id: "kasus-alih-fungsi-rumah",
+    title: "KASUS ALIH FUNGSI RUMAH",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Pendampingan dan penanganan hukum terkait kasus sengketa atau alih fungsi rumah.",
+    coverImage:
+      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "kasus-beleka",
+    title: "KASUS BELEKA",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Pendampingan hukum untuk kasus yang terjadi di wilayah Beleka atau melibatkan pihak terkait.",
+    coverImage:
+      "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "kasus-ijazah-unw",
+    title: "KASUS IJAZAH UNW",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Penanganan kasus dan pendampingan hukum terkait sengketa atau masalah ijazah UNW.",
+    coverImage:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "kasus-kekerasan-kakak-kandung",
+    title: "KASUS KEKERASAN KAKAK KANDUNG",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Korban dan Pihak Terkait",
+    description:
+      "Pendampingan hukum dan psikologis bagi korban kekerasan dalam rumah tangga/keluarga.",
+    coverImage:
+      "https://images.unsplash.com/photo-1528642474498-1af0c17fd8c3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "kasus-penipuan-truk-200-jt",
+    title: "KASUS PENIPUAN TRUK 200 JT",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Advokasi dan proses hukum terkait kasus penipuan transaksi kendaraan truk senilai 200 juta rupiah.",
+    coverImage:
+      "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "kasus-pidana-rosidatul-jannah",
+    title: "KASUS PIDANA ROSIDATUL JANNAH",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Pendampingan hukum terkait perkara pidana atas nama Rosidatul Jannah.",
+    coverImage:
+      "https://images.unsplash.com/photo-1505664159854-232618df4fac?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "klu",
+    title: "KLU",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Dokumentasi perkara dan pendampingan di wilayah Kabupaten Lombok Utara (KLU).",
+    coverImage:
+      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "marni-setuta",
+    title: "MARNI SETUTA",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description: "Pendampingan hukum dan advokasi untuk kasus Marni Setuta.",
+    coverImage:
+      "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "pelecehan-online-oleh-oknum-dosen",
+    title: "PELECEHAN ONLINE OLEH OKNUM DOSEN",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Korban dan Pihak Terkait",
+    description:
+      "Pendampingan korban Kekerasan Berbasis Gender Online (KBGO) yang melibatkan oknum akademisi.",
+    coverImage:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "pencemaran-nama-baik-beleka",
+    title: "PENCEMARAN NAMA BAIK BELEKA",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Advokasi hukum terkait kasus dugaan pencemaran nama baik di wilayah Beleka.",
+    coverImage:
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "rizkil-wathon",
+    title: "RIZKIL WATHON",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Dokumentasi dan pendampingan hukum untuk kasus atas nama Rizkil Wathon.",
+    coverImage:
+      "https://images.unsplash.com/photo-1505664159854-232618df4fac?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+  {
+    id: "sengketa-status-perkawinan",
+    title: "SENGKETA STATUS PERKAWINAN",
+    typeKey: "kasus",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Pendampingan hukum perdata terkait sengketa status perkawinan dan hak-hak keluarga.",
+    coverImage:
+      "https://images.unsplash.com/photo-1528642474498-1af0c17fd8c3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kasus,
+  },
+
+  {
+    id: "refreshing-penanganan-kasus",
+    title: "REFRESHING PENANGANAN KASUS",
     typeKey: "workshop",
     date: "Informasi tanggal belum tersedia",
     location: "Informasi lokasi belum tersedia",
-    participants: "Kelompok rentan dan penyandang disabilitas",
+    participants: "Pendamping dan Pihak Terkait",
     description:
-      "Workshop untuk mendukung kelompok rentan dan penyandang disabilitas dalam mengembangkan keterampilan kewirausahaan berbasis digital. Rincian pelaksanaan dan foto kegiatan perlu dilengkapi berdasarkan dokumentasi resmi.",
+      "Kegiatan penyegaran dan peningkatan kapasitas bagi para pendamping dalam menangani berbagai kasus di lapangan.",
+    coverImage:
+      "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.workshop,
+  },
+  {
+    id: "workshop-penanganan-kasus-kbgo",
+    title: "WORKSHOP PENANGANAN KASUS KEKERASAN BERBASIS GENDER ONLINE",
+    typeKey: "workshop",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pihak Terkait",
+    description:
+      "Workshop komprehensif mengenai strategi, mitigasi, dan penanganan kasus Kekerasan Berbasis Gender Online (KBGO).",
+    coverImage:
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.workshop,
+  },
+  {
+    id: "workshop-kebutuhan-kelompok-berkebutuhan-khusus",
+    title: "WORKSHOP KEBUTUHAN KELOMPOK BERKEBUTAHAN KHUSUS",
+    typeKey: "workshop",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Kelompok Berkebutuhan Khusus / Pihak Terkait",
+    description:
+      "Diskusi dan pelatihan untuk memahami serta memfasilitasi kebutuhan kelompok rentan dan disabilitas agar lebih inklusif.",
+    coverImage:
+      "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.workshop,
+  },
+  {
+    id: "workshop-qamarul-huda",
+    title: "WORKSHOP QAMARUL HUDA",
+    typeKey: "workshop",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Peserta Terkait",
+    description:
+      "Pelaksanaan workshop dan pelatihan kolaboratif yang diselenggarakan di/bersama institusi Qamarul Huda.",
     coverImage:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1000",
     relatedProgramId: "",
-    photos: [],
+    photos: ACTIVITY_PHOTOS.workshop,
   },
   {
-    id: "komunitas-orang-muda-melek-teknologi",
-    title: "Pembentukan Komunitas Orang Muda Melek Teknologi",
-    typeKey: "kegiatan_lapangan",
+    id: "workshop-transfer-knowledge-lingkungan",
+    title: "WORKSHOP TRANSFER KNOWLEDGE LINGKUNGAN",
+    typeKey: "workshop",
     date: "Informasi tanggal belum tersedia",
     location: "Informasi lokasi belum tersedia",
-    participants: "Orang muda",
+    participants: "Pegiat Lingkungan / Masyarakat",
     description:
-      "Inisiatif pembentukan komunitas orang muda untuk mendorong pemahaman, keterampilan, dan pemanfaatan teknologi secara lebih baik. Informasi kegiatan lanjutan dapat ditambahkan sesuai arsip resmi organisasi.",
+      "Kegiatan berbagi pengetahuan, inovasi, dan praktik terbaik dalam pelestarian serta pengelolaan lingkungan hidup.",
+    coverImage:
+      "https://images.unsplash.com/photo-1418065460487-3e41a6c8e1e3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.workshop,
+  },
+
+  {
+    id: "sosialisasi-desa-jenggala",
+    title: "DESA JENGGALA",
+    typeKey: "sosialisasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Desa Jenggala",
+    participants: "Masyarakat Desa",
+    description:
+      "Kegiatan sosialisasi dan penyuluhan yang dilaksanakan di Desa Jenggala.",
     coverImage:
       "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1000",
     relatedProgramId: "",
-    photos: [],
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+  {
+    id: "sosialisasi-diskusi-kbgo",
+    title: "DISKUSI KBGO",
+    typeKey: "sosialisasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Peserta Terkait",
+    description:
+      "Diskusi dan sosialisasi terkait pencegahan serta penanganan Kekerasan Berbasis Gender Online (KBGO).",
+    coverImage:
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+  {
+    id: "sosialisasi-sman-1-janapria",
+    title: "SMAN 1 JANAPRIA",
+    typeKey: "sosialisasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "SMAN 1 Janapria",
+    participants: "Siswa dan Guru",
+    description:
+      "Kegiatan sosialisasi dan edukasi yang diselenggarakan di lingkungan SMAN 1 Janapria.",
+    coverImage:
+      "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+  {
+    id: "sosialisasi-sman-3-mataram",
+    title: "SMAN 3 MATARAM",
+    typeKey: "sosialisasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "SMAN 3 Mataram",
+    participants: "Siswa dan Guru",
+    description:
+      "Kegiatan sosialisasi dan edukasi yang diselenggarakan di lingkungan SMAN 3 Mataram.",
+    coverImage:
+      "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+  {
+    id: "sosialisasi-kanwil-kemenkum-ntb-posbankum-batulayar",
+    title: "Sosialisasi dari Kanwil Kemenkum NTB, ke Posbankum Desa Batulayar",
+    typeKey: "sosialisasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Posbankum Desa Batulayar",
+    participants: "Pengurus Posbankum / Masyarakat",
+    description:
+      "Sosialisasi layanan bantuan hukum dan penguatan kapasitas dari Kanwil Kemenkumham NTB kepada pengurus Posbankum di Desa Batulayar.",
+    coverImage:
+      "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+  {
+    id: "sosialisasi-kbgo-sman-1-janapria-okt",
+    title: "SOSIALISASI KBGO SMAN 1 JANAPRIE 22 OKTOBER 2026",
+    typeKey: "sosialisasi",
+    date: "22 Oktober 2026",
+    location: "SMAN 1 Janapria",
+    participants: "Siswa dan Guru",
+    description:
+      "Edukasi dan sosialisasi pencegahan Kekerasan Berbasis Gender Online (KBGO) yang dilaksanakan khusus di SMAN 1 Janapria.",
+    coverImage:
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+  {
+    id: "sosialisasi-pengenalan-tpdotcom-desa-ganti",
+    title: "SOSIALISASI PENGENALAN TPDOTCOM DESA GANTI",
+    typeKey: "sosialisasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Desa Ganti",
+    participants: "Masyarakat Desa",
+    description:
+      "Kegiatan sosialisasi untuk memperkenalkan program, layanan, dan peran TPDotcom kepada masyarakat di Desa Ganti.",
+    coverImage:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.sosialisasi,
+  },
+
+  {
+    id: "acara-senyumpuan",
+    title: "ACARA SENYUMPUAN",
+    typeKey: "event",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Peserta Terkait",
+    description:
+      "Penyelenggaraan Acara Senyumpuan sebagai bentuk keterlibatan dan partisipasi aktif masyarakat/komunitas.",
+    coverImage:
+      "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.event,
+  },
+  {
+    id: "begawe-ngulat-oktober-2026",
+    title: "BEGAWE NGULAT 18 OKTOBER 2026",
+    typeKey: "event",
+    date: "18 Oktober 2026",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Masyarakat / Komunitas",
+    description:
+      "Penyelenggaraan acara tradisi atau kegiatan komunitas Begawe Ngulat.",
+    coverImage:
+      "https://images.unsplash.com/photo-1523580494112-071d31174ee8?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.event,
+  },
+  {
+    id: "dialog-terbuka-janapria",
+    title:
+      "DIALOG TERBUKA TENTANG BAHAYA PERNIKAHAN DINI DAN PERGAULAN BEBAS DI JANAPRIA",
+    typeKey: "diskusi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Janapria",
+    participants: "Masyarakat dan Remaja",
+    description:
+      "Kegiatan dialog terbuka interaktif yang membahas isu penting mengenai bahaya pernikahan anak/usia dini dan pergaulan bebas.",
+    coverImage:
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.diskusi,
+  },
+  {
+    id: "diskusi-bersama-mahasiswa",
+    title: "DISKUSI BERSAMA MAHASISWA",
+    typeKey: "diskusi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Mahasiswa",
+    description:
+      "Forum diskusi tematik bersama elemen mahasiswa untuk menjaring aspirasi dan meningkatkan kesadaran terhadap isu sosial-hukum.",
+    coverImage:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.diskusi,
+  },
+  {
+    id: "diskusi-dengan-sp-mataram",
+    title: "DISKUSI DENGAN SP MATARAM",
+    typeKey: "diskusi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Mataram",
+    participants: "SP Mataram / Pihak Terkait",
+    description:
+      "Pertemuan dan ruang diskusi bersama kelompok SP Mataram untuk penguatan kelembagaan atau koordinasi program.",
+    coverImage:
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.diskusi,
+  },
+  {
+    id: "evaluasi-penanganan-kasus",
+    title: "EVALUASI PENANGANAN KASUS",
+    typeKey: "evaluasi",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Tim Pendamping dan Internal",
+    description:
+      "Agenda evaluasi internal berkala terkait metode, proses, dan hasil akhir dari penanganan berbagai kasus klien di lapangan.",
+    coverImage:
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.evaluasi,
+  },
+  {
+    id: "hobicon-2026",
+    title: "HOBICON 2026",
+    typeKey: "event",
+    date: "Tahun 2026",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Masyarakat Umum",
+    description:
+      "Kegiatan acara pameran, komunitas, dan pertemuan berskala besar dalam rangkaian Hobicon 2026.",
+    coverImage:
+      "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.event,
+  },
+  {
+    id: "hobicon-student-olympiad",
+    title: "HOBICON STUDENT OLYMPIAD",
+    typeKey: "event",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Siswa/Pelajar",
+    description:
+      "Kompetisi dan olimpiade tingkat pelajar yang diselenggarakan sebagai bagian dari kegiatan Hobicon.",
+    coverImage:
+      "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.event,
+  },
+  {
+    id: "kunjungan-paralegal-juni-2026",
+    title: "KUNJUNGAN PARALEGAL 15 JUNI 2026",
+    typeKey: "kunjungan",
+    date: "15 Juni 2026",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Tim Paralegal",
+    description:
+      "Kegiatan field trip atau kunjungan lapangan oleh tim paralegal untuk observasi, koordinasi, maupun pendampingan teknis.",
+    coverImage:
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kunjungan,
+  },
+  {
+    id: "networking-cso-apik",
+    title: "NETWORKING CSO APIK",
+    typeKey: "networking",
+    date: "Informasi tanggal belum tersedia",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Lembaga CSO / Jaringan APIK",
+    description:
+      "Forum pertemuan lintas lembaga Civil Society Organization (CSO) untuk membangun jejaring kerja dan memperkuat kolaborasi bersama APIK.",
+    coverImage:
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32d7?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.networking,
+  },
+
+  {
+    id: "kunjungan-umkm-lombok-tengah-april-2026",
+    title: "KUNJUNGAN UMKM LOMBOK TENGAH 28 APRIL 2026",
+    typeKey: "kunjungan",
+    date: "28 April 2026",
+    location: "Lombok Tengah",
+    participants: "Pelaku UMKM / Tim Kunjungan",
+    description:
+      "Kegiatan kunjungan lapangan ke berbagai UMKM di wilayah Lombok Tengah untuk dukungan dan pendampingan usaha.",
+    coverImage:
+      "https://images.unsplash.com/photo-1542744094-24638ea0b3b5?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kunjungan,
+  },
+  {
+    id: "pembuatan-konten-umkm-juli-2026",
+    title: "PEMBUATAN KONTEN UMKM 9 JULI 2026",
+    typeKey: "kegiatan",
+    date: "9 Juli 2026",
+    location: "Informasi lokasi belum tersedia",
+    participants: "Pelaku UMKM / Tim Kreatif",
+    description:
+      "Kegiatan produksi dan pembuatan konten media untuk mendukung pemasaran produk-produk UMKM.",
+    coverImage:
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1000",
+    relatedProgramId: "",
+    photos: ACTIVITY_PHOTOS.kegiatan,
   },
 ];
 
 export const PUBLICATIONS: PublicationItem[] = [
+  // {
+  //   id: "laporan-tahunan-2024",
+  //   title:
+  //     "Mengurai Bayang-bayang Kekerasan Digital: Laporan Situasi KBGO di Indonesia 2024",
+  //   subtitle:
+  //     "Catatan Tahunan Advokasi, Data Kasus, dan Rekomendasi Kebijakan TPDcom",
+  //   type: "Laporan Tahunan",
+  //   year: 2024,
+  //   date: "10 Desember 2024",
+  //   pages: 148,
+  //   fileSize: "4.8 MB",
+  //   summary:
+  //     "Laporan komprehensif mendokumentasikan 1.412 aduan kekerasan digital sepanjang 2024. Menyoroti lonjakan 42% kasus pemerasan konten intim (sextortion) dan ancaman baru pornografi berbasis Generatif AI/Deepfake di kalangan pelajar dan perempuan muda.",
+  //   keyFindings: [
+  //     "1.412 aduan kasus diterima sepanjang 2024, naik 38% dibandingkan tahun sebelumnya",
+  //     "WhatsApp (44%) dan Telegram (29%) menjadi kanal teratas distribusi konten intim non-konsensual",
+  //     "78% korban berusia 18–29 tahun, dengan 14% di antaranya adalah anak di bawah usia 18 tahun",
+  //     "Hambatan terbesar penegakan hukum: lambatnya respons platform teknologi dan reviktimisasi saat pelaporan kepolisian",
+  //   ],
+  //   downloadUrl: "#",
+  //   isFeatured: true,
+  // },
+  // {
+  //   id: "panduan-protokol-ncii",
+  //   title: "Panduan Protokol Penghapusan Konten Intim Non-Konsensual (NCII)",
+  //   subtitle:
+  //     "Langkah Taktis Mandiri & Institusional Menghapus Foto/Video Tanpa Persetujuan",
+  //   type: "Panduan Praktis",
+  //   year: 2024,
+  //   date: "15 September 2024",
+  //   pages: 64,
+  //   fileSize: "2.4 MB",
+  //   summary:
+  //     "Buku saku praktis langkah demi langkah bagi korban dan pendamping kasus untuk menghapus foto/video intim dari internet secara mandiri dan legal, memanfaatkan teknologi hash StopNCII serta jalur eskalasi darurat.",
+  //   keyFindings: [
+  //     "Penjelasan tuntas cara kerja StopNCII.org tanpa pernah menyerahkan foto/video asli ke server pihak ketiga",
+  //     "Panduan pengamanan bukti elektronik (screenshot URL, header metadata, tanggal) yang sah di pengadilan",
+  //     "Format draf surat somasi dan pelaporan langsung ke perwakilan platform Meta, X, Google, dan Telegram",
+  //     "Hak-hak ganti rugi (restitusi) dan pemulihan nama baik bagi korban berdasarkan Pasal 30 UU TPKS",
+  //   ],
+  //   downloadUrl: "#",
+  //   isFeatured: true,
+  // },
+  // {
+  //   id: "policy-brief-uu-tpks-kbgo",
+  //   title:
+  //     "Kertas Kebijakan: Akselerasi Peraturan Pelaksana UU TPKS untuk Kasus Kekerasan Digital",
+  //   subtitle:
+  //     "Menutup Celah Hukum Penanganan Bukti Elektronik & Pelindungan Saksi Korban",
+  //   type: "Kertas Kebijakan",
+  //   year: 2024,
+  //   date: "28 Juli 2024",
+  //   pages: 42,
+  //   fileSize: "1.9 MB",
+  //   summary:
+  //     "Analisis kritis terhadap lambatnya pengesahan RPP tentang penanganan kekerasan seksual berbasis elektronik, serta rekomendasi standarisasi SOP bagi aparat penegak hukum agar tidak menuntut bukti materiil yang memalukan korban.",
+  //   keyFindings: [
+  //     "Urgennya mandat kejaksaan dan kepolisian untuk mengakui sertifikasi hash digital sebagai bukti otentik",
+  //     "Pentingnya integrasi Dana Bantuan Korban (Victim Trust Fund) untuk biaya pemulihan psikologis trauma digital",
+  //   ],
+  //   downloadUrl: "#",
+  // },
+  // {
+  //   id: "buku-saku-keamanan-digital-mahasiswa",
+  //   title: "Buku Saku: Menjaga Kedaulatan Digital di Kampus",
+  //   subtitle:
+  //     "Panduan Mengenali, Menghindari, dan Melawan KBGO bagi Civitas Academica",
+  //   type: "Panduan Praktis",
+  //   year: 2023,
+  //   date: "18 November 2023",
+  //   pages: 56,
+  //   fileSize: "3.1 MB",
+  //   summary:
+  //     "Pedoman edukasi bagi Satgas PPKS (Pencegahan dan Penanganan Kekerasan Seksual) di perguruan tinggi untuk menangani kasus kebocoran data, grup chat perpeloncoan seksual, dan pelecehan daring di lingkungan kampus.",
+  //   keyFindings: [
+  //     "Alur penanganan kasus KBGO di level universitas dengan menjaga kerahasiaan identitas korban",
+  //     "Checklist audit keamanan akun media sosial organisasi mahasiswa",
+  //   ],
+  //   downloadUrl: "#",
+  // },
   {
-    id: "laporan-tahunan-2024",
-    title:
-      "Mengurai Bayang-bayang Kekerasan Digital: Laporan Situasi KBGO di Indonesia 2024",
-    subtitle:
-      "Catatan Tahunan Advokasi, Data Kasus, dan Rekomendasi Kebijakan TPDcom",
-    type: "Laporan Tahunan",
-    year: 2024,
-    date: "10 Desember 2024",
-    pages: 148,
-    fileSize: "4.8 MB",
+    id: "strategic-plan-tpdotcom",
+    type: "Strategic Plan",
+    title: "Strategic Plan TPDotcom",
+    subtitle: "Rencana Strategis Organisasi",
     summary:
-      "Laporan komprehensif mendokumentasikan 1.412 aduan kekerasan digital sepanjang 2024. Menyoroti lonjakan 42% kasus pemerasan konten intim (sextortion) dan ancaman baru pornografi berbasis Generatif AI/Deepfake di kalangan pelajar dan perempuan muda.",
-    keyFindings: [
-      "1.412 aduan kasus diterima sepanjang 2024, naik 38% dibandingkan tahun sebelumnya",
-      "WhatsApp (44%) dan Telegram (29%) menjadi kanal teratas distribusi konten intim non-konsensual",
-      "78% korban berusia 18–29 tahun, dengan 14% di antaranya adalah anak di bawah usia 18 tahun",
-      "Hambatan terbesar penegakan hukum: lambatnya respons platform teknologi dan reviktimisasi saat pelaporan kepolisian",
-    ],
-    downloadUrl: "#",
-    isFeatured: true,
-  },
-  {
-    id: "panduan-protokol-ncii",
-    title: "Panduan Protokol Penghapusan Konten Intim Non-Konsensual (NCII)",
-    subtitle:
-      "Langkah Taktis Mandiri & Institusional Menghapus Foto/Video Tanpa Persetujuan",
-    type: "Panduan Praktis",
-    year: 2024,
-    date: "15 September 2024",
-    pages: 64,
-    fileSize: "2.4 MB",
-    summary:
-      "Buku saku praktis langkah demi langkah bagi korban dan pendamping kasus untuk menghapus foto/video intim dari internet secara mandiri dan legal, memanfaatkan teknologi hash StopNCII serta jalur eskalasi darurat.",
-    keyFindings: [
-      "Penjelasan tuntas cara kerja StopNCII.org tanpa pernah menyerahkan foto/video asli ke server pihak ketiga",
-      "Panduan pengamanan bukti elektronik (screenshot URL, header metadata, tanggal) yang sah di pengadilan",
-      "Format draf surat somasi dan pelaporan langsung ke perwakilan platform Meta, X, Google, dan Telegram",
-      "Hak-hak ganti rugi (restitusi) dan pemulihan nama baik bagi korban berdasarkan Pasal 30 UU TPKS",
-    ],
-    downloadUrl: "#",
-    isFeatured: true,
-  },
-  {
-    id: "policy-brief-uu-tpks-kbgo",
-    title:
-      "Kertas Kebijakan: Akselerasi Peraturan Pelaksana UU TPKS untuk Kasus Kekerasan Digital",
-    subtitle:
-      "Menutup Celah Hukum Penanganan Bukti Elektronik & Pelindungan Saksi Korban",
-    type: "Kertas Kebijakan",
-    year: 2024,
-    date: "28 Juli 2024",
-    pages: 42,
-    fileSize: "1.9 MB",
-    summary:
-      "Analisis kritis terhadap lambatnya pengesahan RPP tentang penanganan kekerasan seksual berbasis elektronik, serta rekomendasi standarisasi SOP bagi aparat penegak hukum agar tidak menuntut bukti materiil yang memalukan korban.",
-    keyFindings: [
-      "Urgennya mandat kejaksaan dan kepolisian untuk mengakui sertifikasi hash digital sebagai bukti otentik",
-      "Pentingnya integrasi Dana Bantuan Korban (Victim Trust Fund) untuk biaya pemulihan psikologis trauma digital",
-    ],
-    downloadUrl: "#",
-  },
-  {
-    id: "buku-saku-keamanan-digital-mahasiswa",
-    title: "Buku Saku: Menjaga Kedaulatan Digital di Kampus",
-    subtitle:
-      "Panduan Mengenali, Menghindari, dan Melawan KBGO bagi Civitas Academica",
-    type: "Panduan Praktis",
-    year: 2023,
+      "Dokumen perencanaan strategis yang memuat arah organisasi, prioritas program, tujuan, serta strategi pengembangan TPDotcom dalam periode perencanaan.",
+    year: 2026,
+    pages: null,
     date: "18 November 2023",
-    pages: 56,
-    fileSize: "3.1 MB",
-    summary:
-      "Pedoman edukasi bagi Satgas PPKS (Pencegahan dan Penanganan Kekerasan Seksual) di perguruan tinggi untuk menangani kasus kebocoran data, grup chat perpeloncoan seksual, dan pelecehan daring di lingkungan kampus.",
+    fileSize: "",
     keyFindings: [
-      "Alur penanganan kasus KBGO di level universitas dengan menjaga kerahasiaan identitas korban",
-      "Checklist audit keamanan akun media sosial organisasi mahasiswa",
+      "Arah dan prioritas strategis organisasi.",
+      "Tujuan dan sasaran pengembangan organisasi.",
+      "Strategi pelaksanaan program dan kegiatan.",
+      "Kerangka pemantauan dan evaluasi organisasi.",
     ],
-    downloadUrl: "#",
+  },
+  {
+    id: "sop-tpdotcom",
+    type: "SOP",
+    title: "Standar Operasional Prosedur TPDotcom",
+    subtitle: "Pedoman Pelaksanaan dan Tata Kelola Organisasi",
+    summary:
+      "Kumpulan prosedur operasional sebagai pedoman pelaksanaan kegiatan, koordinasi tim, administrasi, serta tata kelola organisasi TPDotcom.",
+    year: 2026,
+    pages: null,
+    date: "18 November 2023",
+    fileSize: "",
+    keyFindings: [
+      "Prosedur pelaksanaan kegiatan organisasi.",
+      "Alur koordinasi dan komunikasi internal.",
+      "Prosedur administrasi dan dokumentasi.",
+      "Standar pelaksanaan dan evaluasi kegiatan.",
+    ],
   },
 ];
 
@@ -459,7 +1190,7 @@ export const TEAM_MEMBERS = [
     role: "Ketua",
     bio: "Memimpin dan mengoordinasikan jalannya organisasi, menetapkan arah pelaksanaan program, serta membangun kolaborasi untuk mendukung pemberdayaan perempuan dan masyarakat.",
     avatar: beautyPhoto,
-    level: 2,
+    level: 3,
   },
   {
     name: "Prof. Ruth Stella",
@@ -487,34 +1218,34 @@ export const TEAM_MEMBERS = [
     role: "Anggota",
     bio: "Berpartisipasi dalam pelaksanaan program dan kegiatan organisasi serta mendukung pencapaian tujuan TPDotcom melalui kerja sama tim.",
     avatar: toniPhoto,
-    level: 4,
+    level: 3,
   },
   {
     name: "Hulmayadi Rahman",
     role: "Anggota",
     bio: "Mendukung pelaksanaan kegiatan, kolaborasi dengan pemangku kepentingan, serta penguatan inisiatif pemberdayaan perempuan dan masyarakat.",
     avatar: hulmayadiPhoto,
-    level: 4,
+    level: 3,
   },
   {
     name: "Lalu Ocky Saktiya Luhung",
     role: "Koordinator Keuangan",
     bio: "Mengoordinasikan kebutuhan operasional keuangan, memantau pencatatan transaksi, serta membantu menyiapkan data dan dokumen pendukung pelaporan keuangan.",
     avatar: okiPhoto,
-    level: 5,
-  },
-  {
-    name: "Nesti Diayu",
-    role: "Koordinator Umum",
-    bio: "Mengoordinasikan kebutuhan operasional organisasi, mendukung pelaksanaan kegiatan, serta memastikan kebutuhan administrasi dan logistik terkelola dengan baik.",
-    avatar: nestiPhoto,
-    level: 5,
+    level: 6,
   },
   {
     name: "Lalu Ferdian Yusuf",
     role: "Koordinator IT",
     bio: "Mengoordinasikan pengembangan dan pemeliharaan platform digital TPDotcom, mengelola kebutuhan teknologi informasi, serta mendukung penyebaran informasi dan edukasi digital.",
     avatar: ferdiPhoto,
+    level: 6,
+  },
+  {
+    name: "Nesti Diayu",
+    role: "Direktur Pelaksana",
+    bio: "Mengoordinasikan kebutuhan operasional organisasi, mendukung pelaksanaan kegiatan, serta memastikan kebutuhan administrasi dan logistik terkelola dengan baik.",
+    avatar: nestiPhoto,
     level: 5,
   },
 ];
@@ -527,25 +1258,370 @@ export const EMERGENCY_HOTLINES = [
       "Respon cepat 24 jam untuk kasus darurat ancaman sebar konten intim dan doxing",
     type: "whatsapp",
   },
+];
+
+export const PARALEGALS: ParalegalMember[] = [
   {
-    name: "Kanal Terenkripsi Signal TPDcom",
-    number: "+62 812-9900-8721",
-    description:
-      "Pilihan paling aman untuk pengiriman dokumen bukti sensitif dengan enkripsi end-to-end tanpa rekaman metadata",
-    type: "signal",
+    id: "paralegal-01",
+    name: "Nama Paralegal 1",
+    role: "Paralegal",
+    location: "Mataram",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800",
+    bio: "Mendukung pemberian informasi hukum, edukasi hak, serta pendampingan awal bagi masyarakat.",
+    cases: [
+      {
+        id: "CASE-001",
+        title: "Pendampingan Kekerasan terhadap Perempuan",
+        category: "Kekerasan terhadap Perempuan",
+        status: "Berjalan",
+        year: "2026",
+        date: "12 Januari 2026",
+        description:
+          "Dukungan awal dan koordinasi layanan bagi pihak yang membutuhkan pendampingan.",
+      },
+      {
+        id: "CASE-002",
+        title: "Konsultasi dan Informasi Hukum",
+        category: "Konsultasi Hukum",
+        status: "Selesai",
+        year: "2026",
+        date: "18 Februari 2026",
+        description:
+          "Pemberian informasi awal mengenai hak dan pilihan layanan yang tersedia.",
+      },
+      {
+        id: "CASE-003",
+        title: "Rujukan Layanan Pendampingan",
+        category: "Rujukan Layanan",
+        status: "Dalam Proses",
+        year: "2026",
+        date: "10 Maret 2026",
+        description:
+          "Koordinasi rujukan kepada layanan terkait sesuai kebutuhan pihak yang didampingi.",
+      },
+    ],
   },
   {
-    name: "Layanan SAPA 129 (KemenPPPA)",
-    number: "129 / +62 8111-129-129",
-    description:
-      "Saluran resmi penanganan kekerasan perempuan dan anak pemerintah RI",
-    type: "phone",
+    id: "paralegal-02",
+    name: "Nama Paralegal 2",
+    role: "Paralegal",
+    location: "Lombok Barat",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800",
+    bio: "Berperan dalam edukasi masyarakat, penguatan akses keadilan, dan dukungan pendampingan.",
+    cases: [
+      {
+        id: "CASE-004",
+        title: "Pendampingan Akses Layanan",
+        category: "Pendampingan Masyarakat",
+        status: "Dalam Proses",
+        year: "2026",
+        date: "15 Januari 2026",
+        description:
+          "Koordinasi dengan pihak terkait untuk membantu akses terhadap layanan yang dibutuhkan.",
+      },
+      {
+        id: "CASE-005",
+        title: "Edukasi Hak dan Perlindungan",
+        category: "Edukasi Hukum",
+        status: "Selesai",
+        year: "2026",
+        date: "20 Februari 2026",
+        description:
+          "Pemberian informasi mengenai hak dan mekanisme memperoleh layanan perlindungan.",
+      },
+    ],
   },
   {
-    name: "LPSK (Lembaga Perlindungan Saksi & Korban)",
-    number: "148 / +62 857-7001-0048",
+    id: "paralegal-03",
+    name: "Nama Paralegal 3",
+    role: "Paralegal",
+    location: "Lombok Tengah",
+    avatar:
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800",
+    bio: "Mendukung penguatan pemahaman masyarakat mengenai hak, perlindungan, dan keadilan.",
+    cases: [
+      {
+        id: "CASE-006",
+        title: "Konsultasi Awal Perlindungan Perempuan",
+        category: "Konsultasi Hukum",
+        status: "Berjalan",
+        year: "2026",
+        date: "5 April 2026",
+        description:
+          "Pemberian informasi awal dan identifikasi kebutuhan dukungan yang diperlukan.",
+      },
+    ],
+  },
+  {
+    id: "paralegal-04",
+    name: "Nama Paralegal 4",
+    role: "Paralegal",
+    location: "Lombok Timur",
+    avatar:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800",
+    bio: "Mendukung proses konsultasi awal dan penghubungan masyarakat dengan layanan terkait.",
+    cases: [
+      {
+        id: "CASE-007",
+        title: "Pendampingan dan Rujukan Kasus",
+        category: "Rujukan Layanan",
+        status: "Berjalan",
+        year: "2026",
+        date: "8 Mei 2026",
+        description:
+          "Koordinasi dukungan dan rujukan berdasarkan kebutuhan pihak yang didampingi.",
+      },
+    ],
+  },
+  {
+    id: "paralegal-05",
+    name: "Nama Paralegal 5",
+    role: "Paralegal",
+    location: "Lombok Utara",
+    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800",
+    bio: "Berpartisipasi dalam edukasi hukum dan penguatan kapasitas masyarakat.",
+    cases: [],
+  },
+  {
+    id: "paralegal-06",
+    name: "Nama Paralegal 6",
+    role: "Paralegal",
+    location: "Mataram",
+    avatar:
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800",
+    bio: "Mendukung koordinasi pendampingan dan akses informasi bagi masyarakat.",
+    cases: [],
+  },
+];
+
+export const ROUTES: Record<
+  PageRoute,
+  { path: string; title: string; description: string }
+> = {
+  beranda: {
+    path: "/",
+    title: "Transformasi Perempuan Dotcom | Pemberdayaan Perempuan",
     description:
-      "Permohonan perlindungan fisik, hukum, dan pemulihan medis korban kekerasan seksual",
-    type: "phone",
+      "TPDotcom menyediakan informasi, edukasi, dan sumber daya untuk mendukung pemberdayaan perempuan serta ruang digital yang aman dan inklusif.",
+  },
+
+  tentang_kami: {
+    path: "/tentang-kami",
+    title: "Tentang Kami | Transformasi Perempuan Dotcom",
+    description:
+      "Kenali Transformasi Perempuan Dotcom, organisasi yang berfokus pada pemberdayaan perempuan, edukasi, dan ruang digital yang aman.",
+  },
+
+  volunteer: {
+    path: "/volunteer",
+    title: "Volunteer | Transformasi Perempuan Dotcom",
+    description:
+      "Kenali volunteer TPDotcom dan kontribusi mereka dalam mendukung pemberdayaan perempuan serta masyarakat yang inklusif.",
+  },
+
+  paralegal: {
+    path: "/paralegal",
+    title: "Paralegal | Transformasi Perempuan Dotcom",
+    description:
+      "Kenali tim paralegal TPDotcom, ruang lingkup pendampingan, dan informasi kasus yang ditangani.",
+  },
+
+  paralegal_kasus: {
+    path: "/paralegal/kasus",
+    title: "Kasus Paralegal | Transformasi Perempuan Dotcom",
+    description:
+      "Informasi ringkasan kasus yang ditangani oleh tim paralegal TPDotcom.",
+  },
+
+  program: {
+    path: "/program",
+    title: "Program Pemberdayaan Perempuan | TPDotcom",
+    description:
+      "Jelajahi program dan kegiatan TPDotcom untuk mendukung pemberdayaan perempuan, literasi digital, dan lingkungan yang aman.",
+  },
+
+  detail_program_keamanan_digital: {
+    path: "/program/keamanan-digital",
+    title: "Program Keamanan Digital | TPDotcom",
+    description:
+      "Informasi program TPDotcom untuk meningkatkan pengetahuan dan kemampuan keamanan digital bagi perempuan dan masyarakat.",
+  },
+
+  dokumentasi_kegiatan_program: {
+    path: "/program/dokumentasi-kegiatan",
+    title: "Dokumentasi Kegiatan Program | TPDotcom",
+    description:
+      "Lihat dokumentasi kegiatan dan pelaksanaan program Transformasi Perempuan Dotcom.",
+  },
+
+  isu_pengetahuan: {
+    path: "/informasi-edukasi",
+    title: "Informasi dan Edukasi | Transformasi Perempuan Dotcom",
+    description:
+      "Temukan informasi dan materi edukasi tentang kekerasan berbasis gender online, keamanan digital, teknologi, dan isu perempuan.",
+  },
+
+  kategori_kbgo: {
+    path: "/informasi-edukasi/kbgo",
+    title: "Kekerasan Berbasis Gender Online (KBGO) | TPDotcom",
+    description:
+      "Pelajari bentuk kekerasan berbasis gender online, pencegahan, keamanan digital, dan sumber informasi bagi penyintas.",
+  },
+
+  publikasi: {
+    path: "/publikasi",
+    title: "Publikasi dan Laporan | Transformasi Perempuan Dotcom",
+    description:
+      "Akses publikasi, laporan, panduan, dan sumber pengetahuan dari Transformasi Perempuan Dotcom.",
+  },
+
+  detail_publikasi_laporan_tahunan_2024: {
+    path: "/publikasi/laporan-tahunan-2024",
+    title: "Laporan Tahunan 2024 | TPDotcom",
+    description:
+      "Baca laporan tahunan 2024 Transformasi Perempuan Dotcom untuk mengetahui dokumentasi dan informasi kegiatan organisasi.",
+  },
+
+  detail_panduan_protokol_penghapusan_ncii: {
+    path: "/publikasi/panduan-penghapusan-ncii",
+    title: "Panduan Penghapusan NCII | TPDotcom",
+    description:
+      "Panduan mengenai langkah dan sumber bantuan terkait penghapusan konten intim nonkonsensual atau NCII.",
+  },
+
+  kontak_pengaduan: {
+    path: "/kontak-pengaduan",
+    title: "Kontak dan Pengaduan | Transformasi Perempuan Dotcom",
+    description:
+      "Temukan informasi kontak dan jalur pengaduan TPDotcom. Perhatikan privasi dan keamanan saat mencari bantuan.",
+  },
+
+  umkm: {
+    path: "/umkm",
+    title: "UMKM | Direktori Usaha TPDotcom",
+    description:
+      "Temukan produk dan layanan UMKM binaan TPDotcom. Kenali profil pelaku usaha dan katalog produk lokal.",
+  },
+
+  umkm_katalog: {
+    path: "/umkm/:slug",
+    title: "Katalog UMKM | TPDotcom",
+    description: "Jelajahi katalog produk dan layanan UMKM binaan TPDotcom.",
+  },
+};
+
+export const umkmBusinesses: UmkmBusiness[] = [
+  {
+    id: "keripik-talas",
+    number: "01",
+    name: "Keripik Talas",
+    owner: "Nama Pemilik UMKM 01",
+    location: "Lombok, Nusa Tenggara Barat",
+    category: "Makanan dan Camilan",
+    description:
+      "Usaha olahan pangan lokal yang menghadirkan camilan berbahan dasar talas dengan cita rasa khas dan pilihan varian rasa.",
+    products: [
+      {
+        id: "talas-original",
+        name: "Keripik Talas Original",
+        description: "Keripik talas dengan cita rasa gurih dan renyah.",
+        price: "Rp15.000",
+        category: "Camilan",
+        type: "produk",
+      },
+      {
+        id: "talas-pedas",
+        name: "Keripik Talas Pedas",
+        description: "Keripik talas dengan perpaduan rasa gurih dan pedas.",
+        price: "Rp17.000",
+        category: "Camilan",
+        type: "produk",
+      },
+      {
+        id: "talas-balado",
+        name: "Keripik Talas Balado",
+        description: "Keripik talas dengan bumbu balado.",
+        price: "Rp17.000",
+        category: "Camilan",
+        type: "produk",
+      },
+    ],
+  },
+  {
+    id: "soto",
+    number: "02",
+    name: "Soto Nusantara",
+    owner: "Nama Pemilik UMKM 02",
+    location: "Mataram, Nusa Tenggara Barat",
+    category: "Kuliner",
+    description:
+      "Usaha kuliner yang menyajikan hidangan soto dengan racikan bumbu dan cita rasa khas. Menghadirkan pilihan menu untuk kebutuhan makan sehari-hari.",
+    products: [
+      {
+        id: "soto-ayam",
+        name: "Soto Ayam",
+        description: "Soto ayam dengan kuah gurih dan pelengkap pilihan.",
+        price: "Rp15.000",
+        category: "Menu utama",
+        type: "produk",
+      },
+      {
+        id: "soto-daging",
+        name: "Soto Daging",
+        description: "Sajian soto dengan potongan daging dan kuah berbumbu.",
+        price: "Rp20.000",
+        category: "Menu utama",
+        type: "produk",
+      },
+      {
+        id: "soto-paket",
+        name: "Paket Soto Lengkap",
+        description: "Soto dengan nasi dan pelengkap dalam satu paket.",
+        price: "Rp23.000",
+        category: "Paket",
+        type: "produk",
+      },
+    ],
+  },
+  {
+    id: "english-course",
+    number: "03",
+    name: "English Learning Course",
+    owner: "Nama Pemilik UMKM 03",
+    location: "Lombok, Nusa Tenggara Barat",
+    category: "Pendidikan dan Pelatihan",
+    description:
+      "Layanan pembelajaran bahasa Inggris yang menyediakan kelas untuk berbagai tingkat kemampuan, mulai dari pemula hingga kebutuhan komunikasi profesional.",
+    products: [
+      {
+        id: "english-basic",
+        name: "Basic English",
+        description:
+          "Kelas dasar untuk mengenal kosakata, tata bahasa, dan percakapan sederhana.",
+        price: "Mulai Rp150.000",
+        category: "Kelas",
+        type: "layanan",
+      },
+      {
+        id: "english-speaking",
+        name: "Speaking Class",
+        description:
+          "Kelas praktik percakapan untuk meningkatkan kepercayaan diri berbicara bahasa Inggris.",
+        price: "Mulai Rp200.000",
+        category: "Kelas",
+        type: "layanan",
+      },
+      {
+        id: "english-private",
+        name: "Private English Course",
+        description:
+          "Pembelajaran personal dengan materi yang disesuaikan kebutuhan peserta.",
+        price: "Hubungi pemilik",
+        category: "Kelas privat",
+        type: "layanan",
+      },
+    ],
   },
 ];

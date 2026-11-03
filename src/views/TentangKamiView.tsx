@@ -54,21 +54,44 @@ const missions = [
 
 const memberGroups = [
   {
+    level: 5,
+    title: "Direktur Pelaksana",
+    description:
+      "Pimpinan pelaksana operasional yang bertanggung jawab mengarahkan, mengelola, dan memastikan seluruh kegiatan organisasi berjalan sesuai tujuan dan rencana kerja.",
+    size: "medium" as const,
+  },
+  {
+    level: 6,
+    title: "Koordinator",
+    description:
+      "Pelaksana operasional yang mengoordinasikan kebutuhan teknis, administrasi, keuangan, dan pelaksanaan program organisasi.",
+    size: "medium" as const,
+  },
+  {
     level: 1,
     title: "Pengawas",
-    description: "Menjalankan fungsi pengawasan organisasi.",
+    description:
+      "Menjalankan fungsi pengawasan dan memastikan organisasi berjalan sesuai visi, misi, serta prinsip akuntabilitas.",
     size: "small" as const,
   },
   {
     level: 2,
     title: "Ketua",
-    description: "Memimpin arah dan koordinasi organisasi.",
+    description: "Memimpin arah, koordinasi, dan pelaksanaan organisasi.",
     size: "leader" as const,
   },
   {
     level: 3,
     title: "Pengurus Inti",
-    description: "Menggerakkan tata kelola dan pelaksanaan kerja organisasi.",
+    description:
+      "Mengelola koordinasi, administrasi, keuangan, dan tata kelola organisasi.",
+    size: "medium" as const,
+  },
+  {
+    level: 4,
+    title: "Anggota Organisasi",
+    description:
+      "Mendukung pelaksanaan program, kegiatan, dan berbagai inisiatif pemberdayaan perempuan serta masyarakat.",
     size: "medium" as const,
   },
 ];
@@ -134,7 +157,8 @@ function MemberGroup({
 
   if (members.length === 0) return null;
 
-  const isLeader = size === "leader";
+  const isSinglePosition = level === 1 || level === 2 || level === 5;
+  const isDoubleItems = level === 4 || level === 6;
 
   return (
     <section className="py-9 sm:py-12">
@@ -143,10 +167,12 @@ function MemberGroup({
           <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800">
             Struktur organisasi
           </p>
+
           <h3 className="font-editorial text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
             {title}
           </h3>
         </div>
+
         <p className="max-w-sm text-sm leading-6 text-slate-500">
           {description}
         </p>
@@ -154,22 +180,22 @@ function MemberGroup({
 
       <div
         className={
-          isLeader
+          isSinglePosition
             ? "flex justify-center"
-            : level === 3
-              ? "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              : "flex flex-wrap justify-center gap-5"
+            : isDoubleItems
+              ? "flex flex-wrap justify-center gap-4"
+              : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         }
       >
         {members.map((member) => (
           <div
             key={`${member.level}-${member.name}`}
             className={
-              isLeader
+              isSinglePosition
                 ? "w-full max-w-[340px]"
-                : level === 3
-                  ? "min-w-0"
-                  : "w-full max-w-[280px]"
+                : isDoubleItems
+                  ? "w-full max-w-[340px]"
+                  : "min-w-0"
             }
           >
             <MemberCard member={member} size={size} />
@@ -184,9 +210,6 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
   onNavigate,
   onOpenDonation,
 }) => {
-  const anggota = TEAM_MEMBERS.filter((member) => member.level === 4);
-  const staf = TEAM_MEMBERS.filter((member) => member.level === 5);
-
   return (
     <main className="pb-20 text-slate-900">
       {/* INTRODUCTION */}
@@ -243,6 +266,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
             <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Fokus kerja
             </span>
+
             <div className="flex flex-wrap gap-x-3 gap-y-2 text-xs font-medium text-slate-700 sm:gap-x-5 sm:text-sm">
               <span>Pemberdayaan perempuan</span>
               <span className="text-stone-400">/</span>
@@ -296,6 +320,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                   <span className="pt-0.5 font-editorial text-lg text-blue-800">
                     0{index + 1}
                   </span>
+
                   <p className="max-w-2xl text-sm leading-7 text-slate-600 transition-colors group-hover:text-slate-950 sm:text-base">
                     {mission}
                   </p>
@@ -314,11 +339,13 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800 sm:text-xs">
                 Prinsip kerja
               </p>
+
               <h2 className="max-w-xl font-editorial text-3xl font-semibold tracking-tight sm:text-4xl">
                 Bukan hanya apa yang kami kerjakan, tetapi bagaimana kami
                 melakukannya.
               </h2>
             </div>
+
             <p className="max-w-lg text-sm leading-7 text-slate-600 lg:justify-self-end">
               Cara bekerja sama pentingnya dengan tujuan yang ingin dicapai.
               Setiap kegiatan perlu menghormati martabat, pilihan, dan keragaman
@@ -339,6 +366,7 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
                     <span className="font-editorial text-sm text-blue-800">
                       {value.number}
                     </span>
+
                     <Icon
                       aria-hidden="true"
                       className="h-5 w-5 text-slate-500"
@@ -367,15 +395,17 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
             <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800 sm:text-xs">
               Orang-orang di balik kerja kami
             </p>
+
             <h2 className="font-editorial text-3xl font-semibold tracking-tight sm:text-4xl">
               Struktur kepengurusan TPDotcom
             </h2>
           </div>
 
           <p className="max-w-xl text-sm leading-7 text-slate-600 lg:justify-self-end">
-            Organisasi berjalan melalui kerja bersama, pembagian peran, dan
-            kontribusi orang-orang yang mendukung pemberdayaan perempuan serta
-            penguatan kapasitas masyarakat.
+            TPDotcom dijalankan melalui kerja bersama antara staf pelaksana,
+            anggota, pengurus inti, ketua, dan pengawas. Setiap bagian memiliki
+            peran dan tanggung jawab untuk mendukung keberlangsungan organisasi
+            serta pencapaian tujuan bersama.
           </p>
         </div>
 
@@ -390,69 +420,6 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
             />
           ))}
         </div>
-
-        {(anggota.length > 0 || staf.length > 0) && (
-          <div className="mt-3 grid gap-12 border-t border-stone-300 lg:grid-cols-2 lg:gap-10">
-            {anggota.length > 0 && (
-              <section className="pt-9 sm:pt-12">
-                <div className="mb-6 border-b border-stone-300 pb-5">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800">
-                    Berkontribusi bersama
-                  </p>
-                  <h3 className="font-editorial text-2xl font-semibold">
-                    Anggota organisasi
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Mendukung pelaksanaan program dan kegiatan TPDotcom.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                  {anggota.map((member) => (
-                    <MemberCard
-                      key={`${member.level}-${member.name}`}
-                      member={member}
-                      size="compact"
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {staf.length > 0 && (
-              <section
-                className={`pt-9 sm:pt-12 ${
-                  anggota.length > 0
-                    ? "lg:border-l lg:border-stone-300 lg:pl-8"
-                    : ""
-                }`}
-              >
-                <div className="mb-6 border-b border-stone-300 pb-5">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800">
-                    Pelaksanaan program
-                  </p>
-                  <h3 className="font-editorial text-2xl font-semibold">
-                    Staf dan koordinator
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Mendukung koordinasi program, kebutuhan teknis, dan
-                    operasional organisasi.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-                  {staf.map((member) => (
-                    <MemberCard
-                      key={`${member.level}-${member.name}`}
-                      member={member}
-                      size="compact"
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
-        )}
       </section>
 
       {/* ACCOUNTABILITY */}
@@ -537,9 +504,11 @@ export const TentangKamiView: React.FC<TentangKamiViewProps> = ({
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800 sm:text-xs">
                 Bergerak bersama
               </p>
+
               <h2 className="font-editorial text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
                 Perubahan yang berarti membutuhkan partisipasi banyak pihak.
               </h2>
+
               <p className="mt-3 max-w-xl text-sm leading-7 text-slate-600">
                 Kenali program kami, bagikan pengetahuan, atau dukung inisiatif
                 pemberdayaan yang kami jalankan.

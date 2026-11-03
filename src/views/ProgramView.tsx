@@ -9,11 +9,12 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import React from "react";
-import { PROGRAM_ACTIVITIES, PROGRAMS } from "../data/content";
+import { PROGRAM_ACTIVITIES, PROGRAMS, umkmBusinesses } from "../data/content";
 import { PageRoute } from "../types";
 
 interface ProgramViewProps {
   onNavigate: (route: PageRoute) => void;
+  onViewUmkmCatalog: (businessId: string) => void;
 }
 
 const programDetails: Record<
@@ -74,8 +75,12 @@ const serviceFlow = [
   },
 ];
 
-export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
+export const ProgramView: React.FC<ProgramViewProps> = ({
+  onNavigate,
+  onViewUmkmCatalog,
+}) => {
   const recentActivities = PROGRAM_ACTIVITIES.slice(0, 3);
+  const featuredBusinesses = umkmBusinesses.slice(0, 3);
 
   return (
     <main className="pb-20 text-slate-900">
@@ -122,6 +127,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
             <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">
               Area kerja
             </span>
+
             {[
               "Keamanan digital",
               "Advokasi hukum",
@@ -174,7 +180,6 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
                 key={prog.id}
                 className="grid gap-8 py-9 sm:py-12 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-14 lg:py-14"
               >
-                {/* Main content */}
                 <div className="min-w-0">
                   <div className="mb-5 flex flex-wrap items-center gap-x-3 gap-y-2">
                     <span className="font-editorial text-sm text-blue-800">
@@ -252,7 +257,7 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
                   </div>
                 </div>
 
-                {/* Editorial side panel */}
+                {/* EDITORIAL SIDE PANEL */}
                 <aside className="flex flex-col border-t border-stone-300 pt-5 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-1">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -372,6 +377,110 @@ export const ProgramView: React.FC<ProgramViewProps> = ({ onNavigate }) => {
           </div>
         </div>
       </section>
+
+      {/* UMKM BINAAN */}
+      {featuredBusinesses.length > 0 && (
+        <section className="border-b border-stone-300 bg-white">
+          <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:px-12">
+            <div className="mb-10 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <div className="mb-5 flex items-center gap-3">
+                  <span className="h-px w-8 bg-blue-800" />
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-800 sm:text-xs">
+                    Pemberdayaan ekonomi
+                  </p>
+                </div>
+
+                <h2 className="max-w-2xl font-editorial text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
+                  Mengenal produk dan usaha binaan TPDotcom.
+                </h2>
+
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
+                  Bagian dari upaya pemberdayaan ekonomi masyarakat melalui
+                  pengenalan usaha, produk, dan layanan yang dikembangkan oleh
+                  UMKM binaan TPDotcom.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onNavigate("umkm")}
+                className="group inline-flex shrink-0 items-center gap-2 self-start border-b border-blue-800 pb-1.5 text-sm font-semibold text-blue-800 transition-colors hover:text-blue-950 sm:self-auto"
+              >
+                Lihat semua UMKM
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredBusinesses.map((business, index) => (
+                <article
+                  key={business.id}
+                  className="group overflow-hidden border border-stone-200 bg-[#f8f7f3] transition-all duration-300 hover:-translate-y-1 hover:border-stone-300 hover:shadow-lg"
+                >
+                  <div className="relative aspect-[5/4] overflow-hidden bg-stone-200">
+                    {business.coverImage ? (
+                      <img
+                        src={business.coverImage}
+                        alt={business.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-stone-400">
+                        <span className="text-sm">Foto usaha</span>
+                      </div>
+                    )}
+
+                    <span className="absolute left-4 top-4 bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-blue-800">
+                      UMKM Binaan
+                    </span>
+                  </div>
+
+                  <div className="p-6">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-blue-800">
+                        {business.category}
+                      </span>
+
+                      <span className="font-editorial text-sm text-stone-400">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <h3 className="font-editorial text-xl font-semibold leading-snug text-slate-950">
+                      {business.name}
+                    </h3>
+
+                    <p className="mt-2 text-xs text-slate-500">
+                      Oleh {business.owner}
+                    </p>
+
+                    <p className="mt-4 line-clamp-3 min-h-[4.5rem] text-sm leading-6 text-slate-600">
+                      {business.description}
+                    </p>
+
+                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-stone-200 pt-4">
+                      <span className="text-xs text-slate-500">
+                        {business.products.length} produk/layanan
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => onViewUmkmCatalog(business.id)}
+                        className="group/button inline-flex items-center gap-2 text-sm font-semibold text-blue-800 transition-colors hover:text-blue-950"
+                      >
+                        Lihat katalog
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SERVICE FLOW */}
       <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24 lg:px-12">

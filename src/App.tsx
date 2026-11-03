@@ -18,78 +18,12 @@ import { KontakPengaduanView } from "./views/KontakPengaduanView";
 import { ProgramView } from "./views/ProgramView";
 import { PublikasiView } from "./views/PublikasiView";
 import { TentangKamiView } from "./views/TentangKamiView";
-
-const ROUTES: Record<
-  PageRoute,
-  { path: string; title: string; description: string }
-> = {
-  beranda: {
-    path: "/",
-    title: "Transformasi Perempuan Dotcom | Pemberdayaan Perempuan",
-    description:
-      "TPDotcom menyediakan informasi, edukasi, dan sumber daya untuk mendukung pemberdayaan perempuan serta ruang digital yang aman dan inklusif.",
-  },
-  tentang_kami: {
-    path: "/tentang-kami",
-    title: "Tentang Kami | Transformasi Perempuan Dotcom",
-    description:
-      "Kenali Transformasi Perempuan Dotcom, organisasi yang berfokus pada pemberdayaan perempuan, edukasi, dan ruang digital yang aman.",
-  },
-  program: {
-    path: "/program",
-    title: "Program Pemberdayaan Perempuan | TPDotcom",
-    description:
-      "Jelajahi program dan kegiatan TPDotcom untuk mendukung pemberdayaan perempuan, literasi digital, dan lingkungan yang aman.",
-  },
-  detail_program_keamanan_digital: {
-    path: "/program/keamanan-digital",
-    title: "Program Keamanan Digital | TPDotcom",
-    description:
-      "Informasi program TPDotcom untuk meningkatkan pengetahuan dan kemampuan keamanan digital bagi perempuan dan masyarakat.",
-  },
-  dokumentasi_kegiatan_program: {
-    path: "/program/dokumentasi-kegiatan",
-    title: "Dokumentasi Kegiatan Program | TPDotcom",
-    description:
-      "Lihat dokumentasi kegiatan dan pelaksanaan program Transformasi Perempuan Dotcom.",
-  },
-  isu_pengetahuan: {
-    path: "/informasi-edukasi",
-    title: "Informasi dan Edukasi | Transformasi Perempuan Dotcom",
-    description:
-      "Temukan informasi dan materi edukasi tentang kekerasan berbasis gender online, keamanan digital, teknologi, dan isu perempuan.",
-  },
-  kategori_kbgo: {
-    path: "/informasi-edukasi/kbgo",
-    title: "Kekerasan Berbasis Gender Online (KBGO) | TPDotcom",
-    description:
-      "Pelajari bentuk kekerasan berbasis gender online, pencegahan, keamanan digital, dan sumber informasi bagi penyintas.",
-  },
-  publikasi: {
-    path: "/publikasi",
-    title: "Publikasi dan Laporan | Transformasi Perempuan Dotcom",
-    description:
-      "Akses publikasi, laporan, panduan, dan sumber pengetahuan dari Transformasi Perempuan Dotcom.",
-  },
-  detail_publikasi_laporan_tahunan_2024: {
-    path: "/publikasi/laporan-tahunan-2024",
-    title: "Laporan Tahunan 2024 | TPDotcom",
-    description:
-      "Baca laporan tahunan 2024 Transformasi Perempuan Dotcom untuk mengetahui dokumentasi dan informasi kegiatan organisasi.",
-  },
-  detail_panduan_protokol_penghapusan_ncii: {
-    path: "/publikasi/panduan-penghapusan-ncii",
-    title: "Panduan Penghapusan NCII | TPDotcom",
-    description:
-      "Panduan mengenai langkah dan sumber bantuan terkait penghapusan konten intim nonkonsensual atau NCII.",
-  },
-  kontak_pengaduan: {
-    path: "/kontak-pengaduan",
-    title: "Kontak dan Pengaduan | Transformasi Perempuan Dotcom",
-    description:
-      "Temukan informasi kontak dan jalur pengaduan TPDotcom. Perhatikan privasi dan keamanan saat mencari bantuan.",
-  },
-};
+import { VolunteerView } from "./views/VolunteerView";
+import { ParalegalView } from "./views/ParalegalView";
+import { ParalegalCasesView } from "./views/ParalegalCasesView";
+import UmkmView from "./views/UmkmView";
+import { ROUTES } from "./data/content";
+import UmkmCatalogView from "./views/UmkmCatalogView";
 
 const PATH_TO_ROUTE = Object.fromEntries(
   Object.entries(ROUTES).map(([route, config]) => [
@@ -100,14 +34,18 @@ const PATH_TO_ROUTE = Object.fromEntries(
 
 const VALID_ROUTES = Object.keys(ROUTES) as PageRoute[];
 
+function getPathname() {
+  return window.location.pathname.replace(/\/+$/, "") || "/";
+}
+
 function getInitialRoute(): PageRoute {
-  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  const pathname = getPathname();
   const matchedRoute = PATH_TO_ROUTE[pathname];
 
   if (matchedRoute) return matchedRoute;
 
-  // Kompatibilitas dengan URL hash dan query lama.
   const params = new URLSearchParams(window.location.search);
+
   const legacyRoute =
     params.get("page") ||
     params.get("route") ||
@@ -116,33 +54,70 @@ function getInitialRoute(): PageRoute {
   if (VALID_ROUTES.includes(legacyRoute as PageRoute)) {
     const route = legacyRoute as PageRoute;
 
-    // Pindahkan URL lama ke format URL baru.
     window.history.replaceState(null, "", ROUTES[route].path);
 
     return route;
   }
 
+  if (pathname.startsWith("/umkm/")) {
+    return "umkm_katalog";
+  }
+
   return "beranda";
+}
+
+function getInitialParalegalId(): string | null {
+  if (getPathname() !== "/paralegal/kasus") return null;
+
+  return new URLSearchParams(window.location.search).get("paralegal");
 }
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>(getInitialRoute);
+
+  const [selectedParalegalId, setSelectedParalegalId] = useState<string | null>(
+    getInitialParalegalId,
+  );
+
+  const [selectedUmkmId, setSelectedUmkmId] = useState<string | null>(() => {
+    const pathname = getPathname();
+
+    if (pathname.startsWith("/umkm/")) {
+      return pathname.split("/")[2] || null;
+    }
+
+    return null;
+  });
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isDonationOpen, setIsDonationOpen] = useState(false);
 
   useEffect(() => {
     const handlePopState = () => {
-      const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+      const pathname = getPathname();
       const route = PATH_TO_ROUTE[pathname];
 
-      if (route) {
-        setCurrentRoute(route);
+      setCurrentRoute(route || "beranda");
+
+      if (pathname.startsWith("/umkm/")) {
+        setCurrentRoute("umkm_katalog");
+        setSelectedUmkmId(pathname.split("/")[2] || null);
       } else {
-        setCurrentRoute("beranda");
+        setSelectedUmkmId(null);
       }
 
-      window.scrollTo({ top: 0, behavior: "auto" });
+      if (route === "paralegal_kasus") {
+        setSelectedParalegalId(
+          new URLSearchParams(window.location.search).get("paralegal"),
+        );
+      } else {
+        setSelectedParalegalId(null);
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "auto",
+      });
     };
 
     window.addEventListener("popstate", handlePopState);
@@ -158,13 +133,55 @@ export default function App() {
     if (!config) return;
 
     setCurrentRoute(route);
+    setSelectedParalegalId(null);
     setIsSearchOpen(false);
 
     if (window.location.pathname !== config.path) {
       window.history.pushState(null, "", config.path);
+    } else if (window.location.search) {
+      window.history.pushState(null, "", config.path);
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleViewUmkmCatalog = (businessId: string) => {
+    const url = `/umkm/${businessId}`;
+
+    setSelectedUmkmId(businessId);
+    setCurrentRoute("umkm_katalog");
+    setIsSearchOpen(false);
+
+    window.history.pushState(null, "", url);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleViewParalegalCases = (paralegalId: string) => {
+    const url = `${ROUTES.paralegal_kasus.path}?paralegal=${encodeURIComponent(
+      paralegalId,
+    )}`;
+
+    setSelectedParalegalId(paralegalId);
+    setCurrentRoute("paralegal_kasus");
+    setIsSearchOpen(false);
+
+    window.history.pushState(null, "", url);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleBackToParalegals = () => {
+    handleNavigate("paralegal");
   };
 
   const handleQuickExit = () => {
@@ -174,7 +191,7 @@ export default function App() {
   const seo = ROUTES[currentRoute];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafaf8] text-slate-800">
+    <div className="flex min-h-screen flex-col bg-[#fafaf8] text-slate-800">
       <SEO title={seo.title} description={seo.description} path={seo.path} />
 
       <Header
@@ -199,8 +216,24 @@ export default function App() {
           />
         )}
 
+        {currentRoute === "volunteer" && <VolunteerView />}
+
+        {currentRoute === "paralegal" && (
+          <ParalegalView onViewCases={handleViewParalegalCases} />
+        )}
+
+        {currentRoute === "paralegal_kasus" && (
+          <ParalegalCasesView
+            paralegalId={selectedParalegalId}
+            onBack={handleBackToParalegals}
+          />
+        )}
+
         {currentRoute === "program" && (
-          <ProgramView onNavigate={handleNavigate} />
+          <ProgramView
+            onNavigate={handleNavigate}
+            onViewUmkmCatalog={handleViewUmkmCatalog}
+          />
         )}
 
         {currentRoute === "detail_program_keamanan_digital" && (
@@ -233,6 +266,17 @@ export default function App() {
 
         {currentRoute === "kontak_pengaduan" && (
           <KontakPengaduanView onNavigate={handleNavigate} />
+        )}
+
+        {currentRoute === "umkm" && (
+          <UmkmView onViewCatalog={handleViewUmkmCatalog} />
+        )}
+
+        {currentRoute === "umkm_katalog" && (
+          <UmkmCatalogView
+            businessId={selectedUmkmId}
+            onBack={() => handleNavigate("umkm")}
+          />
         )}
       </main>
 

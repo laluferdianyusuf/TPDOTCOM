@@ -1,50 +1,46 @@
 import {
   ArrowRight,
-  Check,
+  CheckCircle2,
   ChevronDown,
   LockKeyhole,
+  Mail,
   MessageCircle,
   Phone,
   ShieldCheck,
   TriangleAlert,
 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import React, { useState } from "react";
 import { EMERGENCY_HOTLINES, KBGO_CATEGORIES } from "../data/content";
-import { CaseReportForm, PageRoute } from "../types";
+import { PageRoute } from "../types";
 
 interface KontakPengaduanViewProps {
   onNavigate: (route: PageRoute) => void;
 }
 
-const initialFormData: CaseReportForm = {
-  fullName: "",
-  aliasName: "",
-  isAnonymous: true,
-  safeContactMethod: "whatsapp",
-  contactValue: "",
-  victimAgeGroup: "18-24 tahun",
-  victimLocation: "",
-  category: "Penyebaran Konten Intim Non-Konsensual (NCII)",
-  platforms: [],
-  incidentDate: "",
-  urgencyLevel: "konsultasi",
-  neededServices: [],
-  chronology: "",
-  hasEvidence: false,
-  consentAgreed: false,
-};
+interface ContactFormData {
+  name: string;
+  contactMethod: "whatsapp" | "signal" | "telegram" | "email";
+  contactValue: string;
+  category: string;
+  urgency: "darurat" | "segera" | "konsultasi";
+  neededServices: string[];
+  message: string;
+  consent: boolean;
+}
 
-const platforms = [
-  "WhatsApp",
-  "Telegram",
-  "Instagram",
-  "Facebook",
-  "TikTok",
-  "X",
-  "Situs web atau forum",
-  "Aplikasi kencan",
-  "Lainnya",
-];
+type SubmitStatus = "idle" | "loading" | "success" | "error";
+
+const initialFormData: ContactFormData = {
+  name: "",
+  contactMethod: "whatsapp",
+  contactValue: "",
+  category: "",
+  urgency: "konsultasi",
+  neededServices: [],
+  message: "",
+  consent: false,
+};
 
 const requestedServices = [
   "Informasi penghapusan konten",
@@ -56,33 +52,28 @@ const requestedServices = [
 ];
 
 const fieldClass =
-  "mt-2 w-full rounded-none border border-stone-300 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-colors placeholder:text-stone-400 focus:border-blue-800 focus:ring-1 focus:ring-blue-800";
+  "mt-2 w-full rounded-none border border-stone-300 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none transition placeholder:text-stone-400 focus:border-blue-800 focus:ring-1 focus:ring-blue-800";
 
-const labelClass = "block text-sm font-medium text-slate-800";
+const labelClass = "block text-sm font-semibold text-slate-800";
+
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
   onNavigate,
 }) => {
-  const [formData, setFormData] = useState<CaseReportForm>(initialFormData);
+  const [formData, setFormData] = useState<ContactFormData>(initialFormData);
 
-  const [showDemoNotice, setShowDemoNotice] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
 
-  const updateForm = <K extends keyof CaseReportForm>(
+  const updateForm = <K extends keyof ContactFormData>(
     field: K,
-    value: CaseReportForm[K],
+    value: ContactFormData[K],
   ) => {
     setFormData((previous) => ({
       ...previous,
       [field]: value,
-    }));
-  };
-
-  const togglePlatform = (platform: string) => {
-    setFormData((previous) => ({
-      ...previous,
-      platforms: previous.platforms.includes(platform)
-        ? previous.platforms.filter((item) => item !== platform)
-        : [...previous.platforms, platform],
     }));
   };
 
@@ -95,32 +86,63 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!formData.consentAgreed) {
+    if (!formData.consent) return;
+
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      setSubmitStatus("error");
       return;
     }
 
-    // Form ini belum terhubung ke backend.
-    // Jangan membuat nomor tiket atau mengklaim laporan telah diterima.
-    setShowDemoNotice(true);
+    setSubmitStatus("loading");
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          sender_name: formData.name,
+          contact_method: formData.contactMethod,
+          contact_value: formData.contactValue,
+          category: formData.category || "Belum ditentukan",
+          urgency: formData.urgency,
+          needed_services:
+            formData.neededServices.length > 0
+              ? formData.neededServices.join(", ")
+              : "Belum ditentukan",
+          message: formData.message || "Tidak ada pesan tambahan.",
+          consent: "Ya, pelapor menyetujui pengiriman permintaan konsultasi.",
+          to_email: "transformasiperempuan@gmail.com",
+        },
+        {
+          publicKey: EMAILJS_PUBLIC_KEY,
+        },
+      );
+
+      setSubmitStatus("success");
+      setFormData(initialFormData);
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      setSubmitStatus("error");
+    }
   };
 
   const handleReset = () => {
     setFormData(initialFormData);
-    setShowDemoNotice(false);
+    setSubmitStatus("idle");
   };
 
   return (
     <main className="bg-[#f8f7f3] pb-20 text-slate-900">
-      {/* Intro */}
+      {/* HERO */}
       <section className="border-b border-stone-200">
-        <div className="mx-auto max-w-7xl px-5 pb-12 pt-9 sm:px-8 sm:pb-16 sm:pt-12">
+        <div className="mx-auto max-w-7xl px-5 pb-14 pt-10 sm:px-8 sm:pb-20 sm:pt-14 lg:px-12">
           <button
             type="button"
             onClick={() => onNavigate("program")}
-            className="mb-10 inline-flex items-center gap-2 text-sm text-stone-600 transition-colors hover:text-blue-800"
+            className="mb-10 inline-flex items-center gap-2 text-sm text-stone-600 transition hover:text-blue-800"
           >
             <ArrowRight className="h-4 w-4 rotate-180" />
             Kembali ke program
@@ -128,275 +150,235 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
 
           <div className="grid gap-10 lg:grid-cols-[1fr_300px] lg:items-end">
             <div>
-              <div className="mb-5 flex items-center gap-3">
+              <div className="mb-6 flex items-center gap-3">
                 <span className="h-px w-8 bg-blue-800" />
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-800">
                   Kontak dan pengaduan
                 </p>
               </div>
 
-              <h1 className="max-w-3xl font-editorial text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-                Anda tidak harus menghadapi ini sendirian.
+              <h1 className="max-w-3xl font-editorial text-4xl font-bold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+                Anda berhak mendapatkan informasi dan dukungan.
               </h1>
 
-              <p className="mt-6 max-w-2xl text-base leading-7 text-stone-600 sm:text-lg sm:leading-8">
-                Halaman ini membantu Anda mengenali pilihan untuk mencari
-                informasi, dukungan, dan pendampingan terkait kekerasan berbasis
-                gender online (KBGO). Anda tidak perlu menceritakan semuanya
-                sekaligus.
+              <p className="mt-6 max-w-2xl text-base leading-8 text-stone-600 sm:text-lg">
+                TPDotcom menyediakan ruang komunikasi awal bagi masyarakat yang
+                membutuhkan informasi, konsultasi, atau dukungan terkait
+                kekerasan berbasis gender online (KBGO). Anda dapat menyampaikan
+                kebutuhan tanpa harus menceritakan seluruh pengalaman sekaligus.
               </p>
             </div>
 
             <aside className="border-l-2 border-blue-800 py-1 pl-5">
-              <ShieldCheck className="mb-4 h-6 w-6 text-blue-800" />
-              <p className="font-semibold text-slate-900">
-                Anda berhak menentukan langkah berikutnya.
-              </p>
+              <ShieldCheck className="mb-4 h-7 w-7 text-blue-800" />
+              <h2 className="font-semibold text-slate-900">
+                Kendali tetap ada pada Anda.
+              </h2>
               <p className="mt-2 text-sm leading-6 text-stone-600">
-                Bagikan hanya informasi yang diperlukan dan pertimbangkan
-                keamanan perangkat sebelum menghubungi pihak lain.
+                Sampaikan informasi secukupnya. Anda berhak menentukan informasi
+                yang ingin dibagikan dan langkah yang ingin diambil.
               </p>
             </aside>
           </div>
         </div>
       </section>
 
-      {/* Important status notice */}
+      {/* PRIVACY NOTICE */}
       <section className="mx-auto max-w-7xl px-5 pt-8 sm:px-8">
-        <div className="flex items-start gap-4 border border-amber-300 bg-amber-50 px-4 py-4 sm:px-5">
-          <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0 text-amber-800" />
+        <div className="flex items-start gap-4 border border-amber-300 bg-amber-50 px-4 py-5 sm:px-5">
+          <LockKeyhole className="mt-0.5 h-5 w-5 shrink-0 text-amber-800" />
           <div>
-            <p className="text-sm font-semibold text-amber-950">
-              Informasi penting tentang formulir
-            </p>
+            <h2 className="text-sm font-bold text-amber-950">
+              Perhatikan keamanan informasi Anda
+            </h2>
             <p className="mt-1 text-sm leading-6 text-amber-950/80">
-              Formulir pada versi website ini masih berupa prototipe dan belum
-              terhubung ke sistem penerimaan pengaduan. Jangan masukkan nama
-              asli, nomor pribadi, kronologi sensitif, atau informasi yang dapat
-              mengidentifikasi Anda. Menekan tombol kirim tidak akan mengirimkan
-              laporan kepada TPDotcom.
+              Formulir ini digunakan untuk mengirim permintaan konsultasi awal
+              melalui email. Jangan menuliskan kata sandi, alamat lengkap,
+              detail intim, kronologi sensitif, atau mengirim bukti berupa foto
+              maupun video intim. Email bukan kanal khusus untuk penyimpanan
+              bukti atau informasi kasus yang sangat sensitif.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Main layout */}
+      {/* MAIN CONTENT */}
       <section className="mx-auto max-w-7xl px-5 pt-10 sm:px-8 sm:pt-14">
         <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-16">
-          {/* Form */}
+          {/* FORM */}
           <div>
-            {showDemoNotice ? (
+            {submitStatus === "success" ? (
               <div
                 role="status"
-                className="border-y border-stone-300 py-10 sm:py-14"
+                className="border-y border-stone-300 py-12 sm:py-16"
               >
-                <div className="mb-6 flex h-12 w-12 items-center justify-center border border-amber-300 bg-amber-50">
-                  <TriangleAlert className="h-6 w-6 text-amber-800" />
+                <div className="mb-6 flex h-14 w-14 items-center justify-center bg-emerald-50">
+                  <CheckCircle2 className="h-7 w-7 text-emerald-700" />
                 </div>
 
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-800">
-                  Prototipe formulir
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                  Pengiriman berhasil
                 </p>
 
-                <h2 className="mt-3 max-w-xl font-editorial text-2xl font-bold leading-snug sm:text-3xl">
-                  Laporan belum dikirim.
+                <h2 className="mt-3 max-w-xl font-editorial text-3xl font-bold leading-snug text-slate-950">
+                  Permintaan konsultasi berhasil dikirim.
                 </h2>
 
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-600 sm:text-base">
-                  Formulir ini belum memiliki sistem backend untuk menerima,
-                  menyimpan, atau meneruskan pengaduan. Tidak ada nomor tiket
-                  yang dibuat karena laporan belum tercatat sebagai kasus.
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-600">
+                  Terima kasih telah menghubungi TPDotcom. Permintaan konsultasi
+                  awal Anda telah diteruskan melalui email. Tim TPDotcom dapat
+                  menindaklanjuti melalui kontak yang Anda cantumkan sesuai
+                  kapasitas layanan yang tersedia.
                 </p>
 
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-600">
-                  Jika Anda membutuhkan bantuan, gunakan kanal resmi yang telah
-                  diverifikasi oleh organisasi atau layanan bantuan terkait.
-                  Pastikan nomor dan jam operasionalnya benar sebelum membagikan
-                  informasi pribadi.
+                <p className="mt-4 text-sm leading-6 text-stone-500">
+                  Pengiriman email bukan jaminan bahwa pendampingan langsung
+                  tersedia. Jika Anda berada dalam bahaya langsung, jangan
+                  menunggu balasan email untuk mencari pertolongan darurat.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="border border-stone-300 px-5 py-3 text-sm font-semibold transition-colors hover:border-blue-800 hover:text-blue-800"
+                    className="border border-stone-300 px-5 py-3 text-sm font-semibold transition hover:border-blue-800 hover:text-blue-800"
                   >
-                    Kembali ke formulir
+                    Kirim permintaan lain
                   </button>
 
                   <button
                     type="button"
                     onClick={() => onNavigate("program")}
-                    className="inline-flex items-center gap-2 bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
+                    className="inline-flex items-center gap-2 bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-900"
                   >
-                    Lihat program TPDotcom
+                    Kembali ke program
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div className="border-b border-stone-300 pb-6">
+                <div className="border-b border-stone-300 pb-7">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-800">
-                    Formulir prototipe
+                    Formulir konsultasi
                   </p>
-                  <h2 className="mt-3 font-editorial text-2xl font-bold sm:text-3xl">
-                    Ceritakan kebutuhan Anda
+
+                  <h2 className="mt-3 font-editorial text-2xl font-bold text-slate-950 sm:text-3xl">
+                    Sampaikan kebutuhan Anda
                   </h2>
-                  <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-600">
-                    Gunakan data contoh saat menguji formulir ini. Kolom di
-                    bawah belum mengirim data ke tim pendamping.
+
+                  <p className="mt-3 text-sm leading-7 text-stone-600">
+                    Isi informasi berikut agar tim TPDotcom dapat memahami
+                    kebutuhan awal dan mengetahui cara menghubungi Anda.
                   </p>
                 </div>
 
-                {/* Section 1 */}
+                {/* IDENTITAS */}
                 <fieldset className="border-b border-stone-200 py-8">
-                  <legend className="mb-6 text-sm font-semibold text-slate-900">
+                  <legend className="mb-6 text-sm font-bold text-slate-900">
                     <span className="mr-3 text-stone-400">01</span>
-                    Identitas dan kontak
+                    Informasi kontak
                   </legend>
 
-                  <label className="flex items-start gap-3 border border-stone-300 bg-white px-4 py-4">
-                    <input
-                      type="checkbox"
-                      checked={formData.isAnonymous}
-                      onChange={(event) =>
-                        updateForm("isAnonymous", event.target.checked)
-                      }
-                      className="mt-1 h-4 w-4 accent-blue-800"
-                    />
-                    <span>
-                      <span className="block text-sm font-medium text-slate-900">
-                        Saya ingin menggunakan nama samaran
-                      </span>
-                      <span className="mt-1 block text-xs leading-5 text-stone-500">
-                        Pilihan ini hanya mengubah tampilan formulir. Ini bukan
-                        jaminan anonimitas atau kerahasiaan data.
-                      </span>
-                    </span>
-                  </label>
-
-                  <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                  <div className="space-y-5">
                     <div>
-                      <label className={labelClass}>
-                        {formData.isAnonymous ? "Nama samaran" : "Nama"}
+                      <label htmlFor="contact-name" className={labelClass}>
+                        Nama atau nama samaran
                       </label>
                       <input
+                        id="contact-name"
                         type="text"
+                        required
+                        maxLength={100}
                         autoComplete="off"
-                        value={
-                          formData.isAnonymous
-                            ? formData.aliasName
-                            : formData.fullName
-                        }
+                        value={formData.name}
                         onChange={(event) =>
-                          updateForm(
-                            formData.isAnonymous ? "aliasName" : "fullName",
-                            event.target.value,
-                          )
+                          updateForm("name", event.target.value)
                         }
-                        placeholder={
-                          formData.isAnonymous
-                            ? "Contoh: Bunga"
-                            : "Gunakan data contoh"
-                        }
+                        placeholder="Masukkan nama atau nama samaran"
                         className={fieldClass}
                       />
                     </div>
 
-                    <div>
-                      <label className={labelClass}>Rentang usia</label>
-                      <div className="relative">
-                        <select
-                          value={formData.victimAgeGroup}
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="contact-method" className={labelClass}>
+                          Metode kontak
+                        </label>
+                        <div className="relative">
+                          <select
+                            id="contact-method"
+                            value={formData.contactMethod}
+                            onChange={(event) =>
+                              updateForm(
+                                "contactMethod",
+                                event.target
+                                  .value as ContactFormData["contactMethod"],
+                              )
+                            }
+                            className={`${fieldClass} appearance-none pr-10`}
+                          >
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="signal">Signal</option>
+                            <option value="telegram">Telegram</option>
+                            <option value="email">Email</option>
+                          </select>
+                          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label htmlFor="contact-value" className={labelClass}>
+                          Nomor atau alamat kontak
+                        </label>
+                        <input
+                          id="contact-value"
+                          type="text"
+                          required
+                          maxLength={150}
+                          autoComplete="off"
+                          value={formData.contactValue}
                           onChange={(event) =>
-                            updateForm("victimAgeGroup", event.target.value)
+                            updateForm("contactValue", event.target.value)
                           }
-                          className={`${fieldClass} appearance-none pr-10`}
-                        >
-                          <option value="Di bawah 18 tahun">
-                            Di bawah 18 tahun
-                          </option>
-                          <option value="18-24 tahun">18–24 tahun</option>
-                          <option value="25-34 tahun">25–34 tahun</option>
-                          <option value="35-49 tahun">35–49 tahun</option>
-                          <option value="50 tahun ke atas">
-                            50 tahun ke atas
-                          </option>
-                          <option value="Tidak ingin menyebutkan">
-                            Tidak ingin menyebutkan
-                          </option>
-                        </select>
-                        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
+                          placeholder="Kontak yang aman untuk dihubungi"
+                          className={fieldClass}
+                        />
                       </div>
                     </div>
 
-                    <div>
-                      <label className={labelClass}>
-                        Kanal kontak yang dipilih
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={formData.safeContactMethod}
-                          onChange={(event) =>
-                            updateForm(
-                              "safeContactMethod",
-                              event.target
-                                .value as CaseReportForm["safeContactMethod"],
-                            )
-                          }
-                          className={`${fieldClass} appearance-none pr-10`}
-                        >
-                          <option value="whatsapp">WhatsApp</option>
-                          <option value="signal">Signal</option>
-                          <option value="telegram">Telegram</option>
-                          <option value="email">Email</option>
-                        </select>
-                        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className={labelClass}>
-                        Kontak contoh (opsional)
-                      </label>
-                      <input
-                        type="text"
-                        autoComplete="off"
-                        value={formData.contactValue}
-                        onChange={(event) =>
-                          updateForm("contactValue", event.target.value)
-                        }
-                        placeholder="Jangan gunakan kontak asli"
-                        className={fieldClass}
-                      />
-                    </div>
+                    <p className="text-xs leading-5 text-stone-500">
+                      Pastikan kontak yang dicantumkan aman untuk dihubungi.
+                      Jangan gunakan kontak yang dapat dipantau oleh pihak yang
+                      membahayakan Anda.
+                    </p>
                   </div>
-
-                  <p className="mt-4 text-xs leading-5 text-stone-500">
-                    Hindari memasukkan nomor telepon atau akun pribadi yang
-                    sebenarnya selama formulir belum terhubung ke sistem aman.
-                  </p>
                 </fieldset>
 
-                {/* Section 2 */}
+                {/* KEBUTUHAN */}
                 <fieldset className="border-b border-stone-200 py-8">
-                  <legend className="mb-6 text-sm font-semibold text-slate-900">
+                  <legend className="mb-6 text-sm font-bold text-slate-900">
                     <span className="mr-3 text-stone-400">02</span>
-                    Informasi kejadian
+                    Kebutuhan konsultasi
                   </legend>
 
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="space-y-5">
                     <div>
-                      <label className={labelClass}>Kategori kejadian</label>
+                      <label htmlFor="category" className={labelClass}>
+                        Topik atau kategori kebutuhan
+                      </label>
                       <div className="relative">
                         <select
+                          id="category"
                           value={formData.category}
                           onChange={(event) =>
                             updateForm("category", event.target.value)
                           }
                           className={`${fieldClass} appearance-none pr-10`}
                         >
+                          <option value="">
+                            Pilih kategori jika sudah mengetahui
+                          </option>
                           {KBGO_CATEGORIES.map((category) => (
                             <option key={category.id} value={category.name}>
                               {category.name}
@@ -410,15 +392,17 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
                     </div>
 
                     <div>
-                      <label className={labelClass}>Tingkat kebutuhan</label>
+                      <label htmlFor="urgency" className={labelClass}>
+                        Tingkat kebutuhan
+                      </label>
                       <div className="relative">
                         <select
-                          value={formData.urgencyLevel}
+                          id="urgency"
+                          value={formData.urgency}
                           onChange={(event) =>
                             updateForm(
-                              "urgencyLevel",
-                              event.target
-                                .value as CaseReportForm["urgencyLevel"],
+                              "urgency",
+                              event.target.value as ContactFormData["urgency"],
                             )
                           }
                           className={`${fieldClass} appearance-none pr-10`}
@@ -427,7 +411,7 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
                             Mendesak — ada ancaman langsung
                           </option>
                           <option value="segera">
-                            Perlu bantuan dalam waktu dekat
+                            Membutuhkan bantuan dalam waktu dekat
                           </option>
                           <option value="konsultasi">
                             Informasi atau konsultasi
@@ -438,175 +422,139 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
                     </div>
 
                     <div>
-                      <label className={labelClass}>
-                        Tanggal kejadian (opsional)
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.incidentDate}
-                        onChange={(event) =>
-                          updateForm("incidentDate", event.target.value)
-                        }
-                        className={fieldClass}
-                      />
-                    </div>
+                      <p className={labelClass}>
+                        Bentuk dukungan yang dibutuhkan
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-stone-500">
+                        Anda dapat memilih lebih dari satu.
+                      </p>
 
-                    <div>
-                      <label className={labelClass}>
-                        Lokasi umum (opsional)
-                      </label>
-                      <input
-                        type="text"
-                        autoComplete="off"
-                        value={formData.victimLocation}
-                        onChange={(event) =>
-                          updateForm("victimLocation", event.target.value)
-                        }
-                        placeholder="Contoh: kabupaten atau kota"
-                        className={fieldClass}
-                      />
-                    </div>
-                  </div>
+                      <div className="mt-3 divide-y divide-stone-200 border-y border-stone-200">
+                        {requestedServices.map((service) => {
+                          const selected =
+                            formData.neededServices.includes(service);
 
-                  <div className="mt-7">
-                    <p className={labelClass}>Platform yang terlibat</p>
-                    <p className="mt-1 text-xs text-stone-500">
-                      Pilih semua yang sesuai.
-                    </p>
-
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {platforms.map((platform) => {
-                        const selected = formData.platforms.includes(platform);
-
-                        return (
-                          <button
-                            key={platform}
-                            type="button"
-                            aria-pressed={selected}
-                            onClick={() => togglePlatform(platform)}
-                            className={`inline-flex items-center gap-2 border px-3 py-2 text-sm transition-colors ${
-                              selected
-                                ? "border-blue-800 bg-blue-800 text-white"
-                                : "border-stone-300 bg-white text-slate-700 hover:border-blue-800"
-                            }`}
-                          >
-                            {selected && <Check className="h-3.5 w-3.5" />}
-                            {platform}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="mt-7">
-                    <p className={labelClass}>
-                      Bentuk bantuan yang ingin diketahui
-                    </p>
-
-                    <div className="mt-3 divide-y divide-stone-200 border-y border-stone-200">
-                      {requestedServices.map((service) => {
-                        const selected =
-                          formData.neededServices.includes(service);
-
-                        return (
-                          <label
-                            key={service}
-                            className="flex cursor-pointer items-start gap-3 py-3"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selected}
-                              onChange={() => toggleService(service)}
-                              className="mt-1 h-4 w-4 accent-blue-800"
-                            />
-                            <span className="text-sm leading-6 text-slate-700">
-                              {service}
-                            </span>
-                          </label>
-                        );
-                      })}
+                          return (
+                            <label
+                              key={service}
+                              className="flex cursor-pointer items-start gap-3 py-3"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selected}
+                                onChange={() => toggleService(service)}
+                                className="mt-1 h-4 w-4 accent-blue-800"
+                              />
+                              <span className="text-sm leading-6 text-slate-700">
+                                {service}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </fieldset>
 
-                {/* Section 3 */}
+                {/* PESAN */}
                 <fieldset className="border-b border-stone-200 py-8">
-                  <legend className="mb-4 text-sm font-semibold text-slate-900">
+                  <legend className="mb-4 text-sm font-bold text-slate-900">
                     <span className="mr-3 text-stone-400">03</span>
-                    Cerita singkat (opsional)
+                    Pesan awal
                   </legend>
 
-                  <label className={labelClass}>
-                    Apa yang ingin Anda sampaikan?
+                  <label htmlFor="message" className={labelClass}>
+                    Apakah ada hal yang ingin disampaikan?
                   </label>
+
                   <textarea
+                    id="message"
                     rows={5}
-                    value={formData.chronology}
+                    maxLength={500}
+                    value={formData.message}
                     onChange={(event) =>
-                      updateForm("chronology", event.target.value)
+                      updateForm("message", event.target.value)
                     }
-                    placeholder="Untuk uji coba, gunakan cerita rekaan. Jangan cantumkan nama lengkap, alamat, kata sandi, atau detail intim."
+                    placeholder="Tuliskan pertanyaan umum atau waktu yang aman untuk dihubungi. Jangan tuliskan kronologi sensitif atau detail intim."
                     className={`${fieldClass} resize-y`}
                   />
 
-                  <label className="mt-5 flex items-start gap-3 border border-stone-300 bg-white p-4">
-                    <input
-                      type="checkbox"
-                      checked={formData.hasEvidence}
-                      onChange={(event) =>
-                        updateForm("hasEvidence", event.target.checked)
-                      }
-                      className="mt-1 h-4 w-4 accent-blue-800"
-                    />
-                    <span className="text-sm leading-6 text-slate-700">
-                      Saya memiliki informasi atau dokumentasi terkait kejadian.
-                      Saya tidak akan mengunggah atau mengirim materi intim
-                      melalui formulir prototipe ini.
-                    </span>
-                  </label>
+                  <p className="mt-2 text-xs leading-5 text-stone-500">
+                    Maksimal 500 karakter. Hindari mencantumkan informasi
+                    sensitif, nama pihak lain, alamat lengkap, kata sandi, atau
+                    detail kejadian yang bersifat pribadi.
+                  </p>
                 </fieldset>
 
-                {/* Consent and submit */}
+                {/* CONSENT */}
                 <div className="pt-8">
                   <label className="flex items-start gap-3">
                     <input
                       type="checkbox"
                       required
-                      checked={formData.consentAgreed}
+                      checked={formData.consent}
                       onChange={(event) =>
-                        updateForm("consentAgreed", event.target.checked)
+                        updateForm("consent", event.target.checked)
                       }
                       className="mt-1 h-4 w-4 accent-blue-800"
                     />
+
                     <span className="text-sm leading-6 text-slate-700">
-                      Saya memahami bahwa halaman ini masih berupa prototipe,
-                      data tidak dikirim kepada TPDotcom, dan formulir ini tidak
-                      menciptakan laporan atau nomor kasus resmi.
+                      Saya menyetujui pengiriman informasi awal yang saya
+                      masukkan melalui formulir ini ke email pengelola TPDotcom
+                      untuk keperluan tindak lanjut permintaan konsultasi.
                     </span>
                   </label>
 
+                  {submitStatus === "error" && (
+                    <div
+                      role="alert"
+                      className="mt-5 flex items-start gap-3 border border-red-200 bg-red-50 p-4"
+                    >
+                      <TriangleAlert className="mt-0.5 h-5 w-5 shrink-0 text-red-700" />
+                      <div>
+                        <p className="text-sm font-semibold text-red-900">
+                          Pengiriman belum berhasil.
+                        </p>
+                        <p className="mt-1 text-sm leading-6 text-red-800">
+                          Periksa koneksi internet dan konfigurasi EmailJS.
+                          Silakan coba kembali beberapa saat lagi.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    className="mt-6 inline-flex w-full items-center justify-center gap-3 bg-slate-900 px-5 py-4 text-sm font-semibold text-white transition-colors hover:bg-blue-900"
+                    disabled={submitStatus === "loading" || !formData.consent}
+                    className="mt-7 inline-flex min-h-14 w-full items-center justify-center gap-3 bg-blue-800 px-5 py-4 text-sm font-semibold text-white transition-colors hover:bg-blue-950 disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    Tinjau status formulir
-                    <ArrowRight className="h-4 w-4" />
+                    {submitStatus === "loading" ? (
+                      <>
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                        Mengirim permintaan...
+                      </>
+                    ) : (
+                      <>
+                        Kirim permintaan konsultasi
+                        <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
                   </button>
 
                   <p className="mt-4 text-xs leading-5 text-stone-500">
-                    Ini hanya demonstrasi antarmuka. Sebelum diluncurkan,
-                    formulir perlu dihubungkan ke backend dengan pengamanan
-                    data, kontrol akses, kebijakan retensi, dan prosedur
-                    penanganan pengaduan yang jelas.
+                    Permintaan akan dikirim melalui layanan EmailJS kepada
+                    pengelola TPDotcom. Hindari mengirimkan informasi yang
+                    sangat sensitif melalui formulir ini.
                   </p>
                 </div>
               </form>
             )}
           </div>
 
-          {/* Sidebar */}
+          {/* SIDEBAR */}
           <aside className="space-y-10 lg:sticky lg:top-8">
-            {/* Emergency information */}
+            {/* EMERGENCY */}
             <section className="border-t-2 border-slate-900 pt-5">
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-blue-800" />
@@ -616,8 +564,9 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
               </div>
 
               <p className="mt-3 text-sm leading-6 text-stone-600">
-                Jika ada bahaya fisik langsung, prioritaskan keselamatan dan
-                hubungi layanan darurat yang sesuai di wilayah Anda.
+                Jika terdapat ancaman fisik langsung, prioritaskan keselamatan
+                dan hubungi layanan darurat yang sesuai di wilayah Anda. Jangan
+                menunggu balasan email.
               </p>
 
               <div className="mt-5 divide-y divide-stone-200 border-y border-stone-200">
@@ -635,33 +584,26 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
                   </div>
                 ))}
               </div>
-
-              <p className="mt-3 text-xs leading-5 text-stone-500">
-                Verifikasi nomor, wilayah layanan, dan jam operasional sebelum
-                dipublikasikan. Jangan menganggap seluruh nomor tersedia
-                sepanjang waktu.
-              </p>
             </section>
 
-            {/* Privacy notes */}
+            {/* PRIVACY */}
             <section className="border-t-2 border-slate-900 pt-5">
               <div className="flex items-center gap-3">
                 <LockKeyhole className="h-5 w-5 text-blue-800" />
                 <h2 className="font-editorial text-xl font-bold">
-                  Pertimbangkan keamanan Anda
+                  Jaga keamanan Anda
                 </h2>
               </div>
 
               <div className="mt-5 space-y-5">
                 <div>
                   <h3 className="text-sm font-semibold text-slate-900">
-                    Perangkat mungkin dipantau?
+                    Gunakan perangkat yang aman
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    Jika Anda khawatir pelaku memantau perangkat atau akun,
-                    pertimbangkan mencari bantuan melalui perangkat yang lebih
-                    aman. Menghapus riwayat browser tidak selalu menghilangkan
-                    semua jejak aktivitas.
+                    Jika perangkat atau akun Anda mungkin dipantau,
+                    pertimbangkan menggunakan perangkat lain yang lebih aman
+                    untuk mencari bantuan.
                   </p>
                 </div>
 
@@ -670,8 +612,8 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
                     Belum siap bercerita?
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    Anda dapat membaca informasi tentang KBGO terlebih dahulu
-                    tanpa mengisi formulir ini.
+                    Anda dapat membaca informasi mengenai KBGO terlebih dahulu
+                    tanpa mengisi formulir.
                   </p>
                   <button
                     type="button"
@@ -685,28 +627,27 @@ export const KontakPengaduanView: React.FC<KontakPengaduanViewProps> = ({
 
                 <div className="border-t border-stone-200 pt-5">
                   <h3 className="text-sm font-semibold text-slate-900">
-                    Apakah pengaduan ini rahasia?
+                    Tentang kerahasiaan
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-stone-600">
-                    Tingkat kerahasiaan bergantung pada sistem, pihak yang
-                    memiliki akses, dan prosedur organisasi. Sebelum mengirimkan
-                    data sensitif, pastikan Anda memperoleh informasi yang jelas
-                    mengenai penggunaan dan perlindungan data.
+                    Informasi yang dikirim melalui email dapat diakses oleh
+                    pihak yang memiliki akses ke akun penerima. Jangan
+                    mengirimkan informasi yang dapat membahayakan keselamatan
+                    Anda.
                   </p>
                 </div>
               </div>
             </section>
 
-            {/* Contact readiness */}
+            {/* CONTACT */}
             <section className="border-y border-stone-300 py-5">
-              <MessageCircle className="mb-4 h-5 w-5 text-blue-800" />
+              <Mail className="mb-4 h-5 w-5 text-blue-800" />
               <h2 className="font-editorial text-xl font-bold">
-                Tentang layanan TPDotcom
+                Hubungi TPDotcom
               </h2>
               <p className="mt-3 text-sm leading-6 text-stone-600">
-                Informasi mengenai jenis pendampingan, biaya, jam layanan, dan
-                mekanisme pengaduan perlu dijelaskan berdasarkan kapasitas serta
-                kebijakan organisasi yang benar-benar tersedia.
+                Untuk informasi mengenai program, kegiatan, dan layanan
+                organisasi, silakan pelajari halaman program TPDotcom.
               </p>
               <button
                 type="button"

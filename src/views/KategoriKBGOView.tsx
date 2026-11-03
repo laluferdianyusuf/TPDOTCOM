@@ -390,25 +390,27 @@ export const KategoriKBGOView: React.FC<KategoriKBGOViewProps> = ({
 
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 {activeCategory.id === "ncii" ? (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onNavigate("detail_panduan_protokol_penghapusan_ncii")
-                    }
-                    className="group flex min-h-28 flex-col items-start justify-between border border-stone-300 bg-white p-5 text-left transition-colors hover:border-blue-800"
-                  >
-                    <span className="flex items-center gap-2 text-sm font-semibold">
-                      <BookOpen size={17} className="text-blue-800" />
-                      Panduan NCII
-                    </span>
-                    <span className="mt-4 flex items-center gap-2 text-sm text-blue-800">
-                      Pelajari pilihan perlindungan
-                      <ArrowRight
-                        size={15}
-                        className="transition-transform group-hover:translate-x-1"
-                      />
-                    </span>
-                  </button>
+                  // <button
+                  //   type="button"
+                  //   onClick={() =>
+                  //     // onNavigate("detail_panduan_protokol_penghapusan_ncii")
+                  //     console.log("nothing there")
+                  //   }
+                  //   className="group flex min-h-28 flex-col opacity-0 items-start justify-between border border-stone-300 bg-white p-5 text-left transition-colors hover:border-blue-800"
+                  // >
+                  //   <span className="flex items-center gap-2 text-sm font-semibold">
+                  //     <BookOpen size={17} className="text-blue-800" />
+                  //     Panduan NCII
+                  //   </span>
+                  //   <span className="mt-4 flex items-center gap-2 text-sm text-blue-800">
+                  //     Pelajari pilihan perlindungan
+                  //     <ArrowRight
+                  //       size={15}
+                  //       className="transition-transform group-hover:translate-x-1"
+                  //     />
+                  //   </span>
+                  // </button>
+                  <></>
                 ) : (
                   <button
                     type="button"

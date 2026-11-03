@@ -38,6 +38,20 @@ const NAV_ITEMS: NavigationItem[] = [
   {
     label: "Tentang Kami",
     route: "tentang_kami",
+    dropdownItems: [
+      {
+        label: "Profil Organisasi",
+        route: "tentang_kami",
+      },
+      {
+        label: "Paralegal",
+        route: "paralegal",
+      },
+      {
+        label: "Volunteer",
+        route: "volunteer",
+      },
+    ],
   },
   {
     label: "Program",
@@ -54,6 +68,10 @@ const NAV_ITEMS: NavigationItem[] = [
       {
         label: "Dokumentasi Kegiatan",
         route: "dokumentasi_kegiatan_program",
+      },
+      {
+        label: "UMKM Binaan",
+        route: "umkm",
       },
     ],
   },
@@ -79,14 +97,14 @@ const NAV_ITEMS: NavigationItem[] = [
         label: "Semua Publikasi",
         route: "publikasi",
       },
-      {
-        label: "Laporan Tahunan 2024",
-        route: "detail_publikasi_laporan_tahunan_2024",
-      },
-      {
-        label: "Panduan Penghapusan NCII",
-        route: "detail_panduan_protokol_penghapusan_ncii",
-      },
+      // {
+      //   label: "Laporan Tahunan 2024",
+      //   route: "detail_publikasi_laporan_tahunan_2024",
+      // },
+      // {
+      //   label: "Panduan Penghapusan NCII",
+      //   route: "detail_panduan_protokol_penghapusan_ncii",
+      // },
     ],
   },
   {
@@ -291,6 +309,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
                           Jelajahi
                         </p>
+
                         <p className="mt-1 font-editorial text-base text-slate-900">
                           {item.label}
                         </p>

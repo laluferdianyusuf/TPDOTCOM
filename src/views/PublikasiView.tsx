@@ -20,8 +20,9 @@ const PUBLICATION_TYPES = [
   "Laporan Tahunan",
   "Panduan Praktis",
   "Kertas Kebijakan",
+  "Strategic Plan",
+  "SOP",
 ];
-
 export const PublikasiView: React.FC<PublikasiViewProps> = ({ onNavigate }) => {
   const [selectedType, setSelectedType] = useState<string>("Semua");
   const [searchQuery, setSearchQuery] = useState("");

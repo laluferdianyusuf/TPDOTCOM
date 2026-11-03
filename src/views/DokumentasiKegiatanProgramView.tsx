@@ -21,18 +21,27 @@ interface DokumentasiKegiatanProgramViewProps {
 const FILTERS = [
   { label: "Semua kegiatan", value: "Semua" },
   { label: "Pelatihan", value: "pelatihan" },
+  { label: "Penanganan Kasus", value: "kasus" },
   { label: "Workshop", value: "workshop" },
-  { label: "Webinar", value: "webinar" },
-  { label: "Seminar", value: "seminar" },
-  { label: "Kegiatan lapangan", value: "kegiatan_lapangan" },
+  { label: "Sosialisasi", value: "sosialisasi" },
+  { label: "Event", value: "event" },
+  { label: "Diskusi", value: "diskusi" },
+  { label: "Evaluasi", value: "evaluasi" },
+  { label: "Kunjungan", value: "kunjungan" },
+  { label: "Networking", value: "networking" },
+  { label: "Kegiatan", value: "kegiatan" },
 ];
-
 const TYPE_LABELS: Record<string, string> = {
   pelatihan: "Pelatihan",
+  kasus: "Penanganan Kasus",
   workshop: "Workshop",
-  webinar: "Webinar",
-  seminar: "Seminar",
-  kegiatan_lapangan: "Kegiatan lapangan",
+  sosialisasi: "Sosialisasi",
+  event: "Event",
+  diskusi: "Diskusi",
+  evaluasi: "Evaluasi",
+  kunjungan: "Kunjungan",
+  networking: "Networking",
+  kegiatan: "Kegiatan",
 };
 
 export const DokumentasiKegiatanProgramView: React.FC<

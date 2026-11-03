@@ -1,15 +1,20 @@
-export type PageRoute = 
-  | 'beranda'
-  | 'tentang_kami'
-  | 'program'
-  | 'detail_program_keamanan_digital'
-  | 'dokumentasi_kegiatan_program'
-  | 'isu_pengetahuan'
-  | 'kategori_kbgo'
-  | 'publikasi'
-  | 'detail_publikasi_laporan_tahunan_2024'
-  | 'detail_panduan_protokol_penghapusan_ncii'
-  | 'kontak_pengaduan';
+export type PageRoute =
+  | "beranda"
+  | "tentang_kami"
+  | "program"
+  | "detail_program_keamanan_digital"
+  | "dokumentasi_kegiatan_program"
+  | "isu_pengetahuan"
+  | "kategori_kbgo"
+  | "publikasi"
+  | "detail_publikasi_laporan_tahunan_2024"
+  | "detail_panduan_protokol_penghapusan_ncii"
+  | "kontak_pengaduan"
+  | "volunteer"
+  | "paralegal"
+  | "paralegal_kasus"
+  | "umkm"
+  | "umkm_katalog";
 
 export interface KBGOCategory {
   id: string;
@@ -18,7 +23,7 @@ export interface KBGOCategory {
   fullDesc: string;
   examples: string[];
   legalBasis: string[]; // e.g. UU TPKS Pasal 14
-  riskLevel: 'Tinggi' | 'Sangat Kritis' | 'Sedang';
+  riskLevel: "Tinggi" | "Sangat Kritis" | "Sedang";
   immediateActions: string[];
   icon: string;
 }
@@ -27,10 +32,16 @@ export interface PublicationItem {
   id: string;
   title: string;
   subtitle: string;
-  type: 'Laporan Tahunan' | 'Panduan Praktis' | 'Kertas Kebijakan' | 'Riset & Data';
+  type:
+    | "Laporan Tahunan"
+    | "Panduan Praktis"
+    | "Kertas Kebijakan"
+    | "Riset & Data"
+    | "Strategic Plan"
+    | "SOP";
   year: number;
   date: string;
-  pages: number;
+  pages: number | null;
   fileSize: string;
   summary: string;
   keyFindings: string[];
@@ -43,7 +54,11 @@ export interface ArticleItem {
   id: string;
   title: string;
   slug: string;
-  category: 'Analisis Kebijakan' | 'Edukasi Digital' | 'Suara Penyintas' | 'Advokasi Hukum';
+  category:
+    | "Analisis Kebijakan"
+    | "Edukasi Digital"
+    | "Suara Penyintas"
+    | "Advokasi Hukum";
   date: string;
   readTime: string;
   author: string;
@@ -65,10 +80,15 @@ export interface ProgramItem {
 
 export type ProgramActivityTypeKey =
   | "pelatihan"
+  | "kasus"
   | "workshop"
-  | "webinar"
-  | "seminar"
-  | "kegiatan_lapangan";
+  | "sosialisasi"
+  | "event"
+  | "diskusi"
+  | "evaluasi"
+  | "kunjungan"
+  | "networking"
+  | "kegiatan";
 
 export interface ProgramActivityPhoto {
   url: string;
@@ -92,16 +112,60 @@ export interface CaseReportForm {
   fullName: string;
   aliasName?: string;
   isAnonymous: boolean;
-  safeContactMethod: 'whatsapp' | 'signal' | 'telegram' | 'email';
+  safeContactMethod: "whatsapp" | "signal" | "telegram" | "email";
   contactValue: string;
   victimAgeGroup: string;
   victimLocation: string;
   category: string;
   platforms: string[];
   incidentDate: string;
-  urgencyLevel: 'darurat' | 'segera' | 'konsultasi';
+  urgencyLevel: "darurat" | "segera" | "konsultasi";
   neededServices: string[];
   chronology: string;
   hasEvidence: boolean;
   consentAgreed: boolean;
+}
+
+export type CaseStatus = "Berjalan" | "Dalam Proses" | "Selesai";
+
+export interface ParalegalCase {
+  id: string;
+  title: string;
+  category: string;
+  status: CaseStatus;
+  year: string;
+  description: string;
+  date: string;
+}
+
+export interface ParalegalMember {
+  id: string;
+  name: string;
+  role: string;
+  location: string;
+  avatar: string;
+  bio: string;
+  cases: ParalegalCase[];
+}
+
+export interface UmkmProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  category: string;
+  image?: string;
+  type: "produk" | "layanan";
+}
+
+export interface UmkmBusiness {
+  id: string;
+  number: string;
+  name: string;
+  owner: string;
+  location: string;
+  category: string;
+  description: string;
+  coverImage?: string;
+  products: UmkmProduct[];
 }
