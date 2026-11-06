@@ -90,6 +90,8 @@ export type ProgramActivityTypeKey =
   | "networking"
   | "kegiatan";
 
+export type ProgramActivityPhotoTypeKey = "paralegal";
+
 export interface ProgramActivityPhoto {
   url: string;
   caption?: string;
