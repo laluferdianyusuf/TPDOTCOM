@@ -3,7 +3,6 @@ import type { PageRoute } from "./types";
 
 import { DonationModal } from "./components/DonationModal";
 import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
 import { SearchModal } from "./components/SearchModal";
 import SEO from "./components/SEO";
 
@@ -24,6 +23,8 @@ import { ParalegalCasesView } from "./views/ParalegalCasesView";
 import UmkmView from "./views/UmkmView";
 import { ROUTES } from "./data/content";
 import UmkmCatalogView from "./views/UmkmCatalogView";
+import Header from "./components/Header";
+import RuangJejaringView from "./views/RuangJejaringView";
 
 const PATH_TO_ROUTE = Object.fromEntries(
   Object.entries(ROUTES).map(([route, config]) => [
@@ -278,6 +279,8 @@ export default function App() {
             onBack={() => handleNavigate("umkm")}
           />
         )}
+
+        {currentRoute === "ruang_jejaring" && <RuangJejaringView />}
       </main>
 
       <Footer

@@ -1,3 +1,4 @@
+import { Laptop, Lightbulb, Megaphone, Users } from "lucide-react";
 import bayuPhoto from "../assets/members/bayu.jpeg";
 import beautyPhoto from "../assets/members/beauty.jpeg";
 import ferdiPhoto from "../assets/members/ferdi.jpeg";
@@ -20,6 +21,7 @@ import {
   ProgramItem,
   PublicationItem,
   UmkmBusiness,
+  VolunteerMember,
 } from "../types";
 
 export const IMPACT_STATS = [
@@ -2156,6 +2158,12 @@ export const ROUTES: Record<
     title: "Katalog UMKM | TPDotcom",
     description: "Jelajahi katalog produk dan layanan UMKM binaan TPDotcom.",
   },
+
+  ruang_jejaring: {
+    path: "/network",
+    title: "Alumni Update | TPDotcom",
+    description: "Update alumni aktivitas",
+  },
 };
 
 export const umkmBusinesses: UmkmBusiness[] = [
@@ -2265,5 +2273,99 @@ export const umkmBusinesses: UmkmBusiness[] = [
       //   type: "layanan",
       // },
     ],
+  },
+];
+
+export const volunteerMembers: VolunteerMember[] = [
+  {
+    name: "Syafira Desiana Cindra Kaisa",
+    role: "Volunteer",
+    location: "Mataram",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673681/WhatsApp_Image_2025-07-15_at_14.48.43_63d90b4b.jpg",
+    bio: "Berpartisipasi dalam mendukung kegiatan dan program pemberdayaan masyarakat.",
+  },
+  {
+    name: "Dinda Adhiba Tsoraya",
+    role: "Volunteer",
+    location: "Lombok Barat",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673676/WhatsApp_Image_2025-07-15_at_17.43.42_61a86cd2.jpg",
+    bio: "Mendukung pelaksanaan kegiatan edukasi dan penguatan kapasitas masyarakat.",
+  },
+  {
+    name: "Agus Heri Subagyo",
+    role: "Volunteer",
+    location: "Pagutan",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673673/WhatsApp_Image_2024-03-25_at_13.01.25_6c426811.jpg",
+    bio: "Terlibat dalam kegiatan sosial dan kampanye kesetaraan.",
+  },
+  {
+    name: "Bunga Intan Lestari",
+    role: "Volunteer",
+    location: "Lombok Timur",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673675/WhatsApp_Image_2025-07-15_at_12.08.09_debf4fac.jpg",
+    bio: "Mendukung kegiatan lapangan dan keterlibatan masyarakat.",
+  },
+  {
+    name: "Nama Volunteer 5",
+    role: "Volunteer",
+    location: "Mataram",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673674/WhatsApp_Image_2024-03-26_at_11.39.10_f82b14d9.jpg",
+    bio: "Berkontribusi dalam pengembangan materi dan publikasi kegiatan.",
+  },
+  {
+    name: "Nama Volunteer 6",
+    role: "Volunteer",
+    location: "Lombok Utara",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673674/WhatsApp_Image_2024-03-25_at_12.20.49_5fe0b4a5.jpg",
+    bio: "Mendukung perluasan informasi dan partisipasi masyarakat.",
+  },
+  {
+    name: "Bunga Intan Lestari",
+    role: "Volunteer",
+    location: "Lombok Utara",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673673/WhatsApp_Image_2024-03-25_at_12.23.46_6ece21a0.jpg",
+    bio: "Mendukung perluasan informasi dan partisipasi masyarakat.",
+  },
+  {
+    name: "Baiq Nurul Apriana",
+    role: "Volunteer",
+    location: "Lombok Utara",
+    avatar:
+      "https://res.cloudinary.com/obyq9wil/image/upload/v1793673672/WhatsApp_Image_2025-07-16_at_10.07.41_e8d098b4.jpg",
+    bio: "Mendukung perluasan informasi dan partisipasi masyarakat.",
+  },
+];
+
+export const volunteerAreas = [
+  {
+    number: "01",
+    title: "Kegiatan dan Program",
+    desc: "Mendukung persiapan, pelaksanaan, dan dokumentasi kegiatan organisasi bersama tim.",
+    icon: Users,
+  },
+  {
+    number: "02",
+    title: "Edukasi dan Literasi",
+    desc: "Membantu menyebarluaskan pengetahuan mengenai kesetaraan, hak, dan literasi digital.",
+    icon: Lightbulb,
+  },
+  {
+    number: "03",
+    title: "Kampanye dan Advokasi",
+    desc: "Berpartisipasi dalam kampanye publik untuk mendorong kesadaran dan perubahan sosial.",
+    icon: Megaphone,
+  },
+  {
+    number: "04",
+    title: "Dukungan Digital",
+    desc: "Mendukung kebutuhan komunikasi, publikasi, desain, dan pengelolaan informasi digital.",
+    icon: Laptop,
   },
 ];

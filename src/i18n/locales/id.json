@@ -1,0 +1,309 @@
+{
+  "header": {
+    "home": "Beranda",
+    "about": "Tentang Kami",
+    "program": "Program",
+    "issues": "Isu & Pengetahuan",
+    "publication": "Publikasi",
+    "contact": "Kontak",
+    "network": "Jejaring",
+
+    "profile": "Profil Organisasi",
+    "paralegal": "Paralegal",
+    "volunteer": "Volunteer",
+
+    "allPrograms": "Semua Program",
+    "digitalSecurity": "Keamanan Digital",
+    "documentation": "Dokumentasi Kegiatan",
+    "msme": "UMKM Binaan",
+
+    "articles": "Artikel & Analisis",
+    "kbgo": "Bentuk-Bentuk KBGO",
+
+    "allPublications": "Semua Publikasi",
+
+    "explore": "Jelajahi",
+
+    "support": "Dukung Kami",
+    "supportUs": "Dukung Kami",
+    "contactComplaint": "Kontak & Pengaduan",
+
+    "contactQuestion": "Punya pertanyaan atau membutuhkan bantuan?",
+    "contactMobile": "Butuh bantuan?",
+    "whatsapp": "Hubungi WhatsApp",
+
+    "description": "Bersama mewujudkan ruang yang aman, adil, dan setara bagi perempuan.",
+
+    "search": "Cari",
+    "openSearch": "Buka pencarian",
+
+    "whatsappLabel": "Hubungi kami melalui WhatsApp",
+
+    "navigation": "Navigasi utama",
+    "mobileNavigation": "Navigasi mobile",
+
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu",
+    "backHome": "Kembali ke beranda",
+
+    "selectLanguage": "Pilih bahasa",
+    "indonesian": "Bahasa Indonesia",
+    "english": "English"
+  },
+
+  "home": {
+    "hero": {
+      "eyebrow": "Transformasi Perempuan Dotcom",
+      "title": "Ruang digital yang lebih aman,",
+      "titleHighlight": "adil, dan setara.",
+      "description": "TPDotcom bekerja untuk memperkuat kapasitas masyarakat, mendorong pemberdayaan perempuan, dan meningkatkan pemahaman tentang hak serta keamanan di ruang digital.",
+      "reportButton": "Cari bantuan atau ajukan pengaduan",
+      "programButton": "Kenali kerja kami",
+      "values": {
+        "victimCentered": "Berperspektif korban",
+        "consent": "Menghormati persetujuan",
+        "empowerment": "Berorientasi pada pemberdayaan"
+      }
+    },
+    "start": {
+      "eyebrow": "Mulai dari sini",
+      "title": "Apa yang kamu butuhkan?",
+      "description": "Pilih informasi yang paling sesuai dengan kebutuhanmu.",
+      "helpTitle": "Mencari bantuan",
+      "helpDescription": "Informasi awal untuk mencari pendampingan atau menyampaikan pengaduan.",
+      "kbgoTitle": "Memahami KBGO",
+      "kbgoDescription": "Kenali bentuk kekerasan berbasis gender online dan langkah yang dapat dipertimbangkan.",
+      "programTitle": "Mengenal program",
+      "programDescription": "Pelajari area kerja, kegiatan, dan pendekatan pemberdayaan TPDotcom.",
+      "safetyNote": "Jika kamu berada dalam bahaya langsung, utamakan keselamatan fisik dan hubungi layanan darurat setempat atau orang yang dapat dipercaya."
+    },
+    "emergency": {
+      "eyebrow": "Panduan Praktis",
+      "title": "Ketika kekerasan terjadi di ruang digital",
+      "description": "Kamu tidak harus menyelesaikan semuanya sekaligus. Mulai dengan langkah yang aman dan pilih informasi sesuai situasi yang sedang dihadapi.",
+      "guideButton": "Baca panduan penanganan",
+      "disclaimer": "Panduan umum ini bukan pengganti pendampingan hukum, bantuan teknis khusus, atau layanan darurat.",
+      "tabs": {
+        "ncii": "Konten intim",
+        "doxing": "Doxing",
+        "stalking": "Penguntitan",
+        "deepfake": "Manipulasi AI"
+      },
+      "guides": {
+        "ncii": {
+          "eyebrow": "Konten intim tanpa persetujuan",
+          "title": "Foto atau video intim diancam untuk disebarkan",
+          "introduction": "Kamu tidak harus memenuhi ancaman pelaku. Utamakan keselamatan dan simpan bukti jika aman dilakukan.",
+          "steps": [
+            "Jangan terburu-buru membayar atau mengirim konten tambahan.",
+            "Simpan pesan ancaman, nama akun, tautan, dan waktu kejadian jika aman.",
+            "Laporkan konten melalui kanal resmi platform. StopNCII.org dapat membantu orang dewasa yang memenuhi syarat mencegah penyebaran gambar intim tertentu."
+          ],
+          "actionLabel": "Pelajari langkah penanganan"
+        },
+        "doxing": {
+          "eyebrow": "Penyebaran data pribadi",
+          "title": "Informasi pribadi disebarkan tanpa izin",
+          "introduction": "Penyebaran alamat, nomor telepon, atau informasi pribadi dapat meningkatkan risiko keselamatan. Kamu berhak mencari bantuan.",
+          "steps": [
+            "Dokumentasikan unggahan dan tautannya jika aman dilakukan.",
+            "Periksa pengaturan privasi dan amankan akun dari perangkat yang kamu percaya.",
+            "Laporkan konten kepada platform dan pertimbangkan bantuan hukum jika ada ancaman atau kerugian."
+          ],
+          "actionLabel": "Kenali bentuk KBGO"
+        },
+        "stalking": {
+          "eyebrow": "Penguntitan digital",
+          "title": "Merasa akun atau perangkat sedang dipantau",
+          "introduction": "Jika kamu mencurigai pemantauan oleh seseorang yang mungkin membahayakanmu, hindari tindakan yang dapat meningkatkan risiko.",
+          "steps": [
+            "Gunakan perangkat yang lebih aman untuk mencari bantuan bila memungkinkan.",
+            "Periksa sesi masuk, berbagi lokasi, dan izin aplikasi hanya jika aman dilakukan.",
+            "Catat kejadian yang mencurigakan dan cari bantuan teknis tepercaya sebelum menghapus aplikasi yang mungkin menjadi bukti."
+          ],
+          "actionLabel": "Pelajari keamanan digital"
+        },
+        "deepfake": {
+          "eyebrow": "Manipulasi gambar dengan AI",
+          "title": "Wajah atau identitas digunakan dalam gambar palsu",
+          "introduction": "Gambar manipulatif dapat digunakan untuk mempermalukan, mengancam, atau memeras seseorang. Kamu tidak bertanggung jawab atas tindakan pelaku.",
+          "steps": [
+            "Simpan tautan dan informasi akun yang menyebarkan gambar jika aman.",
+            "Hindari menyebarkan ulang gambar, terutama konten intim.",
+            "Gunakan kanal pelaporan platform dan cari pendampingan untuk menentukan langkah berikutnya."
+          ],
+          "actionLabel": "Cari informasi dan bantuan"
+        }
+      },
+      "findAssistance": "Cari pendampingan"
+    },
+    "programs": {
+      "eyebrow": "Area Kerja",
+      "title": "Perubahan membutuhkan lebih dari satu pendekatan.",
+      "description": "Program TPDotcom menghubungkan pengetahuan, dukungan, dan advokasi untuk menjawab kebutuhan masyarakat.",
+      "viewAll": "Lihat seluruh program",
+      "learn": "Pelajari {{title}}"
+    },
+    "kbgo": {
+      "eyebrow": "Isu dan Pengetahuan",
+      "title": "Mengenali kekerasan adalah langkah awal.",
+      "description": "Pahami bentuk-bentuk kekerasan berbasis gender online, risiko yang mungkin muncul, dan pilihan untuk mencari bantuan.",
+      "viewAll": "Buka katalog KBGO",
+      "legalBasis": "Dasar hukum:",
+      "legalBasisFallback": "Lihat penjelasan lengkap",
+      "disclaimer": "Tingkat risiko berbeda sesuai konteks dan kondisi setiap orang. Penilaian pada katalog bukan pengganti penilaian keselamatan secara individual."
+    },
+    "publications": {
+      "eyebrow": "Publikasi dan Sumber Belajar",
+      "title": "Pengetahuan yang dapat digunakan bersama.",
+      "description": "Temukan bahan bacaan dan dokumen yang membantu masyarakat memahami isu, memperkuat kapasitas, serta mendukung kerja advokasi.",
+      "viewAll": "Semua publikasi ({{count}})",
+      "category": "Bahan bacaan",
+      "read": "Baca publikasi",
+      "empty": "Publikasi sedang disiapkan. Kunjungi halaman publikasi untuk melihat informasi terbaru."
+    },
+    "approach": {
+      "eyebrow": "Cara Kami Bekerja",
+      "title": "Pendampingan yang menghormati pilihan setiap orang.",
+      "description": "Setiap orang memiliki situasi, kebutuhan, dan pertimbangan keselamatan yang berbeda. Respons yang baik dimulai dengan mendengarkan, menghormati keputusan orang yang terdampak, serta menyediakan informasi yang jelas mengenai pilihan yang tersedia.",
+      "steps": {
+        "listen": {
+          "title": "Dengarkan",
+          "description": "Mulai dari pengalaman dan kebutuhan orang yang terdampak."
+        },
+        "options": {
+          "title": "Beri pilihan",
+          "description": "Jelaskan pilihan yang tersedia tanpa menyalahkan korban."
+        },
+        "respect": {
+          "title": "Hormati keputusan",
+          "description": "Utamakan persetujuan dan pertimbangan keselamatan."
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Langkah Berikutnya",
+      "title": "Kamu tidak harus mencari jawaban sendirian.",
+      "description": "Mulai dengan membaca informasi yang kamu butuhkan atau menghubungi organisasi untuk menanyakan pilihan dukungan yang tersedia.",
+      "contact": "Hubungi kami",
+      "programs": "Lihat program kami",
+      "supportTitle": "Dukung kerja bersama.",
+      "supportDescription": "Solidaritas masyarakat ikut mendukung keberlanjutan kerja pemberdayaan dan advokasi.",
+      "donate": "Dukung melalui donasi",
+      "organization": "Transformasi Perempuan Dotcom",
+      "tagline": "Pemberdayaan masyarakat dan keadilan digital"
+    }
+  },
+
+  "about": {
+    "hero": {
+      "eyebrow": "Tentang TPDotcom",
+      "title": "Perubahan dimulai ketika setiap orang",
+      "titleHighlight": "punya ruang untuk berdaya.",
+      "description": "Transformasi Perempuan Dotcom bekerja dalam pemberdayaan perempuan dan penguatan kapasitas masyarakat. Kami mendorong akses terhadap pengetahuan, partisipasi yang bermakna, serta pemanfaatan teknologi yang lebih aman dan inklusif.",
+      "programButton": "Kenali program kami",
+      "contactButton": "Hubungi kami",
+      "focusLabel": "Fokus kerja",
+      "focus": {
+        "women": "Pemberdayaan perempuan",
+        "digital": "Literasi digital",
+        "participation": "Partisipasi masyarakat"
+      }
+    },
+    "vision": {
+      "eyebrow": "Arah organisasi",
+      "title": "Masyarakat yang berdaya, setara, dan inklusif.",
+      "description": "Kami percaya bahwa kesempatan untuk belajar, berpartisipasi, dan mengakses hak harus terbuka bagi setiap orang.",
+      "highlight": "Teknologi dan pembangunan seharusnya memperluas kesempatan, bukan menciptakan hambatan baru.",
+      "missionTitle": "Misi kami",
+      "missions": [
+        "Memperkuat pemberdayaan perempuan melalui peningkatan literasi dan kapasitas digital.",
+        "Meningkatkan pemahaman masyarakat mengenai hak asasi manusia, kesetaraan, dan perlindungan kelompok rentan.",
+        "Mendorong partisipasi perempuan, generasi muda, penyandang disabilitas, dan lanjut usia dalam pembangunan.",
+        "Melakukan advokasi untuk mendorong pemenuhan hak, akses yang setara, dan kehidupan masyarakat yang lebih adil."
+      ]
+    },
+    "values": {
+      "eyebrow": "Prinsip kerja",
+      "title": "Bukan hanya apa yang kami kerjakan, tetapi bagaimana kami melakukannya.",
+      "description": "Cara bekerja sama pentingnya dengan tujuan yang ingin dicapai. Setiap kegiatan perlu menghormati martabat, pilihan, dan keragaman pengalaman masyarakat.",
+      "items": {
+        "human": {
+          "title": "Berpihak pada manusia",
+          "description": "Kami mendengarkan pengalaman setiap orang tanpa menghakimi. Martabat, pilihan, dan kebutuhan orang yang didampingi menjadi pertimbangan utama."
+        },
+        "consent": {
+          "title": "Persetujuan dan kendali",
+          "description": "Informasi disampaikan dengan jelas agar setiap orang dapat memahami pilihan yang tersedia dan menentukan langkah sesuai kebutuhannya."
+        },
+        "privacy": {
+          "title": "Menjaga privasi",
+          "description": "Informasi pribadi perlu ditangani secara hati-hati. Pengumpulan, penggunaan, dan pembagian data harus mempertimbangkan persetujuan serta keamanan."
+        },
+        "inclusion": {
+          "title": "Keadilan yang inklusif",
+          "description": "Kami memperhatikan perbedaan pengalaman, akses, dan hambatan yang dihadapi perempuan, anak, penyandang disabilitas, serta kelompok lainnya."
+        }
+      }
+    },
+    "structure": {
+      "eyebrow": "Orang-orang di balik kerja kami",
+      "title": "Struktur kepengurusan TPDotcom",
+      "description": "TPDotcom dijalankan melalui kerja bersama antara staf pelaksana, anggota, pengurus inti, ketua, dan pengawas. Setiap bagian memiliki peran dan tanggung jawab untuk mendukung keberlangsungan organisasi serta pencapaian tujuan bersama.",
+      "groups": {
+        "executive": {
+          "title": "Direktur Pelaksana",
+          "description": "Pimpinan pelaksana operasional yang bertanggung jawab mengarahkan, mengelola, dan memastikan seluruh kegiatan organisasi berjalan sesuai tujuan dan rencana kerja."
+        },
+        "coordinator": {
+          "title": "Koordinator",
+          "description": "Pelaksana operasional yang mengoordinasikan kebutuhan teknis, administrasi, keuangan, dan pelaksanaan program organisasi."
+        },
+        "supervisor": {
+          "title": "Pengawas",
+          "description": "Menjalankan fungsi pengawasan dan memastikan organisasi berjalan sesuai visi, misi, serta prinsip akuntabilitas."
+        },
+        "chairperson": {
+          "title": "Ketua",
+          "description": "Memimpin arah, koordinasi, dan pelaksanaan organisasi."
+        },
+        "core": {
+          "title": "Pengurus Inti",
+          "description": "Mengelola koordinasi, administrasi, keuangan, dan tata kelola organisasi."
+        },
+        "members": {
+          "title": "Anggota Organisasi",
+          "description": "Mendukung pelaksanaan program, kegiatan, dan berbagai inisiatif pemberdayaan perempuan serta masyarakat."
+        }
+      }
+    },
+    "accountability": {
+      "eyebrow": "Akuntabilitas publik",
+      "title": "Kepercayaan dibangun melalui keterbukaan dan tanggung jawab.",
+      "description": "Informasi mengenai organisasi, program, dan publikasi menjadi bagian penting agar masyarakat dapat mengenali kerja TPDotcom serta memahami kegiatan yang kami lakukan.",
+      "publicationDescription": "Untuk mengetahui informasi organisasi dan materi yang telah dipublikasikan, kunjungi halaman publikasi TPDotcom.",
+      "publicationButton": "Lihat publikasi",
+      "points": {
+        "information": {
+          "title": "Informasi yang jelas",
+          "description": "Menyajikan informasi organisasi dan kegiatan dengan bahasa yang mudah dipahami."
+        },
+        "responsibility": {
+          "title": "Tanggung jawab bersama",
+          "description": "Mendorong praktik kerja yang bertanggung jawab kepada masyarakat dan mitra."
+        },
+        "documentation": {
+          "title": "Dokumentasi kegiatan",
+          "description": "Menggunakan publikasi untuk membantu masyarakat mengikuti kegiatan dan pembelajaran organisasi."
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Bergerak bersama",
+      "title": "Perubahan yang berarti membutuhkan partisipasi banyak pihak.",
+      "description": "Kenali program kami, bagikan pengetahuan, atau dukung inisiatif pemberdayaan yang kami jalankan.",
+      "programButton": "Jelajahi program",
+      "donationButton": "Dukung kerja kami"
+    }
+  }
+}

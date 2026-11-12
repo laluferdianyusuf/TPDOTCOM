@@ -390,10 +390,10 @@ export const ParalegalView: React.FC<ParalegalViewProps> = ({
             </div>
 
             <a
-              href="/kontak-pengaduan"
+              href="/"
               className="inline-flex min-h-11 items-center justify-center gap-2 bg-blue-800 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-950"
             >
-              Hubungi kami
+              Update Aktivitasmu
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>

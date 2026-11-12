@@ -1,3 +1,5 @@
+import React, { useEffect, useRef, useState } from "react";
+
 import {
   ArrowUpRight,
   ChevronDown,
@@ -8,9 +10,12 @@ import {
   Search,
   X,
 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+
+import { useTranslation } from "react-i18next";
+
 import Logo from "../assets/images/logo.png";
 import { PageRoute } from "../types";
+import LanguageSelector from "./LanguageSelector";
 
 interface HeaderProps {
   currentRoute: PageRoute;
@@ -20,104 +25,103 @@ interface HeaderProps {
 }
 
 interface DropdownItem {
-  label: string;
+  key: string;
   route: PageRoute;
 }
 
 interface NavigationItem {
-  label: string;
+  key: string;
   route: PageRoute;
   dropdownItems?: DropdownItem[];
 }
 
 const NAV_ITEMS: NavigationItem[] = [
   {
-    label: "Beranda",
+    key: "home",
     route: "beranda",
   },
   {
-    label: "Tentang Kami",
+    key: "about",
     route: "tentang_kami",
     dropdownItems: [
       {
-        label: "Profil Organisasi",
+        key: "profile",
         route: "tentang_kami",
       },
       {
-        label: "Paralegal",
+        key: "paralegal",
         route: "paralegal",
       },
       {
-        label: "Volunteer",
+        key: "volunteer",
         route: "volunteer",
       },
     ],
   },
   {
-    label: "Program",
+    key: "program",
     route: "program",
     dropdownItems: [
       {
-        label: "Semua Program",
+        key: "allPrograms",
         route: "program",
       },
       {
-        label: "Keamanan Digital",
+        key: "digitalSecurity",
         route: "detail_program_keamanan_digital",
       },
       {
-        label: "Dokumentasi Kegiatan",
+        key: "documentation",
         route: "dokumentasi_kegiatan_program",
       },
       {
-        label: "UMKM Binaan",
+        key: "msme",
         route: "umkm",
       },
     ],
   },
   {
-    label: "Isu & Pengetahuan",
+    key: "issues",
     route: "isu_pengetahuan",
     dropdownItems: [
       {
-        label: "Artikel & Analisis",
+        key: "articles",
         route: "isu_pengetahuan",
       },
       {
-        label: "Bentuk-Bentuk KBGO",
+        key: "kbgo",
         route: "kategori_kbgo",
       },
     ],
   },
   {
-    label: "Publikasi",
+    key: "publication",
     route: "publikasi",
     dropdownItems: [
       {
-        label: "Semua Publikasi",
+        key: "allPublications",
         route: "publikasi",
       },
-      // {
-      //   label: "Laporan Tahunan 2024",
-      //   route: "detail_publikasi_laporan_tahunan_2024",
-      // },
-      // {
-      //   label: "Panduan Penghapusan NCII",
-      //   route: "detail_panduan_protokol_penghapusan_ncii",
-      // },
     ],
   },
   {
-    label: "Kontak",
+    key: "contact",
     route: "kontak_pengaduan",
   },
+
+  // {
+  //   key: "network",
+  //   route: "ruang_jejaring",
+  // },
 ];
 
 const isRouteActive = (
   currentRoute: PageRoute,
   item: NavigationItem,
 ): boolean => {
-  if (currentRoute === item.route) return true;
+  if (currentRoute === item.route) {
+    return true;
+  }
 
   return Boolean(
     item.dropdownItems?.some(
@@ -126,12 +130,14 @@ const isRouteActive = (
   );
 };
 
-export const Header: React.FC<HeaderProps> = ({
+const Header: React.FC<HeaderProps> = ({
   currentRoute,
   onRouteChange,
   onOpenSearch,
   onOpenDonation,
 }) => {
+  const { t } = useTranslation();
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
@@ -143,8 +149,8 @@ export const Header: React.FC<HeaderProps> = ({
     setOpenDropdown(null);
   };
 
-  const toggleDropdown = (label: string) => {
-    setOpenDropdown((current) => (current === label ? null : label));
+  const toggleDropdown = (key: string) => {
+    setOpenDropdown((current) => (current === key ? null : key));
   };
 
   const handleSearch = () => {
@@ -201,19 +207,21 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
 
             <span className="hidden text-slate-300 sm:inline">
-              Ingin menghubungi TPDotcom?
+              {t("header.contactQuestion")}
             </span>
 
-            <span className="text-slate-300 sm:hidden">Kontak TPDotcom</span>
+            <span className="text-slate-300 sm:hidden">
+              {t("header.contactMobile")}
+            </span>
 
             <a
               href="https://wa.me/6282339431011"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={t("header.whatsappLabel")}
               className="inline-flex shrink-0 items-center gap-1 font-semibold text-white underline decoration-slate-500 underline-offset-4 transition-colors hover:text-blue-200"
-              aria-label="Hubungi TPDotcom melalui WhatsApp"
             >
-              WhatsApp
+              {t("header.whatsapp")}
               <ArrowUpRight size={12} aria-hidden="true" />
             </a>
           </div>
@@ -231,8 +239,8 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => navigateTo("beranda")}
+            aria-label={t("header.backHome")}
             className="flex min-w-0 shrink-0 items-center rounded-sm text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-4"
-            aria-label="TPDotcom — kembali ke beranda"
           >
             <img
               src={Logo}
@@ -244,29 +252,35 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Navigasi desktop */}
           <nav
             className="hidden items-center gap-0.5 lg:flex"
-            aria-label="Navigasi utama"
+            aria-label={t("header.navigation")}
           >
             {NAV_ITEMS.map((item) => {
               const active = isRouteActive(currentRoute, item);
               const hasDropdown = Boolean(item.dropdownItems?.length);
-              const dropdownOpen = openDropdown === item.label;
+              const dropdownOpen = openDropdown === item.key;
 
               if (!hasDropdown) {
                 return (
                   <button
-                    key={item.label}
+                    key={item.key}
                     type="button"
                     onClick={() => navigateTo(item.route)}
                     aria-current={
                       currentRoute === item.route ? "page" : undefined
                     }
-                    className={`relative whitespace-nowrap px-3 py-3 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 ${
-                      active
-                        ? "font-semibold text-blue-800"
-                        : "text-slate-600 hover:text-slate-950"
-                    }`}
+                    className={`
+                      relative whitespace-nowrap px-3 py-3
+                      text-[13px] transition-colors
+                      focus-visible:outline-none
+                      focus-visible:ring-2 focus-visible:ring-blue-700
+                      ${
+                        active
+                          ? "font-semibold text-blue-800"
+                          : "text-slate-600 hover:text-slate-950"
+                      }
+                    `}
                   >
-                    {item.label}
+                    {t(`header.${item.key}`)}
 
                     {active && (
                       <span className="absolute inset-x-3 bottom-0 h-[2px] bg-blue-800" />
@@ -276,19 +290,26 @@ export const Header: React.FC<HeaderProps> = ({
               }
 
               return (
-                <div key={item.label} className="relative">
+                <div key={item.key} className="relative">
                   <button
                     type="button"
-                    onClick={() => toggleDropdown(item.label)}
+                    onClick={() => toggleDropdown(item.key)}
                     aria-expanded={dropdownOpen}
                     aria-haspopup="true"
-                    className={`flex items-center gap-1 whitespace-nowrap px-3 py-3 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 ${
-                      active
-                        ? "font-semibold text-blue-800"
-                        : "text-slate-600 hover:text-slate-950"
-                    }`}
+                    className={`
+                      relative flex items-center gap-1
+                      whitespace-nowrap px-3 py-3
+                      text-[13px] transition-colors
+                      focus-visible:outline-none
+                      focus-visible:ring-2 focus-visible:ring-blue-700
+                      ${
+                        active
+                          ? "font-semibold text-blue-800"
+                          : "text-slate-600 hover:text-slate-950"
+                      }
+                    `}
                   >
-                    {item.label}
+                    {t(`header.${item.key}`)}
 
                     <ChevronDown
                       size={14}
@@ -307,11 +328,11 @@ export const Header: React.FC<HeaderProps> = ({
                     <div className="absolute left-0 top-full z-50 mt-2 w-64 border border-stone-200 bg-[#fffefa] py-2 shadow-xl shadow-slate-900/10">
                       <div className="border-b border-stone-100 px-4 pb-2 pt-1">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                          Jelajahi
+                          {t("header.explore")}
                         </p>
 
                         <p className="mt-1 font-editorial text-base text-slate-900">
-                          {item.label}
+                          {t(`header.${item.key}`)}
                         </p>
                       </div>
 
@@ -321,23 +342,25 @@ export const Header: React.FC<HeaderProps> = ({
 
                           return (
                             <button
-                              key={dropdownItem.label}
+                              key={dropdownItem.key}
                               type="button"
                               onClick={() => navigateTo(dropdownItem.route)}
                               aria-current={selected ? "page" : undefined}
-                              className={`flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-xs transition-colors ${
-                                selected
-                                  ? "bg-blue-50 font-semibold text-blue-900"
-                                  : "text-slate-600 hover:bg-stone-100 hover:text-slate-950"
-                              }`}
+                              className={`
+                                flex w-full items-center justify-between
+                                gap-3 px-4 py-3 text-left text-xs
+                                transition-colors
+                                ${
+                                  selected
+                                    ? "bg-blue-50 font-semibold text-blue-900"
+                                    : "text-slate-600 hover:bg-stone-100 hover:text-slate-950"
+                                }
+                              `}
                             >
-                              <span>{dropdownItem.label}</span>
+                              <span>{t(`header.${dropdownItem.key}`)}</span>
 
                               {selected && (
-                                <span
-                                  className="h-1.5 w-1.5 shrink-0 bg-blue-800"
-                                  aria-hidden="true"
-                                />
+                                <span className="h-1.5 w-1.5 shrink-0 bg-blue-800" />
                               )}
                             </button>
                           );
@@ -355,20 +378,21 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={handleSearch}
+              title={t("header.search")}
+              aria-label={t("header.openSearch")}
               className="inline-flex h-10 w-10 items-center justify-center text-slate-600 transition-colors hover:bg-stone-200/70 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
-              title="Cari artikel, panduan, atau publikasi"
-              aria-label="Buka pencarian"
             >
               <Search size={18} strokeWidth={1.7} />
             </button>
+            <LanguageSelector />
 
             <button
               type="button"
               onClick={handleDonation}
-              className="inline-flex h-10 items-center gap-2 border border-stone-300 px-3 text-xs font-medium text-slate-700 transition-colors hover:border-blue-800 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
+              className="inline-flex h-10 items-center gap-2 border border-stone-300 px-3 text-xs font-medium text-slate-700 transition-colors hover:border-blue-800 hover:text-blue-800"
             >
               <Heart size={15} strokeWidth={1.8} />
-              Dukung
+              {t("header.support")}
             </button>
 
             <button
@@ -377,17 +401,19 @@ export const Header: React.FC<HeaderProps> = ({
               className="inline-flex h-10 items-center gap-2 bg-blue-800 px-4 text-xs font-semibold text-white transition-colors hover:bg-blue-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
             >
               <LockKeyhole size={14} strokeWidth={1.8} />
-              Kontak & Pengaduan
+              {t("header.contactComplaint")}
             </button>
           </div>
 
-          {/* Aksi layar kecil */}
+          {/* Aksi mobile */}
           <div className="flex shrink-0 items-center gap-1 lg:hidden">
+            <LanguageSelector compact />
+
             <button
               type="button"
               onClick={handleSearch}
+              aria-label={t("header.openSearch")}
               className="inline-flex h-10 w-10 items-center justify-center text-slate-700 transition-colors hover:bg-stone-200/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
-              aria-label="Buka pencarian"
             >
               <Search size={19} strokeWidth={1.7} />
             </button>
@@ -398,12 +424,12 @@ export const Header: React.FC<HeaderProps> = ({
                 setIsMobileMenuOpen((current) => !current);
                 setOpenDropdown(null);
               }}
-              className="inline-flex h-10 w-10 items-center justify-center text-slate-800 transition-colors hover:bg-stone-200/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
               aria-label={
-                isMobileMenuOpen ? "Tutup menu navigasi" : "Buka menu navigasi"
+                isMobileMenuOpen ? t("header.closeMenu") : t("header.openMenu")
               }
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-navigation"
+              className="inline-flex h-10 w-10 items-center justify-center text-slate-800 transition-colors hover:bg-stone-200/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700"
             >
               {isMobileMenuOpen ? (
                 <X size={22} strokeWidth={1.7} />
@@ -422,32 +448,37 @@ export const Header: React.FC<HeaderProps> = ({
           className="border-t border-stone-200 bg-[#f8f7f3] lg:hidden"
         >
           <nav
-            aria-label="Navigasi mobile"
+            aria-label={t("header.mobileNavigation")}
             className="mx-auto max-w-7xl px-4 pb-5 pt-3 sm:px-6"
           >
             {NAV_ITEMS.map((item, index) => {
               const active = isRouteActive(currentRoute, item);
               const hasDropdown = Boolean(item.dropdownItems?.length);
-              const dropdownOpen = openDropdown === item.label;
+              const dropdownOpen = openDropdown === item.key;
 
               return (
                 <div
-                  key={item.label}
+                  key={item.key}
                   className={index === 0 ? "" : "border-t border-stone-200/80"}
                 >
                   {hasDropdown ? (
                     <>
                       <button
                         type="button"
-                        onClick={() => toggleDropdown(item.label)}
+                        onClick={() => toggleDropdown(item.key)}
                         aria-expanded={dropdownOpen}
-                        className={`flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm transition-colors ${
-                          active
-                            ? "font-semibold text-blue-900"
-                            : "font-medium text-slate-700"
-                        }`}
+                        className={`
+                          flex w-full items-center justify-between
+                          gap-3 py-3.5 text-left text-sm
+                          transition-colors
+                          ${
+                            active
+                              ? "font-semibold text-blue-900"
+                              : "font-medium text-slate-700"
+                          }
+                        `}
                       >
-                        <span>{item.label}</span>
+                        <span>{t(`header.${item.key}`)}</span>
 
                         <ChevronDown
                           size={17}
@@ -466,17 +497,22 @@ export const Header: React.FC<HeaderProps> = ({
 
                             return (
                               <button
-                                key={dropdownItem.label}
+                                key={dropdownItem.key}
                                 type="button"
                                 onClick={() => navigateTo(dropdownItem.route)}
                                 aria-current={selected ? "page" : undefined}
-                                className={`block w-full py-2.5 pl-2 text-left text-[13px] transition-colors ${
-                                  selected
-                                    ? "font-semibold text-blue-900"
-                                    : "text-slate-600 hover:text-slate-950"
-                                }`}
+                                className={`
+                                  block w-full py-2.5 pl-2
+                                  text-left text-[13px]
+                                  transition-colors
+                                  ${
+                                    selected
+                                      ? "font-semibold text-blue-900"
+                                      : "text-slate-600 hover:text-slate-950"
+                                  }
+                                `}
                               >
-                                {dropdownItem.label}
+                                {t(`header.${dropdownItem.key}`)}
                               </button>
                             );
                           })}
@@ -490,13 +526,18 @@ export const Header: React.FC<HeaderProps> = ({
                       aria-current={
                         currentRoute === item.route ? "page" : undefined
                       }
-                      className={`flex w-full items-center justify-between gap-3 py-3.5 text-left text-sm transition-colors ${
-                        active
-                          ? "font-semibold text-blue-900"
-                          : "font-medium text-slate-700"
-                      }`}
+                      className={`
+                        flex w-full items-center justify-between
+                        gap-3 py-3.5 text-left text-sm
+                        transition-colors
+                        ${
+                          active
+                            ? "font-semibold text-blue-900"
+                            : "font-medium text-slate-700"
+                        }
+                      `}
                     >
-                      <span>{item.label}</span>
+                      <span>{t(`header.${item.key}`)}</span>
 
                       {active && (
                         <span
@@ -518,7 +559,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="inline-flex min-h-11 items-center justify-center gap-2 border border-stone-300 px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-blue-800 hover:text-blue-800"
               >
                 <Heart size={15} strokeWidth={1.8} />
-                Dukung TPDotcom
+                {t("header.supportUs")}
               </button>
 
               <button
@@ -527,13 +568,12 @@ export const Header: React.FC<HeaderProps> = ({
                 className="inline-flex min-h-11 items-center justify-center gap-2 bg-blue-800 px-3 text-xs font-semibold text-white transition-colors hover:bg-blue-950"
               >
                 <LockKeyhole size={14} strokeWidth={1.8} />
-                Kontak & Pengaduan
+                {t("header.contactComplaint")}
               </button>
             </div>
 
             <p className="mt-4 text-[11px] leading-relaxed text-slate-500">
-              Transformasi Perempuan Dotcom — ruang informasi, pengetahuan, dan
-              pemberdayaan perempuan.
+              Transformasi Perempuan Dotcom — {t("header.description")}
             </p>
           </nav>
         </div>

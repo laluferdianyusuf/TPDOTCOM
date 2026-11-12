@@ -1,0 +1,308 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About Us",
+    "program": "Programs",
+    "issues": "Issues & Knowledge",
+    "publication": "Publications",
+    "contact": "Contact",
+    "network": "Network",
+
+    "profile": "Organization Profile",
+    "paralegal": "Paralegal",
+    "volunteer": "Volunteer",
+
+    "allPrograms": "All Programs",
+    "digitalSecurity": "Digital Security",
+    "documentation": "Activity Documentation",
+    "msme": "Supported MSMEs",
+
+    "articles": "Articles & Analysis",
+    "kbgo": "Forms of Gender-Based Online Violence",
+
+    "allPublications": "All Publications",
+
+    "explore": "Explore",
+
+    "support": "Support Us",
+    "supportUs": "Support Us",
+    "contactComplaint": "Contact & Complaints",
+
+    "contactQuestion": "Have questions or need assistance?",
+    "contactMobile": "Need help?",
+    "whatsapp": "Contact via WhatsApp",
+
+    "description": "Together, creating a safe, fair, and equal space for women.",
+
+    "search": "Search",
+    "openSearch": "Open search",
+
+    "whatsappLabel": "Contact us through WhatsApp",
+
+    "navigation": "Main navigation",
+    "mobileNavigation": "Mobile navigation",
+
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "backHome": "Back to homepage",
+
+    "selectLanguage": "Select language",
+    "indonesian": "Bahasa Indonesia",
+    "english": "English"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Transformasi Perempuan Dotcom",
+      "title": "A safer digital space,",
+      "titleHighlight": "fair and equal.",
+      "description": "TPDotcom works to strengthen community capacity, promote women's empowerment, and improve understanding of rights and safety in digital spaces.",
+      "reportButton": "Seek help or submit a report",
+      "programButton": "Explore our work",
+      "values": {
+        "victimCentered": "Survivor-centered approach",
+        "consent": "Respect for consent",
+        "empowerment": "Focused on empowerment"
+      }
+    },
+    "start": {
+      "eyebrow": "Start here",
+      "title": "What do you need?",
+      "description": "Choose the information that best matches your needs.",
+      "helpTitle": "Seek assistance",
+      "helpDescription": "Initial information on finding support or submitting a report.",
+      "kbgoTitle": "Understanding online gender-based violence",
+      "kbgoDescription": "Learn about forms of online gender-based violence and possible steps to consider.",
+      "programTitle": "Explore our programs",
+      "programDescription": "Learn about TPDotcom's areas of work, activities, and empowerment approach.",
+      "safetyNote": "If you are in immediate danger, prioritize your physical safety and contact local emergency services or someone you trust."
+    },
+    "emergency": {
+      "eyebrow": "Practical Guide",
+      "title": "When violence happens in digital spaces",
+      "description": "You do not have to resolve everything at once. Start with safe steps and choose information based on your situation.",
+      "guideButton": "Read the response guide",
+      "disclaimer": "This general guide is not a substitute for legal assistance, specialized technical support, or emergency services.",
+      "tabs": {
+        "ncii": "Intimate content",
+        "doxing": "Doxing",
+        "stalking": "Stalking",
+        "deepfake": "AI manipulation"
+      },
+      "guides": {
+        "ncii": {
+          "eyebrow": "Intimate content shared without consent",
+          "title": "Someone is threatening to share intimate photos or videos",
+          "introduction": "You do not have to comply with the perpetrator's threats. Prioritize your safety and preserve evidence if it is safe to do so.",
+          "steps": [
+            "Do not rush to pay or send additional content.",
+            "Save threatening messages, account names, links, and timestamps if it is safe.",
+            "Report the content through the platform's official channels. StopNCII.org may help eligible adults prevent certain intimate images from being shared."
+          ],
+          "actionLabel": "Learn about response steps"
+        },
+        "doxing": {
+          "eyebrow": "Disclosure of personal information",
+          "title": "Personal information has been shared without permission",
+          "introduction": "Sharing an address, phone number, or other personal information can increase safety risks. You have the right to seek help.",
+          "steps": [
+            "Document the post and its links if it is safe to do so.",
+            "Review your privacy settings and secure your account using a device you trust.",
+            "Report the content to the platform and consider legal assistance if there are threats or harm."
+          ],
+          "actionLabel": "Understand forms of online gender-based violence"
+        },
+        "stalking": {
+          "eyebrow": "Digital stalking",
+          "title": "You suspect that your account or device is being monitored",
+          "introduction": "If you suspect monitoring by someone who may put you at risk, avoid actions that could increase the danger.",
+          "steps": [
+            "Use a safer device to seek help if possible.",
+            "Check login sessions, location sharing, and app permissions only if it is safe.",
+            "Record suspicious incidents and seek trusted technical assistance before deleting apps that may contain evidence."
+          ],
+          "actionLabel": "Learn about digital safety"
+        },
+        "deepfake": {
+          "eyebrow": "AI-generated image manipulation",
+          "title": "Your face or identity has been used in a fake image",
+          "introduction": "Manipulated images can be used to humiliate, threaten, or extort someone. You are not responsible for the perpetrator's actions.",
+          "steps": [
+            "Save links and information about the accounts sharing the image if it is safe.",
+            "Avoid resharing the image, especially intimate content.",
+            "Use the platform's reporting channels and seek support to determine your next steps."
+          ],
+          "actionLabel": "Find information and support"
+        }
+      },
+      "findAssistance": "Seek support"
+    },
+    "programs": {
+      "eyebrow": "Our Areas of Work",
+      "title": "Change requires more than one approach.",
+      "description": "TPDotcom programs connect knowledge, support, and advocacy to respond to community needs.",
+      "viewAll": "View all programs",
+      "learn": "Learn about {{title}}"
+    },
+    "kbgo": {
+      "eyebrow": "Issues and Knowledge",
+      "title": "Recognizing violence is the first step.",
+      "description": "Understand forms of online gender-based violence, possible risks, and options for seeking help.",
+      "viewAll": "Explore the online gender-based violence catalogue",
+      "legalBasis": "Legal basis:",
+      "legalBasisFallback": "See the full explanation",
+      "disclaimer": "Risk levels vary depending on each person's context and circumstances. The catalogue's assessment is not a substitute for an individual safety assessment."
+    },
+    "publications": {
+      "eyebrow": "Publications and Learning Resources",
+      "title": "Knowledge that can be shared.",
+      "description": "Explore reading materials and documents that help communities understand issues, strengthen capacity, and support advocacy work.",
+      "viewAll": "All publications ({{count}})",
+      "category": "Reading material",
+      "read": "Read publication",
+      "empty": "Publications are being prepared. Visit the publications page for the latest information."
+    },
+    "approach": {
+      "eyebrow": "How We Work",
+      "title": "Support that respects each person's choices.",
+      "description": "Everyone has different circumstances, needs, and safety considerations. A good response begins with listening, respecting the decisions of affected people, and providing clear information about available options.",
+      "steps": {
+        "listen": {
+          "title": "Listen",
+          "description": "Start with the experiences and needs of the affected person."
+        },
+        "options": {
+          "title": "Offer options",
+          "description": "Explain available options without blaming survivors."
+        },
+        "respect": {
+          "title": "Respect decisions",
+          "description": "Prioritize consent and safety considerations."
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Next Steps",
+      "title": "You do not have to find answers alone.",
+      "description": "Start by reading the information you need or contacting the organization to ask about available support options.",
+      "contact": "Contact us",
+      "programs": "Explore our programs",
+      "supportTitle": "Support collective action.",
+      "supportDescription": "Community solidarity helps sustain empowerment and advocacy work.",
+      "donate": "Support through donations",
+      "organization": "Transformasi Perempuan Dotcom",
+      "tagline": "Community empowerment and digital justice"
+    }
+  },
+
+  "about": {
+    "hero": {
+      "eyebrow": "About TPDotcom",
+      "title": "Change begins when everyone",
+      "titleHighlight": "has the space to thrive.",
+      "description": "Transformasi Perempuan Dotcom works to empower women and strengthen community capacity. We promote access to knowledge, meaningful participation, and safer, more inclusive use of technology.",
+      "programButton": "Explore our programs",
+      "contactButton": "Contact us",
+      "focusLabel": "Our focus",
+      "focus": {
+        "women": "Women's empowerment",
+        "digital": "Digital literacy",
+        "participation": "Community participation"
+      }
+    },
+    "vision": {
+      "eyebrow": "Our direction",
+      "title": "An empowered, equal, and inclusive society.",
+      "description": "We believe that opportunities to learn, participate, and access rights should be open to everyone.",
+      "highlight": "Technology and development should expand opportunities, not create new barriers.",
+      "missionTitle": "Our mission",
+      "missions": [
+        "Strengthen women's empowerment by improving digital literacy and capacity.",
+        "Increase public understanding of human rights, equality, and the protection of vulnerable groups.",
+        "Encourage the participation of women, young people, persons with disabilities, and older people in development.",
+        "Advocate for the fulfillment of rights, equal access, and a fairer society."
+      ]
+    },
+    "values": {
+      "eyebrow": "Our principles",
+      "title": "It is not only about what we do, but also how we do it.",
+      "description": "How we work together is just as important as the goals we aim to achieve. Every activity should respect people's dignity, choices, and diverse experiences.",
+      "items": {
+        "human": {
+          "title": "People-centered",
+          "description": "We listen to everyone's experiences without judgment. The dignity, choices, and needs of the people we support are our primary considerations."
+        },
+        "consent": {
+          "title": "Consent and control",
+          "description": "We provide clear information so everyone can understand the available options and decide on steps that suit their needs."
+        },
+        "privacy": {
+          "title": "Protecting privacy",
+          "description": "Personal information must be handled carefully. Data collection, use, and sharing should always consider consent and security."
+        },
+        "inclusion": {
+          "title": "Inclusive justice",
+          "description": "We recognize differences in experiences, access, and barriers faced by women, children, persons with disabilities, and other groups."
+        }
+      }
+    },
+    "structure": {
+      "eyebrow": "The people behind our work",
+      "title": "TPDotcom organizational structure",
+      "description": "TPDotcom is run through collaboration between operational staff, members, the core management team, the chairperson, and the supervisory board. Each has a role and responsibility in supporting the organization and achieving shared goals.",
+      "groups": {
+        "executive": {
+          "title": "Executive Director",
+          "description": "The operational leader responsible for directing, managing, and ensuring that all organizational activities align with the organization's goals and work plans."
+        },
+        "coordinator": {
+          "title": "Coordinator",
+          "description": "Coordinates the technical, administrative, financial, and program implementation needs of the organization."
+        },
+        "supervisor": {
+          "title": "Supervisory Board",
+          "description": "Oversees the organization and ensures that it operates in accordance with its vision, mission, and accountability principles."
+        },
+        "chairperson": {
+          "title": "Chairperson",
+          "description": "Leads the organization's direction, coordination, and implementation."
+        },
+        "core": {
+          "title": "Core Management Team",
+          "description": "Manages coordination, administration, finance, and organizational governance."
+        },
+        "members": {
+          "title": "Organization Members",
+          "description": "Support the implementation of programs, activities, and various initiatives for women's empowerment and community development."
+        }
+      }
+    },
+    "accountability": {
+      "eyebrow": "Public accountability",
+      "title": "Trust is built through transparency and responsibility.",
+      "description": "Information about our organization, programs, and publications helps the public understand TPDotcom's work and the activities we carry out.",
+      "publicationDescription": "To learn more about the organization and access published materials, visit the TPDotcom publications page.",
+      "publicationButton": "View publications",
+      "points": {
+        "information": {
+          "title": "Clear information",
+          "description": "Presenting organizational and activity information in language that is easy to understand."
+        },
+        "responsibility": {
+          "title": "Shared responsibility",
+          "description": "Encouraging responsible practices toward communities and partners."
+        },
+        "documentation": {
+          "title": "Activity documentation",
+          "description": "Using publications to help the public follow the organization's activities and learning."
+        }
+      }
+    },
+    "cta": {
+      "eyebrow": "Moving forward together",
+      "title": "Meaningful change requires the participation of many.",
+      "description": "Explore our programs, share knowledge, or support the empowerment initiatives we carry out.",
+      "programButton": "Explore programs",
+      "donationButton": "Support our work"
+    }
+  }
+}

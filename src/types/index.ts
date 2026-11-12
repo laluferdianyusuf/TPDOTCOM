@@ -14,7 +14,8 @@ export type PageRoute =
   | "paralegal"
   | "paralegal_kasus"
   | "umkm"
-  | "umkm_katalog";
+  | "umkm_katalog"
+  | "ruang_jejaring";
 
 export interface KBGOCategory {
   id: string;
@@ -170,4 +171,12 @@ export interface UmkmBusiness {
   description: string;
   coverImage?: string;
   products: UmkmProduct[];
+}
+
+export interface VolunteerMember {
+  name: string;
+  role: string;
+  location?: string;
+  avatar: string;
+  bio?: string;
 }
