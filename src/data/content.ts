@@ -2280,66 +2280,66 @@ export const volunteerMembers: VolunteerMember[] = [
   {
     name: "Syafira Desiana Cindra Kaisa",
     role: "Volunteer",
-    location: "Mataram",
+    location: "SMAN 3 Mataram",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673681/WhatsApp_Image_2025-07-15_at_14.48.43_63d90b4b.jpg",
-    bio: "Berpartisipasi dalam mendukung kegiatan dan program pemberdayaan masyarakat.",
+    bio: "Berperan dalam mendukung kegiatan pemberdayaan perempuan dan edukasi masyarakat, khususnya dalam membangun kesadaran tentang kesetaraan dan partisipasi sosial.",
   },
   {
     name: "Dinda Adhiba Tsoraya",
     role: "Volunteer",
-    location: "Lombok Barat",
+    location: "Universitas Mataram",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673676/WhatsApp_Image_2025-07-15_at_17.43.42_61a86cd2.jpg",
-    bio: "Mendukung pelaksanaan kegiatan edukasi dan penguatan kapasitas masyarakat.",
+    bio: "Turut mendukung pelaksanaan program edukasi, penguatan kapasitas, serta penyebarluasan informasi yang mendorong pemberdayaan perempuan dan kelompok rentan.",
   },
   {
     name: "Agus Heri Subagyo",
     role: "Volunteer",
-    location: "Pagutan",
+    location: "Pagesangan",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673673/WhatsApp_Image_2024-03-25_at_13.01.25_6c426811.jpg",
-    bio: "Terlibat dalam kegiatan sosial dan kampanye kesetaraan.",
+    bio: "Berkontribusi dalam membangun keterlibatan masyarakat melalui kegiatan sosial, pendampingan komunitas, dan penguatan nilai-nilai kesetaraan di lingkungan sekitar.",
   },
   {
     name: "Bunga Intan Lestari",
     role: "Volunteer",
-    location: "Lombok Timur",
+    location: "Lombok Barat",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673675/WhatsApp_Image_2025-07-15_at_12.08.09_debf4fac.jpg",
-    bio: "Mendukung kegiatan lapangan dan keterlibatan masyarakat.",
+    bio: "Mendukung pelaksanaan kegiatan lapangan dan berinteraksi langsung dengan masyarakat untuk memperkuat partisipasi dalam berbagai program pemberdayaan.",
   },
   {
-    name: "Nama Volunteer 5",
+    name: "Gading Setia Ramadhan",
     role: "Volunteer",
-    location: "Mataram",
+    location: "SMAN 8 Mataram",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673674/WhatsApp_Image_2024-03-26_at_11.39.10_f82b14d9.jpg",
-    bio: "Berkontribusi dalam pengembangan materi dan publikasi kegiatan.",
+    bio: "Turut berkontribusi dalam pengembangan materi komunikasi, dokumentasi, dan publikasi kegiatan untuk memperluas jangkauan informasi organisasi.",
   },
   {
-    name: "Nama Volunteer 6",
+    name: "Rizka Arsyana",
     role: "Volunteer",
-    location: "Lombok Utara",
+    location: "SMKM 2 Mataram",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673674/WhatsApp_Image_2024-03-25_at_12.20.49_5fe0b4a5.jpg",
-    bio: "Mendukung perluasan informasi dan partisipasi masyarakat.",
+    bio: "Berpartisipasi dalam mendukung kampanye sosial dan penyebaran informasi edukatif untuk meningkatkan kesadaran masyarakat terhadap isu perempuan dan kelompok rentan.",
   },
   {
-    name: "Bunga Intan Lestari",
+    name: "Kadek Feby Trisna Ningsih",
     role: "Volunteer",
-    location: "Lombok Utara",
+    location: "SMAN 2 Mataram",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673673/WhatsApp_Image_2024-03-25_at_12.23.46_6ece21a0.jpg",
-    bio: "Mendukung perluasan informasi dan partisipasi masyarakat.",
+    bio: "Mendukung kegiatan komunikasi dan edukasi masyarakat serta mendorong keterlibatan generasi muda dalam menciptakan lingkungan yang inklusif dan setara.",
   },
   {
     name: "Baiq Nurul Apriana",
     role: "Volunteer",
-    location: "Lombok Utara",
+    location: "Lombok Tengah",
     avatar:
       "https://res.cloudinary.com/obyq9wil/image/upload/v1793673672/WhatsApp_Image_2025-07-16_at_10.07.41_e8d098b4.jpg",
-    bio: "Mendukung perluasan informasi dan partisipasi masyarakat.",
+    bio: "Turut mendukung pelaksanaan program pemberdayaan di tingkat komunitas serta memperkuat partisipasi perempuan dalam kegiatan sosial dan pengembangan masyarakat.",
   },
 ];
 
